@@ -1,0 +1,45 @@
+﻿@model App.Models.ProjectViewModel
+@using App.Models
+
+
+@Html.AntiForgeryToken()
+
+
+<div class="form-group">
+
+    @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
+
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Here goes project name" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.StartDate, new
+   {
+       @class = "form-control datepicker",
+       @placeholder = "Here goes start date",
+       @data_date_format = "dd.mm.yyyy"
+   })
+        @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-10">
+        @Html.TextBoxFor(m => m.EndDate, new
+   {
+       @class = "form-control datepicker",
+       @placeholder = "Here goes end date",
+       @data_date_format = "dd.mm.yyyy"
+   })
+        @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" class="btn btn-default" value="Search" />
+    </div>
+</div>
+
+

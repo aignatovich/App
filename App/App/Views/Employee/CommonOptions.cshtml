@@ -1,0 +1,21 @@
+﻿@using App.Models
+@model EmployeeViewModel
+@{
+    EmployeeViewModel item = Model;
+}
+
+@using (Html.BeginForm("RemoveEmployee", "Employee", FormMethod.Post, new { @class = "", role = "" }))
+{
+    @Html.HiddenFor(x => x.Id, item.Id);
+    <td width="50">
+        <input type="submit" value="Remove" class="btn btn-primary remove" />
+    </td>
+}
+
+@using (Html.BeginForm("EditEmployee", "Employee", FormMethod.Get, new { @class = "", role = ""}))
+{
+    @Html.HiddenFor(x => x.Id, item.Id);
+    <td width="50">
+        <input type="submit" value="Edit" class="btn btn-primary"/>
+    </td>
+}          

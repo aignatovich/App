@@ -1,0 +1,12 @@
+﻿@using App.Models
+@model ManagingDateModel
+
+@using (Ajax.BeginForm("ApplyChanges", new AjaxOptions { HttpMethod = "Post" }))
+{
+    @Html.HiddenFor(x => x.UserId, new { @id = "userIdBox" })
+    @Html.HiddenFor(x => x.Day, new { @id = "dayValueBox" })
+    @Html.HiddenFor(x => x.Month, new { @id = "monthValueBox" })
+    @Html.HiddenFor(x => x.Year, new { @id = "yearValueBox" })
+    @Html.HiddenFor(x => x.Reason, new { @id = "reasonValueBox" })
+    <input type="submit" id="applyChanges" class="hiddn" tabindex="-1" />
+}

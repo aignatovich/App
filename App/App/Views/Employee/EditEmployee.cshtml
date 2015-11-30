@@ -1,0 +1,26 @@
+﻿@model App.Models.EmployeeViewModel
+@using App.Models
+
+@{
+    ViewBag.Title = "EditEmployee";
+    EmployeeViewModel employee = Model;
+}
+
+
+<div style="margin-top:10%;">
+    <h2>Edit Employee</h2>
+    <div class="well col-md-5">
+        @using (Html.BeginForm("EditEmployee", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <h4>Edit existing employee</h4>
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.Id, employee.Id)
+            @Html.Partial("EmployeeInputPartial")
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

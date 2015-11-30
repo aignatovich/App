@@ -1,0 +1,167 @@
+﻿.pad5 {
+    padding: 5px;
+}
+
+.clrWsm {
+    background-color: #F1F2E8;
+    border-radius:2px;
+}
+
+.brdCell {
+    width: 10%;
+    padding: 2px;
+    background-color: #F1F2E8;
+    color: white;
+}
+
+.dCellG {
+    font-size: 12px;
+    font-weight: bold;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    background-color: #D9D9D9;
+    text-align: center;
+    width: 2%;
+    padding: 0px;
+}
+
+.dCellW {
+    font-size: 12px;
+    font-weight: bold;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    background-color: #F1F2E8;
+    text-align: center;
+    width: 2%;
+    padding: 0px;
+}
+
+.lbrdRow {
+    background-color: white;
+    height: 80%;
+    width: 200%;
+}
+
+.lbrdCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    text-align: left;
+    background-color:olive;
+    color:white;
+}
+
+.dayCell {
+    width: 2%;
+    padding: 2px;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    background-color: #4B180E;
+    text-align: center;
+    color: white;
+}
+
+.rbrdCell {
+    width: 2%;
+    padding: 2px;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    background-color: olive;
+    text-align: center;
+    color: white;
+}
+
+.monthTotal {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0px;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+
+.empNameCell {
+    font-size: 12px;
+    font-weight: bold;
+    border-bottom: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+}
+.wCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    border-left: 1.5px solid white;
+    border-right: 1.5px solid white;
+    background-color: whitesmoke;
+    text-align: center;
+    color: white;
+    width: 2%;
+}
+
+.gCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    border-left: 1.5px solid white;
+    border-right: 1.5px solid white;
+    background-color: lightgrey;
+    text-align: center;
+    width: 2%;
+    color: white;
+}
+
+.resWCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    border-left: 1.5px solid lightgrey;
+    border-bottom: 1.5px solid lightgrey;
+    background-color: white;
+    text-align: center;
+    width: 10%;
+}
+
+.greenCell {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 0px;
+    border-left: 1.5px solid white;
+    border-right: 1.5px solid white;
+    background-color: darkseagreen;
+    text-align: center;
+    width: 2%;
+    color: white;
+}
+
+.bigGreenCell {
+    color:white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px;
+    background-color: darkseagreen;
+    text-align: center;
+    width: 10%;
+}
+
+.hiddn {
+    display:none;
+}
+
+.cmenufont {
+    font-family:Consolas; 
+    font-weight:bold;
+    color:white;
+}
+
+.vacclr {
+    background-color:#A53423;
+}
+
+.sickclr {
+    background-color:#9BB05D;
+}
+
+.perclr {
+    background-color:#E68130;
+}

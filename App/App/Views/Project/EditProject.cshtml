@@ -1,0 +1,39 @@
+﻿@model App.Models.ProjectViewModel
+@using App.Models
+
+@{
+    ViewBag.Title = "Edit project";
+    ProjectViewModel project = Model;
+}
+
+
+
+<div style="margin-top:10%;">
+    <h2>Edit project</h2>
+    <div class="well col-md-5">
+        @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <h4>Edit existing project</h4>
+            <br />
+            @Html.HiddenFor(x => x.Id, Model.Id)
+            @Html.Partial("ProjectInputPartial")
+        }
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jq")
+    @Scripts.Render("~/bundles/datepicker")
+    @Styles.Render("~/Content/datepicker-styles")
+    <script>
+        (function () {
+            $('.datepicker').datepicker();
+        })();
+    </script>
+}
+
+

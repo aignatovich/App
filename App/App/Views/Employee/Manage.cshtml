@@ -1,0 +1,460 @@
+﻿@using App.Models.ManagingTableModels
+@using PagedList.Mvc;
+@using App.Models;
+@model TableData
+@{
+    int days = Model.DayLimit;
+    int startYear = Model.StartYear;
+}
+
+<div>
+    <br />
+    <br />
+    <br />
+</div>
+
+<div>
+    <div class="row pad5 clrWsm">
+        <div style="padding: 5px;">
+            <div class="col-xs-4" style="padding-left:0px;">
+                <select id="selectMonth" data-bind="options: months, optionsText: 'Name', optionsValue: 'Code', value: month"></select>
+            </div>
+        </div>
+        <div class="col-xs-4" style="padding-left:65px;">
+            <h3 style="margin-top:0px;">Dates of Absence</h3>
+        </div>
+        <div class="col-xs-1" style="float:right; margin-right:70px;">
+            <select id="selectYear" data-bind="options: years(), optionsText: 'Name', optionsValue: 'Name', value: year"></select>
+        </div>
+
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="brdCell"></th>
+
+                <!-- ko foreach: daysToDisplay()  -->
+                <td style="padding:0px;" data-bind="attr: {'class': $parent.computeDayCellStyle(Value)}, text: Name"></td>
+                <!-- /ko -->
+
+                <th class="brdCell"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="lbrdRow">
+                <td class="lbrdCell" id="days" style="padding: 0px;" data-bind="text: tableRowNameEmployee"></td>
+
+                <!-- ko foreach: daysToDisplay()  -->
+                <th class="dayCell" style="padding: 0px;" data-bind="text: Value"></th>
+                <!-- /ko -->
+
+                <th class="rbrdCell" style="padding: 0px;" data-bind="text: tableTotalDays"></th>
+            </tr>
+
+            <!-- ko foreach: employees  -->
+            <tr class="lbrdRow">
+                <td class="empNameCell active" style="padding: 0px;" data-bind="text: DataValue"></td>
+                <!-- ko foreach: $parent.daysToDisplay()  -->
+                <td class="cell" style="padding: 3px;" data-bind="
+                                attr: {'class': $root.computeCellStyle($parent, $index())},
+                                text: $root.computeCellContent($parent, $index),
+                                event: { contextmenu: $root.formData($element, $context)}"></td>
+                <!-- /ko -->
+                <td class="resWCell active" style="padding: 3px;" data-bind="text: TotalAbsence"></td>
+            </tr>
+            <!-- /ko -->
+
+            <tr id="horizontal_rez" class="lbrdRow">
+                <td class="bigGreenCell" style="padding: 3px;" data-bind="text: tableMonthTotal"></td>
+
+                <!-- ko foreach: daysToDisplay()  -->
+                <td class="greenCell" style="padding: 3px;" data-bind="text: $parent.totalDayAbsence()[$index()]()"></td>
+                <!-- /ko -->
+
+                <td class="bigGreenCell" style="padding: 3px;" id="totalDays" data-bind="text: absenceSummary().Value"></td>
+            </tr>
+        </tbody>
+    </table>
+    @Html.PagedListPager(Model.Employees, page => Url.Action("Manage", new { month = (int)Model.Month, year = Model.Year, page, sort = Model.Sort, projectId = Model.ProjectId }))
+</div>
+
+
+@using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { }))
+{
+    @Html.Hidden("month", "", new { @id = "monthBox" })
+    @Html.Hidden("year", "", new { @id = "yearBox" })
+    @Html.Hidden("page", "", new { @id = "" })
+    @Html.Hidden("sort", "", new { @id = "" })
+    @Html.Hidden("projectId", "", new { @id = "projectIdBox" })
+    <input type="submit" class="hiddn" id="datepickSub" tabindex="-1" />
+}
+
+<ul id="contextMenu" class="dropdown-menu" role="menu" style="display:none; background-color:gainsboro;">
+    <li id="vac" class="vacclr" data-bind="click: contextClickVacation">
+        <a class="cmenufont" style="color:white;" tabindex="-1">Vacation</a>
+    </li>
+    <li id="sic" class="sickclr" data-bind="click: contextClickSick">
+        <a class="cmenufont" style="color:white;" tabindex="-1" href="#">Sick</a>
+    </li>
+    <li id="per" class="perclr" data-bind="click: contextClickPersonal">
+        <a class="cmenufont" style="color:white;" tabindex="-1" href="#">Personal</a>
+    </li>
+</ul>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jq")
+    @Styles.Render("~/Content/nice-select-styles")
+    @Styles.Render("~/Content/register-styles")
+    @Scripts.Render("~/bundles/register")
+    @Scripts.Render("~/bundles/knockout")
+
+    <script>
+        (function () {
+
+            $('#selectMonth').niceSelect();
+            $('#selectYear').niceSelect();
+            $('#selectProject').niceSelect();
+
+            (function ($, window) {
+
+                $.fn.contextMenu = function (settings) {
+
+                    return this.each(function () {
+
+                        // Open context menu
+                        $(this).on("contextmenu", function (e) {
+                            // return native menu if pressing control
+                            if (e.ctrlKey) return;
+
+                            //open menu
+                            var $menu = $(settings.menuSelector)
+                                .data("invokedOn", $(e.target))
+                                .show()
+                                .css({
+                                    position: "absolute",
+                                    trigger: 'left',
+                                    left: getMenuPosition(e.clientX, 'width', 'scrollLeft'),
+                                    top: getMenuPosition(e.clientY, 'height', 'scrollTop')
+                                })
+                                .off('click')
+                                .on('click', 'a', function (e) {
+                                    $menu.hide();
+
+                                    var $invokedOn = $menu.data("invokedOn");
+                                    var $selectedMenu = $(e.target);
+
+                                    settings.menuSelected.call(this, $invokedOn, $selectedMenu);
+                                });
+
+                            return false;
+                        });
+
+                        //make sure menu closes on any click
+                        $(document).click(function () {
+                            $(settings.menuSelector).hide();
+                        });
+                    });
+
+                    function getMenuPosition(mouse, direction, scrollDir) {
+                        var win = $(window)[direction](),
+                            scroll = $(window)[scrollDir](),
+                            menu = $(settings.menuSelector)[direction](),
+                            position = mouse + scroll;
+
+                        // opening menu would pass the side of the page
+                        if (mouse + menu > win && menu < mouse)
+                            position -= menu;
+
+                        return position;
+                    }
+
+                };
+            })(jQuery, window);
+
+            $(".cell").contextMenu({
+                menuSelector: "#contextMenu",
+                menuSelected: function (invokedOn, selectedMenu) {}
+            });
+
+            $('select').on('change', function () {
+                $('#monthBox').val(myViewModel.getMonthIndex($(".option.selected").eq(0).text()));
+                $('#yearBox').val($(".option.selected").eq(1).text());
+                $('#projectIdBox').val(Model.ProjectId);
+                $('#datepickSub').click();
+            });
+
+        })();
+    </script>
+}
+
+<script src="~/Scripts/knockout-3.3.0.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"> </script>
+
+<script type="text/javascript">
+    
+
+    ko.bindingHandlers.cl
+
+    var Model = @Html.Raw(Json.Encode(Model));
+    var months = [
+        { Name: "January", Code: "1" },
+        { Name: "February", Code: "2" },
+        { Name: "March", Code: "3" },
+        { Name: "April", Code: "4" },
+        { Name: "May", Code: "5" },
+        { Name: "June", Code: "6" },
+        { Name: "July", Code: "7" },
+        { Name: "August", Code: "8" },
+        { Name: "September", Code: "9" },
+        { Name: "October", Code: "10" },
+        { Name: "November", Code: "11" },
+        { Name: "December", Code: "12" }
+    ];
+
+    var daysEnum = [
+       {Name : "Sun", Code : "0" },
+       {Name : "Mon", Code : "1" },
+       {Name : "Tue", Code : "2" },
+       {Name : "Wed", Code : "3" },
+       {Name : "Thu", Code : "4" },
+       {Name : "Fri", Code : "5" },
+       {Name : "Sat", Code : "6" }
+    ];
+
+    function ViewModel() {
+
+        var self = this;
+
+        self.reasons = {
+            Vacation: 1,
+            Sick: 2,
+            Personal: 3
+        }
+
+        self.projects = function(){
+            var projectList = [];
+            for (var i = 0; i < Model.Projects.length; i++)
+            {
+                projectList[i] = {Name: Model.Projects[i].Name, Id: Model.Projects[i].Id};
+            }
+            return projectList;
+        }
+
+        self.month = ko.observable(Model.Month);
+
+        self.months = months;
+
+        self.year = ko.observable(Model.Year);
+
+        self.years = function() {
+            var years = [];
+            for (var i = Model.StartYear; i <= Model.EndYear; i++){
+                years.push({Name: i});
+            }
+            years = years.reverse();
+            years = $.grep(years, function(e){ return e.Name != self.year().Name });
+            return years;
+        };
+
+        self.employees = $.map(Model.Employees, function(item, index){
+            var employee = {
+                DataValue: item.Name + " " +  item.Surname,
+                Id: item.Id,
+                AbsenceList: ko.observableArray($.grep(item.AbsenceList, function(e){ 
+                    return e.ProjectId == Model.ProjectId;
+                })),
+                RowColor: index%2,
+                TotalAbsence: ''
+            }
+
+            employee.TotalAbsence = ko.computed(function(){
+                return employee.AbsenceList().length;
+            });
+
+            return employee;
+        });
+
+        self.daysToDisplay = function(){
+            var daysToAppend = [];
+
+            for (var i = Model.FirstDay; i < Model.DayLimit + Model.FirstDay; i++ ){
+                var j = i%7;
+                daysToAppend[i-Model.FirstDay] = {
+                    Name: daysEnum[j].Name ,
+                    Value: i - Model.FirstDay + 1
+                }
+            }
+            return daysToAppend;
+        }
+
+        self.totalDayAbsence = function(){
+            var employees = self.employees;
+            var totalAbsence = [];
+            for (var i = 0; i < self.daysToDisplay().length; i++)
+            {
+                var count = 0;
+                for (var j = 0; j < employees.length; j++)
+                {
+                    var currentEmployee = employees[j];
+                    var currentEmployeeAbsenceList = currentEmployee.AbsenceList();
+                    var days = $.grep(currentEmployeeAbsenceList, function(e){ 
+                        return e.Day == i+1 
+                    });
+                    count += days.length == 0 ? 0 : 1;
+                }
+                totalAbsence[i] = ko.computed(function(){
+                    return count;
+                });
+            }
+            return totalAbsence;
+        }
+
+        self.absenceSummary = ko.computed(function(){
+            var count = 0;
+            var employees = self.employees;
+            for (var i = 0; i < employees.length; i++)
+            {
+                var list = employees[i].AbsenceList();
+                count += list.length;
+            }
+            return {Value: count};
+        });
+
+        self.computeDayCellStyle = function(dayValue){
+            return dayValue % 2 == 0 ? 'dCellW' : 'dCellG';
+        };
+
+        self.computeCellContent = function(employee, index){
+            var List = employee.AbsenceList();
+            var day = index()  + 1;
+            var value = $.grep(List, function(e){ 
+                return (e.Day == day)
+            });
+
+            var text = '';
+
+            if (value != '')
+            {
+                if (value[0].Reason == 1)
+                {
+                    text = 'V';
+                }
+                else if (value[0].Reason == 2)
+                {
+                    text = 'S';
+                }
+                else if (value[0].Reason == 3)
+                {
+                    text = 'P';
+                }
+            }
+            return text;
+        }
+
+        self.computeCellStyle = function(employee, index)
+        {
+            var List = employee.AbsenceList();  
+            var day = index + 1;
+            var value = $.grep(List, function(e){ return (e.Day == day) });
+            var style = '';
+
+            if (value == '')
+            {
+                if (employee.RowColor%2 == 0)
+                {
+                    style = 'cell wCell';
+                }
+                else
+                {
+                    style = 'gCell cell';
+                }
+            }
+            else if (value != '')
+            {
+                if (value[0].Reason == 1)
+                {
+                    style = 'gCell cell vacclr';
+                }
+                else if (value[0].Reason == 2)
+                {
+                    style = 'gCell sickclr cell';
+                }
+                else if (value[0].Reason == 3)
+                {
+                    style = 'gCell cell perclr';
+                }
+            }
+            return style;
+        }
+
+        self.tableRowNameEmployee = "Employee name";
+        self.tableMonthTotal = "Month total";
+        self.tableTotalDays = "Total days";
+
+        self.contextClickVacation = function () {
+            var o = self.currentCell;
+            if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
+                self.postData(self.currentEmployee, self.reasons.Vacation);
+            }
+        }
+
+        self.contextClickSick = function () {
+            var o = self.currentCell;
+            if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
+                self.postData(self.currentEmployee, self.reasons.Sick);
+            }
+        }
+
+        self.contextClickPersonal = function () {
+            var o = self.currentCell;
+            if ($(o).text() != "V" && $(o).text() != "P" && $(o).text() != "S") {
+                self.postData(self.currentEmployee, self.reasons.Personal);
+            }
+        }
+
+        self.getMonthIndex = function (val)
+        {
+            for (var i = 0; i < months.length; i++)
+            {
+                if (months[i].Name == val)
+                {
+                    return (i + 1);
+                }
+            }
+            return -1;
+        }
+
+        self.currentDay = '';
+        self.currentCell = '';
+        self.currentEmployee = '';
+
+        self.formData = function(element, context){
+            var o = element;
+            myViewModel.currentDay = context.$data.Value;
+            myViewModel.currentCell = $(o);
+            myViewModel.currentEmployee = context.$parent;
+        }
+
+        self.postData = function (employee, reason){
+
+            $.ajax({
+                type: "POST",
+                url: "/Employee/ApplyChanges",
+                data: {userId : employee.Id, month: Model.Month, year: Model.Year, day: self.currentDay, reason: reason, projectid: Model.ProjectId},
+                datatype: "html",
+                success: function (data) {
+                    $('#result').html(data);
+                }
+            });
+
+            employee.AbsenceList.push({UserId : employee.Id, Month: Model.Month, Year: Model.Year, Day: self.currentDay, Reason: reason, projectid: Model.ProjectId});
+        };
+
+    };
+
+    var myViewModel = new ViewModel();
+    ko.applyBindings(myViewModel);
+</script>
+
+
+

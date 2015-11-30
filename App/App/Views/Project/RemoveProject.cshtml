@@ -1,0 +1,59 @@
+﻿@using App.Models
+@model ProjectViewModel 
+@{
+    ViewBag.Title = "Remove project";
+    ProjectViewModel project = Model;
+}
+
+<h2>Remove proejct</h2>
+
+<br />
+
+<h4>Are you sure you want to remove this project?</h4>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Start date</th>
+            <th>End date</th>        
+        </tr>
+    </thead>
+    <tbody>
+       
+            <tr>
+                <td>@project.Name</td>
+                <td>@project.StartDate</td>
+                <td>@project.EndDate</td>
+            </tr>       
+    </tbody>
+</table>
+
+<br /><br /><br /><br /><br />
+<div class="form-inline">
+    @using (Html.BeginForm("RemoveProject", "Project", FormMethod.Post, new { @class = "", role = "" }))
+    {
+        @Html.HiddenFor(x => x.Id, project.Id);
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Yes" />
+            </div>
+        </div>
+    }
+    @Html.ActionLink("No, back to list", "ShowProjects", "Project", "", new { @class = "btn btn-default" })
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

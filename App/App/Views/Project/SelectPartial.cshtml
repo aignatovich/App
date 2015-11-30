@@ -1,0 +1,61 @@
+﻿@using App.Models
+@using App.DAL;
+@model  ExtendedProjectViewModel
+@{
+    ExtendedProjectViewModel project = Model;
+ }
+
+<div class="row">
+    <div class="col-xs-5" style="width:26%;">
+        <h4>Employable</h4>
+    </div>
+    <div class="col-xs-2">
+        <h4>Options</h4>
+    </div>
+    <div class="col-xs-5">
+        <h4>Employed</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5" style="width:26%;">
+        <select name="from[]" id="undo_redo" class="form-control" size="13" multiple="multiple">
+            @foreach (ExtendedEmployeeViewModel e in project.Unemployed)
+            {
+                    <option value="@e.Id">
+                        @e.Employee
+                    </option>
+            }
+        </select>
+    </div>
+
+    <div class="col-xs-2">
+        <button type="button" id="undo_redo_undo" class="btn btn-primary btn-block">undo</button>
+        <button type="button" id="undo_redo_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
+        <button type="button" id="undo_redo_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+        <button type="button" id="undo_redo_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+        <button type="button" id="undo_redo_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
+        <button type="button" id="undo_redo_redo" class="btn btn-warning btn-block">redo</button>
+    </div>
+   
+    <div class="col-xs-5">
+        <select name="to[]" id="undo_redo_to" class="form-control" size="13" multiple="multiple" >
+            @foreach (ExtendedEmployeeViewModel e in project.Employed)
+            {
+                <option value="@e.Id">
+                    @e.Employee
+                </option>
+            }
+        </select>
+    </div>
+</div>
+
+<br /><br />
+
+@using (Html.BeginForm("SetupProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.Hidden("ids", "",  new { @id = "idList" })
+    @Html.Hidden("projectId", @project.Project.Id, new { })
+    <input type="submit" id="submit" class="btn btn-default" value="Confirm employment"/>
+}
+
+

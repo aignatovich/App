@@ -1,0 +1,82 @@
+﻿@using App.Models
+@using PagedList.Mvc;
+@model PagedList.IPagedList<EmployeeViewModel>
+
+@{
+    ViewBag.Title = "Show Employees";
+    PagedList.IPagedList<EmployeeViewModel> EmployeeList = Model;
+    PositionsService RoleContainer = new PositionsService();
+    List<SelectListItem> sortingOptions =
+    new List<SelectListItem>() {
+    new SelectListItem() {Text = "Position", Value = "1" },
+    new SelectListItem() {Text = "Name", Value = "2" },
+    new SelectListItem() {Text = "Surname", Value = "3" }
+    };
+}
+<br />
+@Html.DropDownList("SortOptions", sortingOptions, "Sorting", new { @class = "form-control", id = "sort"})
+<br />
+<div class="well">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Position</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in EmployeeList)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Surname</td>
+                    <td>@item.Position</td>
+                    @Html.Partial("CommonOptions", item)
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ShowEmployees", new { page, sort = Request["sort"] }))
+</div>
+
+
+@using (Html.BeginForm("ShowEmployees", "Employee", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.Hidden("page", Model.PageNumber)
+    @Html.Hidden("sort", "", new { @id = "sortval" })
+    <input type="submit" id="subsort" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" /> 
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+
+    <script type="text/javascript">
+    (function () {
+        $('.remove').each(function () {
+            $(this).on("click", function () {
+                if (confirm("Are you sure you want to remove this employee?") == true) {
+                    o.submit();
+                } else {
+                    return false;
+                }
+            })
+        });
+        $('#sort').on("change", function () {
+            $('#sortval').val($("#sort option:selected").val())
+            $('#subsort').click();
+        });
+    })();
+</script>
+}
+
+
+
+
+

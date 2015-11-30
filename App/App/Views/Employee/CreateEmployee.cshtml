@@ -1,0 +1,23 @@
+﻿@model App.Models.EmployeeViewModel
+@using App.Models
+
+@{
+    ViewBag.Title = "Add Employee";
+    PositionsService RoleContainer = new PositionsService();
+}
+
+<div style="margin-top:10%;">
+    <h2>Add Employee</h2>
+
+    <div class="well col-md-6">
+        @using (Html.BeginForm("CreateEmployee", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+            <h4>Create a new employee.</h4>
+            @Html.Partial("EmployeeInputPartial")
+}
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+    </div>
+</div>

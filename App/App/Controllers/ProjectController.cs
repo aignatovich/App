@@ -6,6 +6,7 @@ using App.Service;
 using App.ModelBinding;
 using App.Service.Interfaces;
 using Newtonsoft.Json;
+using PagedList;
 
 namespace App.Controllers
 {
@@ -23,12 +24,14 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult CreateProject()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult CreateProject(ProjectViewModel project)
         {
             if (ModelState.IsValid)
@@ -41,13 +44,15 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        public ActionResult ShowProjects()
+        [Authorize]
+        public ActionResult ShowProjects(int? page)
         {
-            ICollection<ProjectViewModel> toTransfer = projectService.GetAllViewModels();
+            IPagedList<ProjectViewModel> toTransfer = projectService.GetAllAsIPagedList(page);
             return View(toTransfer);
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult RemoveProject(int id)
         {
             ProjectViewModel project = projectService.GetSingle(id);
@@ -55,6 +60,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult RemoveProject(ProjectViewModel project)
         {
             projectService.Remove(project);
@@ -62,6 +68,7 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult EditProject(int id)
         {
             ProjectViewModel toTransfer = projectService.GetSingle(id);
@@ -69,6 +76,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult EditProject(ProjectViewModel project)
         {
             if (ModelState.IsValid)
@@ -81,6 +89,7 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult SetupProject(int id)
         {
             ExtendedProjectViewModel toTransfer = extendedProjectService.Create(id);
@@ -88,6 +97,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult SetupProject([ModelBinder(typeof(IdsArrayBinder))] IEnumerable<Int32> ids, int projectId)
         {
             projectService.EmployInProject(projectId, ids);
@@ -95,10 +105,13 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Search(ProjectViewModel project)
         {
             ICollection<ProjectViewModel> toTransfer = projectService.Search(project);
             return View("ShowProjects", toTransfer);
-        }     
+        }  
+        
+           
     }
 }

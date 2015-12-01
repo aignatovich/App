@@ -1,12 +1,12 @@
 ﻿@using App.Models
-@model  ICollection<ProjectViewModel> 
+@using PagedList.Mvc;
+@model  PagedList.IPagedList<ProjectViewModel> 
 @{
     ViewBag.Title = "Show Projects";
-    ICollection<ProjectViewModel> ProjectList = Model;
+    PagedList.IPagedList<ProjectViewModel> ProjectList = Model;
 }
-<br /><br />
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
+@*
 <div style="margin-top:3%;" class="well col-md-3">
     @using (Html.BeginForm("Search", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
@@ -16,37 +16,42 @@
 
     @Html.Partial("ProjectSearchPartial", new ProjectViewModel())
 }
-</div>
-<div style="margin-top:3%; margin-left:2%;" class="well col-xs-7">
+</div> *@
+<div style="margin-top:3%; margin-left:2%;" class="well col-xs-10">
 
-    <h2>Projects</h2>
+    <h2>Recent projects</h2>
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Options</th>
+                <th  class="col-sm-5">Name</th>
+                <th class="col-sm-2">Start date</th>
+                <th class="col-sm-2">End date</th>
+                <th class="col-sm-4">Options</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in ProjectList)
             {
                 <tr>
-                    <td>@item.Name</td>
-                    <td>@item.StartDate</td>
-                    <td>@item.EndDate</td>
+                    <td class="col-sm-3">@item.Name</td>
+                    <td class="col-sm-1">@item.StartDate</td>
+                    <td class="col-sm-1">@item.EndDate</td>
                     @Html.Partial("OptionsPartial", item)
                 </tr>
             }
         </tbody>
     </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ShowProjects", new { page }))
+
 </div>
 
+
+
 @section Scripts {
+    @Scripts.Render("~/bundles/jq")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/datepicker")
     @Styles.Render("~/Content/datepicker-styles")
 
@@ -64,6 +69,9 @@
             $('.datepicker').datepicker({
                 orientation: 'bottom'
             });
+
+
+
         })();
     </script>
 }

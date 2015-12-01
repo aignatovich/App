@@ -1,17 +1,23 @@
 ﻿
 <head>
-    <link href="~/Content/jquery-ui.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/themes/base/all.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/jquery-2.1.4.min.js" type="text/javascript"></script>   
-    <script src="~/Scripts/jquery-ui-1.11.4.js" type="text/javascript"></script>
-    <script src="~/Scripts/jquery.jqGrid.min.js" type="text/javascript"></script>
-    <script src="~/Scripts/i18n/grid.locale-en.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="~/Content/jquery-ui.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/Content/ui.jqgrid-bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/ui.jqgrid-bootstrap-ui.css" />
+    <link rel="stylesheet" href="~/Content/prettify.css" />
+    
+    <script src="~/Scripts/jquery-2.1.4.min.js" type="text/javascript"></script>  
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/grid.locale-en.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery.jqGrid.js"></script>
+   
 </head>
 
 <br /><br />
 <div>
-    <div class="well col-md-9">
+    <div class="">
         <table id="jqg"></table>
         <div id="jpager"></div>
     </div>
@@ -57,39 +63,46 @@
     (function () {
         $("#jqg").jqGrid({
             url: '@Url.Action("GetEmployeeData")',
+            styleUI : 'Bootstrap',
             datatype: "json",
-            colNames: ['Id', 'Position', 'Name', 'Surname', '',''],
+            colNames: ['Id', 'Position', 'Name', 'Surname','',''],
             colModel: [
             { name: 'Id', label: 'Id', width: 30, stype: 'text' },
-            { name: 'Position', label: 'Position', width: 50, sortable: true },
+            { name: 'PositionValue', label: 'Position', width: 50, sortable: true },
             { name: 'Name', index: 'Name', width: 50, sortable: true },
             { name: 'Surname', label: 'Surname', width: 50, sortable: true },
-            {
 
-              width:14,
-              formatter: function (cellvalue, options, rowObject) {
-                  return ' <span class="glyphicon glyphicon-remove-circle btn btn-primary" title="click to open" onclick="DeleteAction(' + options.rowId + ');"></span>';
-              },              
-            },
+             {
+                 search: false,
+                 width: 10,
+                 formatter: function (cellvalue, options, rowObject) {
+                     return '<span class="glyphicon glyphicon glyphicon-pencil" style="font-size: 25px;" onclick="EditAction(' + options.rowId + ');"></span>';
+                 }
+             } ,
             {
-                width: 13,
-                formatter: function (cellvalue, options, rowObject) {
-                    return '<span class="glyphicon glyphicon glyphicon-pencil btn btn-primary" title="click to open" onclick="EditAction(' + options.rowId + ');"></span>';
-                }
+              search: false,
+              width:10,
+              formatter: function (cellvalue, options, rowObject) {
+                  return ' <span class="glyphicon glyphicon glyphicon-trash" style="font-size: 25px;" onclick="DeleteAction(' + options.rowId + ');"></span>';
+              },              
             }
+           
             ],
-            rowNum: 99,
+            rowNum: 100,
             loadonce: true,
             sortname: 'Id',
             sortorder: "desc",
             caption: "Employee list",
             gridview: true,
-            width: 780,
-            height: 750,
+            width: 980,
+            height: 630,
             pageable: true,
             pager: '#jpager',
-            jsonReader: { repeatitems: false, root: function (obj) { return obj; } },
+            jsonReader: { repeatitems: false, root: function (obj) { return obj; } },           
+        });
 
+        $('#jqg').jqGrid('filterToolbar', {
+            stringResult: true,
         });
 
     })();

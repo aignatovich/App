@@ -7,20 +7,22 @@
 
 
 <div style="margin-top:10%;">
-    <h2>Add new project</h2>
-    <div class="well col-md-6">
+    <h2>Append Project</h2>
+    <br />
+    <div class="well col-md-8">
         @using (Html.BeginForm("CreateProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
-            <br /><br />
+            <h4>Manage as easy as create</h4>
+            <br />
             @Html.Partial("ProjectInputPartial")
         }
     </div>
 </div>
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jq")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jq")
     @Scripts.Render("~/bundles/datepicker")
     @Styles.Render("~/Content/datepicker-styles")
     <script>

@@ -23,6 +23,8 @@ namespace App.Models
 
         public Roles Position { get; set; }
 
+        public string PositionValue { get; set; }
+
         public  ICollection<ProjectViewModel> ActualProjects { get; set; }
 
         public ICollection<ManagingDateModel> AbsenceList { get; set; }
@@ -39,6 +41,7 @@ namespace App.Models
             Name = employee.Name;
             Surname = employee.Surname;
             Position = employee.Position;
+            PositionValue = Enum.GetName(typeof(Roles), employee.Position);
             AbsenceList = new List<ManagingDateModel>(employee.AbsenceList);
 
             foreach (ProjectModel project in employee.ActualProjects)

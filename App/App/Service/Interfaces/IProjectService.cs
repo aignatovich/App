@@ -1,4 +1,5 @@
 ﻿using App.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +25,7 @@ namespace App.Service.Interfaces
         int GetLastProjectId();
 
         ICollection<ProjectViewModel> Search(ProjectViewModel project);
+
+        IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page);
     }
 }

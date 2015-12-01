@@ -15,7 +15,7 @@ namespace App.Service
         private IEmployeeDAO employeeDataAccessObject;
         private IProjectDAO projectDataAccessObject;
 
-        private int pageSize = 12;
+        private int pageSize = 25;
 
         public EmployeeService(IEmployeeDAO employeeDataAccessObject, IProjectDAO projectDataAccessObject)
         {
@@ -139,5 +139,7 @@ namespace App.Service
                 ProjectId = model.ProjectId
             });
         }
+
+
     }
 }

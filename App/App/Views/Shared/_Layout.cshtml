@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Simple manager</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -20,11 +20,13 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Add Employee", "CreateEmployee", "Employee")</li>
-                    <li>@Html.ActionLink("Show Employees", "ShowEmployees", "Employee")</li>
-                    <li>@Html.ActionLink("Add Project", "CreateProject", "Project")</li>
-                    <li>@Html.ActionLink("Show Projects", "ShowProjects", "Project")</li>
-                    <li>@Html.ActionLink("Manage", "Manage", "Employee")</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <li>@Html.ActionLink("Append Employee", "CreateEmployee", "Employee", new { area = "" }, new { style = "color:lightgrey;" })</li>
+                    <li>@Html.ActionLink("Manage Employees", "ShowEmployees", "Employee", new { area = "" }, new { style = "color:lightgrey;" })</li>
+                    <li>@Html.ActionLink("Append Project", "CreateProject", "Project", new { area = "" }, new {  style = "color:lightgrey;" })</li>
+                    <li>@Html.ActionLink("Manage Projects", "ShowProjects", "Project", new { area = "" }, new { style = "color:lightgrey;" })</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

@@ -27,7 +27,7 @@ namespace App
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jq").Include("~/Scripts/jquery-1.10.2.min.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jq").Include("~/Scripts/jquery-2.1.4.min.js"));
 
             
             bundles.Add(new ScriptBundle("~/bundles/datepicker").Include("~/Scripts/bootstrap-datepicker.js"));

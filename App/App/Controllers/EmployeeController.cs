@@ -22,12 +22,14 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult CreateEmployee()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult CreateEmployee(EmployeeViewModel employee)
         {
             if (ModelState.IsValid)
@@ -39,6 +41,7 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult ShowEmployees(int? page, int? sort, int? month, int? year)
         {
             IPagedList<EmployeeViewModel> toTransfer = service.GetAllAsIPagedList(month,year, page,sort);
@@ -46,6 +49,7 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult RemoveEmployee(int id)
         {
             EmployeeViewModel employee = service.GetSingle(id);
@@ -53,6 +57,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult RemoveEmployee(EmployeeViewModel employee)
         {
             service.Remove(employee);
@@ -60,6 +65,7 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult EditEmployee(int id)
         {
             EmployeeViewModel employee = service.GetSingle(id);
@@ -67,6 +73,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult EditEmployee(EmployeeViewModel employee)
         {
             service.Edit(employee);
@@ -74,23 +81,28 @@ namespace App.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult Manage(ManagingRequest request)
         {
             return View(service.GetTableData(request));
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Manage()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public void ApplyChanges(ManagingDateModel model)
         {
             service.ApplyAbsence(model);
         }
 
+        [HttpGet]
+        [Authorize]
         public string GetEmployeeData()
         {
             ICollection<EmployeeViewModel> employeesToTransfer = service.GetAllViewModels();            

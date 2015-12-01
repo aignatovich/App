@@ -15,6 +15,8 @@ namespace App.Service
         private IProjectDAO projectDataAccessObject;
         private IEmployeeDAO employeeDataAccessObject;
 
+        private const int pageSize = 12;
+
         public ProjectService(IEmployeeService employeeService, IProjectDAO projectDataAccessObject, IEmployeeDAO employeeDataAccessObject)
         {
             this.employeeService = employeeService;
@@ -82,6 +84,14 @@ namespace App.Service
             x.StartDate.Equals(project.StartDate) || x.EndDate.Equals(project.EndDate))).ToList();            
             return toTransfer;
         }
+
+        public IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page)
+        {
+            int currentPage = (page ?? 1);
+            return GetAllViewModels().ToPagedList(currentPage,pageSize);
+        }
+
+
 
     }
 }

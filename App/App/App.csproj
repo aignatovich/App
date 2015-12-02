@@ -80,6 +80,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.4\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -218,7 +222,9 @@
     <Compile Include="Models\EmployeeModels\EmployeeModel.cs" />
     <Compile Include="Models\EmployeeModels\EmployeeViewModel.cs" />
     <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />
+    <Compile Include="Models\EmployeeModels\SimplifiedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
+    <Compile Include="Models\JqGridObjects\JqGridEmployeePagedCollection.cs" />
     <Compile Include="Models\ManagingTableModels\DayEnum.cs" />
     <Compile Include="Models\ManagingTableModels\ManagingParamsModel.cs" />
     <Compile Include="Models\ManagingTableModels\ManagingRequest.cs" />
@@ -251,6 +257,7 @@
     <Compile Include="Validation\Project\ExistanceProjectValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fonts.css" />
     <Content Include="Content\ui.jqgrid-bootstrap-ui.css" />
     <Content Include="Content\ui.jqgrid-bootstrap.css" />
     <Content Include="Content\ui.jqgrid.css" />

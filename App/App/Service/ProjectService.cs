@@ -85,13 +85,18 @@ namespace App.Service
             return toTransfer;
         }
 
-        public IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page)
+        public IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page, string query)
         {
             int currentPage = (page ?? 1);
-            return GetAllViewModels().ToPagedList(currentPage,pageSize);
+
+            if (query == null)
+            {
+                return GetAllViewModels().ToPagedList(currentPage, pageSize);
+            }
+            else
+            {
+                return GetAllViewModels().Where(x => (x.Name.Contains(query) || x.StartDate.Contains(query) ||  x.EndDate.Contains(query))).ToPagedList(currentPage, pageSize);
+            }    
         }
-
-
-
     }
 }

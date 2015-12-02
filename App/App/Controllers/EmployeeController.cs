@@ -8,6 +8,7 @@ using App.Service.Interfaces;
 using CodeFirst;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using App.Models.JqGridObjects;
 
 namespace App.Controllers
 {
@@ -42,10 +43,9 @@ namespace App.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult ShowEmployees(int? page, int? sort, int? month, int? year)
+        public ActionResult ShowEmployees()
         {
-            IPagedList<EmployeeViewModel> toTransfer = service.GetAllAsIPagedList(month,year, page,sort);
-            return View(toTransfer);
+            return View();
         }
 
         [HttpGet]
@@ -103,10 +103,10 @@ namespace App.Controllers
 
         [HttpGet]
         [Authorize]
-        public string GetEmployeeData()
+        public string GetEmployeeData(bool _search, int page, int rows, string sidx, string sord, string filters)
         {
-            ICollection<EmployeeViewModel> employeesToTransfer = service.GetAllViewModels();            
-            return JsonConvert.SerializeObject(employeesToTransfer);
+            var toTransfer = JqGridEmployeePagedCollection.Create(_search, page, rows, sidx, sord, filters);       
+            return JsonConvert.SerializeObject(toTransfer);
         }
     }
 }

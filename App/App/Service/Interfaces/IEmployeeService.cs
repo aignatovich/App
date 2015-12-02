@@ -1,4 +1,5 @@
 ﻿using App.Models;
+using App.Models.EmployeeModels;
 using App.Models.ManagingTableModels;
 using PagedList;
 using System;
@@ -10,7 +11,6 @@ namespace App.Service.Interfaces
 {
     public interface IEmployeeService
     {
-        //
 
         ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids);
 
@@ -33,6 +33,12 @@ namespace App.Service.Interfaces
         TableData GetTableData(ManagingRequest request);
 
         void ApplyAbsence(ManagingDateModel model);
+
+        int CalculateTotalPages(int pageSize);
+
+        int CalculatePages(int pageSize, int length);
+
+        ICollection<SimplifiedEmployeeViewModel> GetAllSimplified();
 
     }
 }

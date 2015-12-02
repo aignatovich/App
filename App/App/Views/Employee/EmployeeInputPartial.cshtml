@@ -7,30 +7,32 @@
 @Html.AntiForgeryToken()
 
 @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
-<br />
 <div class="form-group">
-    @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Here goes your name" })
+    @Html.LabelFor(m => m.Name, new { @class = "col-md-3 control-label merri-400" })
+    <div class="col-md-8">
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control merri-400", @placeholder = "Here goes your name" })
         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
-    @Html.LabelFor(m => m.Surname, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Here goes your surname" })
+    @Html.LabelFor(m => m.Surname, new { @class = "col-md-3 control-label merri-400" })
+    <div class="col-md-8">
+        @Html.TextBoxFor(m => m.Surname, new { @class = "form-control merri-400", @placeholder = "Here goes your surname" })
         @Html.ValidationMessageFor(m => m.Surname, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
-    @Html.LabelFor(m => m.Position, new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
-        @Html.DropDownListFor(m => m.Position, RoleContainer.GetRoles(), "Options", new { @class = "form-control", @placeholder = "-Select role-" })
+    @Html.LabelFor(m => m.Position, new { @class = "col-md-3 control-label merri-400" })
+    <div class="col-md-8">
+        @Html.DropDownListFor(m => m.Position, RoleContainer.GetRoles(), "Options", new { @class = "form-control merri-400", @placeholder = "-Select role-" })
         @Html.ValidationMessageFor(m => m.Position, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" class="btn btn-primary" value="Apply" />
+    <div class="col-md-offset-2 col-md-7">
+        <div class="col-md-5">
+
+        </div>
+        <input type="submit" class="btn btn-primary merri-400 col-md-3" value="Apply" />
     </div>
 </div>

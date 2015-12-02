@@ -8,37 +8,40 @@
 <div class="form-group">
    @Html.ValidationMessageFor(m => m, "", new { @class = "text-danger" })
 
-    @Html.Label("Project name", new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Here goes project name" })
+    @Html.Label("Project name", new { @class = "col-md-3 control-label merri-400" })
+    <div class="col-md-8">
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control merri-400", @placeholder = "Here goes project name" })
         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
-    @Html.Label("Start date", new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
+    @Html.Label("Start date", new { @class = "col-md-3 control-label merri-400" })
+    <div class="col-md-8">
         @Html.TextBoxFor(m => m.StartDate, new
        {
-           @class = "form-control datepicker", @placeholder = " Here goes start date",
+           @class = "form-control datepicker merri-400", @placeholder = " Here goes start date",
            @data_date_format = "dd.mm.yyyy"
        })
         @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
-    @Html.Label("End date", new { @class = "col-md-2 control-label" })
-    <div class="col-md-10">
+    @Html.Label("End date", new { @class = "col-md-3 control-label merri-400" })
+    <div class="col-md-8">
         @Html.TextBoxFor(m => m.EndDate, new
        {
-           @class = "form-control datepicker", @placeholder = " Here goes end date",
+           @class = "form-control datepicker merri-400", @placeholder = " Here goes end date",
            @data_date_format = "dd.mm.yyyy"
        })
         @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
     </div>
 </div>
 <div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" class="btn btn-primary" value="Apply" />
+    <div class="col-md-offset-2 col-md-7">
+        <div class="col-md-5">
+
+        </div>
+        <input type="submit" class="btn btn-primary merri-400 col-md-3" value="Apply" />
     </div>
 </div>
 

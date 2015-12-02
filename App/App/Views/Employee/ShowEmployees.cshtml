@@ -17,8 +17,8 @@
 
 <br /><br />
 <div>
-    <div class="">
-        <table id="jqg"></table>
+    <div class="merri-400">
+        <table class="" id="jqg"></table>
         <div id="jpager"></div>
     </div>
 </div>
@@ -65,6 +65,7 @@
             url: '@Url.Action("GetEmployeeData")',
             styleUI : 'Bootstrap',
             datatype: "json",
+            myType: 'GET',
             colNames: ['Id', 'Position', 'Name', 'Surname','',''],
             colModel: [
             { name: 'Id', label: 'Id', width: 30, stype: 'text' },
@@ -89,16 +90,21 @@
            
             ],
             rowNum: 100,
-            loadonce: true,
             sortname: 'Id',
             sortorder: "desc",
             caption: "Employee list",
-            gridview: true,
+            viewrecords: true,
             width: 980,
             height: 630,
-            pageable: true,
             pager: '#jpager',
-            jsonReader: { repeatitems: false, root: function (obj) { return obj; } },           
+            jsonReader: {
+                root: 'Employees',
+                page: "Page",
+                total: "TotalPages",
+                records: "TotalRecords",
+                id: "0",
+
+            }
         });
 
         $('#jqg').jqGrid('filterToolbar', {

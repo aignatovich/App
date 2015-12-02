@@ -9,11 +9,12 @@
 
 
 <div style="margin-top:10%;">
-    <h2>Edit project</h2>
-    <div class="well col-md-5">
+    <h2 class="merri-700">Edit project</h2>
+    <br />
+    <div class="well col-md-6" style="border-radius:0px;">
         @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
-            <h4>Edit existing project</h4>
+            <h4 class="merri-400">Edit existing project</h4>
             <br />
             @Html.HiddenFor(x => x.Id, Model.Id)
             @Html.Partial("ProjectInputPartial")

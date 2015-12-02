@@ -1,80 +1,86 @@
 ﻿@using App.Models
 @using PagedList.Mvc;
-@model  PagedList.IPagedList<ProjectViewModel> 
+@model  PagedList.IPagedList<ProjectViewModel>
 @{
     ViewBag.Title = "Show Projects";
     PagedList.IPagedList<ProjectViewModel> ProjectList = Model;
 }
 
-@*
-<div style="margin-top:3%;" class="well col-md-3">
-    @using (Html.BeginForm("Search", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-    
-    <h3>Search options</h3>
-    <br />
-
-    @Html.Partial("ProjectSearchPartial", new ProjectViewModel())
-}
-</div> *@
-<div style="margin-top:3%; margin-left:2%;" class="well col-xs-10">
-
-    <h2>Recent projects</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th  class="col-sm-5">Name</th>
-                <th class="col-sm-2">Start date</th>
-                <th class="col-sm-2">End date</th>
-                <th class="col-sm-4">Options</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ProjectList)
-            {
+<div style="margin-top:3%; margin-left:2%; border-radius:0px;" class="well col-xs-10">
+    <div>
+        <div class="col-md-7">
+            <h2 class="merri-700">Recent projects</h2>
+        </div>
+        <div class="col-md-5" style="margin-top:15px;">        
+                @using (Html.BeginForm("ShowProjects", "Project", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="col-md-8">
+                        @Html.Hidden("page", Model.PageNumber)
+                        @Html.TextBox("query", "", new { @class = "form-control",@placeholder = " Search ..."})
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-default" value="Search">
+                            <span class="glyphicon glyphicon-search"></span> Search
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td class="col-sm-3">@item.Name</td>
-                    <td class="col-sm-1">@item.StartDate</td>
-                    <td class="col-sm-1">@item.EndDate</td>
-                    @Html.Partial("OptionsPartial", item)
+                    <th class="col-sm-5 merri-400">Name</th>
+                    <th class="col-sm-2 merri-400">Start date</th>
+                    <th class="col-sm-2 merri-400">End date</th>
+                    <th class="col-sm-4 merri-400">Options</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("ShowProjects", new { page }))
+            </thead>
+            <tbody>
+                @foreach (var item in ProjectList)
+            {
+                    <tr>
+                        <td class="col-sm-3 merri-400">@item.Name</td>
+                        <td class="col-sm-1 merri-400">@item.StartDate</td>
+                        <td class="col-sm-1 merri-400">@item.EndDate</td>
+                        @Html.Partial("OptionsPartial", item)
+                    </tr>
+                }
+            </tbody>
+        </table>
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("ShowProjects", new { page, query = Request["query"] }))
 
-</div>
-
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jq")
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/datepicker")
-    @Styles.Render("~/Content/datepicker-styles")
-
-    <script type="text/javascript">
-        (function () {
-            $('.remove').each (function () {
-                $(this).on("click", function () {
-                    if (confirm("Are you sure you want to delete project?") == true) {
-                        this.submit();
-                    } else {
-                        return false;
-                    }
-                })
-            });
-            $('.datepicker').datepicker({
-                orientation: 'bottom'
-            });
+    </div>
 
 
 
-        })();
-    </script>
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jq")
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/datepicker")
+        @Styles.Render("~/Content/datepicker-styles")
+
+        <script type="text/javascript">
+            (function () {
+                $('.remove').each(function () {
+                    $(this).on("click", function () {
+                        if (confirm("Are you sure you want to delete project?") == true) {
+                            this.submit();
+                        } else {
+                            return false;
+                        }
+                    })
+                });
+                $('.datepicker').datepicker({
+                    orientation: 'bottom'
+                });
+
+
+
+            })();
+        </script>
+    }
 
 
 

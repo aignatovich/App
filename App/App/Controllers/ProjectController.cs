@@ -43,11 +43,11 @@ namespace App.Controllers
             return View();
         }
 
-        [HttpGet]
         [Authorize]
-        public ActionResult ShowProjects(int? page)
+        [HttpGet]
+        public ActionResult ShowProjects(int? page, string query)
         {
-            IPagedList<ProjectViewModel> toTransfer = projectService.GetAllAsIPagedList(page);
+            IPagedList<ProjectViewModel> toTransfer = projectService.GetAllAsIPagedList(page, query);
             return View(toTransfer);
         }
 
@@ -103,15 +103,6 @@ namespace App.Controllers
             projectService.EmployInProject(projectId, ids);
             return RedirectToAction("ShowProjects");
         }
-
-        [HttpPost]
-        [Authorize]
-        public ActionResult Search(ProjectViewModel project)
-        {
-            ICollection<ProjectViewModel> toTransfer = projectService.Search(project);
-            return View("ShowProjects", toTransfer);
-        }  
-        
-           
+                 
     }
 }

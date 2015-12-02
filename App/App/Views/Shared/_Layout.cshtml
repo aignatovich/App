@@ -3,9 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Simple manager</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href='https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href="~/Content/fonts.css" rel="stylesheet"/>
 
 </head>
 <body>
@@ -22,10 +24,10 @@
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                    <li>@Html.ActionLink("Append Employee", "CreateEmployee", "Employee", new { area = "" }, new { style = "color:lightgrey;" })</li>
-                    <li>@Html.ActionLink("Manage Employees", "ShowEmployees", "Employee", new { area = "" }, new { style = "color:lightgrey;" })</li>
-                    <li>@Html.ActionLink("Append Project", "CreateProject", "Project", new { area = "" }, new {  style = "color:lightgrey;" })</li>
-                    <li>@Html.ActionLink("Manage Projects", "ShowProjects", "Project", new { area = "" }, new { style = "color:lightgrey;" })</li>
+                    <li>@Html.ActionLink("Append Employee", "CreateEmployee", "Employee", new { area = "" }, new { style = "color:lightgrey;", @class="merri-700" })</li>
+                    <li>@Html.ActionLink("Manage Employees", "ShowEmployees", "Employee", new { area = "" }, new { style = "color:lightgrey;",  @class="merri-700" })</li>
+                    <li>@Html.ActionLink("Append Project", "CreateProject", "Project", new { area = "" }, new {  style = "color:lightgrey;", @class = "merri-700" })</li>
+                    <li>@Html.ActionLink("Manage Projects", "ShowProjects", "Project", new { area = "" }, new { style = "color:lightgrey;",  @class="merri-700" })</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

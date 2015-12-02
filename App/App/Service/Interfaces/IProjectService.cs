@@ -26,6 +26,6 @@ namespace App.Service.Interfaces
 
         ICollection<ProjectViewModel> Search(ProjectViewModel project);
 
-        IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page);
+        IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page, string query);
     }
 }

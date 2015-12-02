@@ -8,11 +8,13 @@
 
 
 <div style="margin-top:10%;">
-    <h2>Edit Employee</h2>
-    <div class="well col-md-5">
+    <h2 class="merri-700">Edit Employee</h2>
+    <br />
+    <div class="well col-md-6" style="border-radius:0px;">
         @using (Html.BeginForm("EditEmployee", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
-            <h4>Edit existing employee</h4>
+            <h4 class="merri-400">Edit existing employee</h4>
+            <br />
             @Html.AntiForgeryToken()
             @Html.HiddenFor(x => x.Id, employee.Id)
             @Html.Partial("EmployeeInputPartial")

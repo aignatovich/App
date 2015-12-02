@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using App.Models.JqGridObjects;
+using App.Models.EmployeeModels;
 
 namespace App.Service
 {
@@ -15,7 +17,7 @@ namespace App.Service
         private IEmployeeDAO employeeDataAccessObject;
         private IProjectDAO projectDataAccessObject;
 
-        private int pageSize = 25;
+        private const int pageSize = 25;
 
         public EmployeeService(IEmployeeDAO employeeDataAccessObject, IProjectDAO projectDataAccessObject)
         {
@@ -140,6 +142,28 @@ namespace App.Service
             });
         }
 
+        public int CalculateTotalPages(int pageSize)
+        {
+            return (employeeDataAccessObject.GetAll().Count / pageSize + 1);
+        }
+
+        public int CalculatePages(int pageSize, int length)
+        {
+            return (length / pageSize + 1);
+        }
+
+        public ICollection<SimplifiedEmployeeViewModel> GetAllSimplified()
+        {
+            ICollection<SimplifiedEmployeeViewModel> employeesSimplified = new List<SimplifiedEmployeeViewModel>();
+            ICollection<EmployeeModel> employeesNotSimplified = employeeDataAccessObject.GetAll();
+
+            foreach (EmployeeModel employee in employeesNotSimplified)
+            {
+                employeesSimplified.Add(SimplifiedEmployeeViewModel.Create(employee));
+            }
+
+            return employeesSimplified;
+        }
 
     }
 }

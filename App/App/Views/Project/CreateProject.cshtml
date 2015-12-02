@@ -7,12 +7,12 @@
 
 
 <div style="margin-top:10%;">
-    <h2>Append Project</h2>
+    <h2 class="merri-700">Append Project</h2>
     <br />
-    <div class="well col-md-8">
+    <div class="well col-md-6" style="border-radius:0px;">
         @using (Html.BeginForm("CreateProject", "Project", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
-            <h4>Manage as easy as create</h4>
+            <h4 class="merri-400">Manage as easy as create</h4>
             <br />
             @Html.Partial("ProjectInputPartial")
         }

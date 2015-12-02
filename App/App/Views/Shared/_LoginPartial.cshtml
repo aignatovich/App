@@ -1,22 +1,22 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right", style = "color:lightgrey;" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right merri-700", style = "color:lightgrey;" } ))
     {
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage",  style = "color:lightgrey;" })
+            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage",  style = "color:lightgrey;", @class = "merri-700"  })
         </li>
-        <li ><a style="color:lightgrey;" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        <li ><a class="merri-700" style="color:lightgrey;" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
     }
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink",  style = "color:lightgrey;" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", style = "color:lightgrey;" })</li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink",  style = "color:lightgrey;", @class = "merri-700"  })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", style = "color:lightgrey;", @class = "merri-700" } )</li>
     </ul>
 }

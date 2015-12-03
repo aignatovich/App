@@ -47,14 +47,7 @@ namespace App.Models.JqGridObjects
                 int endIndex = jqGridPageSize < (employees.Count - (page - 1) * jqGridPageSize) ? jqGridPageSize : (employees.Count - (page - 1) * jqGridPageSize);
 
                 IEnumerable<SimplifiedEmployeeViewModel> toTransfer = employees.GetRange(startIndex, endIndex);
-                if (sortingOrder.Equals(SortingOrderAsc))
-                {
-                    toTransfer = toTransfer.AsEnumerable().OrderBy(sortingProperty).Reverse();
-                }
-                else
-                {
-                    toTransfer = toTransfer.AsEnumerable().OrderBy(sortingProperty);
-                }
+                toTransfer = OrderByProperty(toTransfer, sortingOrder, sortingProperty);
 
                 return new JqGridEmployeePagedCollection()
                 {
@@ -74,15 +67,7 @@ namespace App.Models.JqGridObjects
                 toTransfer = DirectSearch(toTransfer, request.Name, request.Surname, request.Id, request.Role);
                 int startIndex = (page - 1) * jqGridPageSize;
                 int endIndex = jqGridPageSize < (toTransfer.Count() - (page - 1) * jqGridPageSize) ? jqGridPageSize : (toTransfer.Count() - (page - 1) * jqGridPageSize);
-
-                if (sortingOrder.Equals(SortingOrderAsc))
-                {
-                    toTransfer = toTransfer.AsEnumerable().OrderBy(sortingProperty).Reverse();
-                }
-                else
-                {
-                    toTransfer = toTransfer.AsEnumerable().OrderBy(sortingProperty);
-                }
+                toTransfer = OrderByProperty(toTransfer, sortingOrder, sortingProperty);
 
                 return new JqGridEmployeePagedCollection()
                 {
@@ -118,6 +103,20 @@ namespace App.Models.JqGridObjects
                 toTransfer = toTransfer.Where(x => x.Surname.Contains(surname)).ToList();
             }
                    
+            return toTransfer.ToList();
+        }
+
+        private static ICollection<SimplifiedEmployeeViewModel> OrderByProperty(IEnumerable<SimplifiedEmployeeViewModel> toTransfer, string sortingOrder, string property)
+        {
+            if (sortingOrder.Equals(SortingOrderAsc))
+            {
+                toTransfer = toTransfer.AsEnumerable().OrderBy(property).Reverse();
+            }
+            else
+            {
+                toTransfer = toTransfer.AsEnumerable().OrderBy(property);
+            }
+
             return toTransfer.ToList();
         }
     }

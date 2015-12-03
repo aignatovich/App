@@ -35,6 +35,7 @@ namespace App.DAL
             editableEmployee.Name = employee.Name;
             editableEmployee.Surname = employee.Surname;
             editableEmployee.Position = employee.Position;
+            editableEmployee.Email = employee.Email;
         }
 
         public void Remove(int id)

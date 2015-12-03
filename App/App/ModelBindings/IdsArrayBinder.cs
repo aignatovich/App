@@ -25,15 +25,19 @@ namespace App.ModelBinding
         private ICollection<Int32> GetIdsAsList(ModelBindingContext bindingContext, string key)
         {
             ValueProviderResult valueResult = bindingContext.ValueProvider.GetValue(key);
-            string[] ids = ((string)valueResult.ConvertTo(typeof(string))).Trim().Split(' ');
-
             ICollection<Int32> list = new List<int>();
-            foreach (string id in ids)
+
+            if (valueResult != null)
             {
-                int tmp;
-                if (int.TryParse(id, out tmp))
+                string[] ids = ((string)valueResult.ConvertTo(typeof(string))).Trim().Split(' ');
+
+                foreach (string id in ids)
                 {
-                    list.Add(tmp);
+                    int tmp;
+                    if (int.TryParse(id, out tmp))
+                    {
+                        list.Add(tmp);
+                    }
                 }
             }
             return list;

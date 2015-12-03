@@ -9,6 +9,8 @@ using System.Linq;
 using System.Web;
 using App.Models.JqGridObjects;
 using App.Models.EmployeeModels;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace App.Service
 {
@@ -165,5 +167,31 @@ namespace App.Service
             return employeesSimplified;
         }
 
+        public async Task Broadcast(IEnumerable<Int32> ids, string message)
+        {
+            ICollection<EmployeeModel> employees = GetEmployeesByIds(ids);
+
+            var from = "292309745a@gmail.com";
+            var pass = "a17157114";
+            var subject = "Broadcast";
+
+            foreach (EmployeeModel employee in employees)
+            {
+                using (var client = new SmtpClient("smtp.gmail.com", 25))
+                {
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    client.UseDefaultCredentials = false;
+                    client.Credentials = new System.Net.NetworkCredential(from, pass);
+                    client.EnableSsl = true;
+                    var destination = employee.Email;
+                    var mail = new MailMessage(from, destination);
+                    mail.Subject = subject;
+                    mail.Body = message;
+                    mail.IsBodyHtml = true;
+                    client.Send(mail);
+                }
+            }
+        }
+     
     }
 }

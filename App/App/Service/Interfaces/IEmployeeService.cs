@@ -5,6 +5,7 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace App.Service.Interfaces
@@ -39,6 +40,8 @@ namespace App.Service.Interfaces
         int CalculatePages(int pageSize, int length);
 
         ICollection<SimplifiedEmployeeViewModel> GetAllSimplified();
+
+        Task Broadcast(IEnumerable<Int32> ids, string message);
 
     }
 }

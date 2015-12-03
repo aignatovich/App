@@ -56,6 +56,7 @@ namespace App
                 "~/Scripts/grid.locale-en.js",
                 "~/Scripts/jquery.jqGrid.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include("~/Plug-ins/Editor/ckeditor.js"));
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using App.Models.JqGridObjects;
 using App.ModelBindings;
+using App.ModelBinding;
 
 namespace App.Controllers
 {
@@ -109,5 +110,14 @@ namespace App.Controllers
             var toTransfer = JqGridEmployeePagedCollection.Create(request);       
             return JsonConvert.SerializeObject(toTransfer);
         }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        public void Broadcast([ModelBinder(typeof(IdsArrayBinder))] IEnumerable<Int32> ids, string message)
+        {
+            service.Broadcast(ids, message);
+        }
+
     }
 }

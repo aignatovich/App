@@ -14,6 +14,8 @@ namespace App.Models
 
         public string Surname { get; set; }
 
+        public string Email { get; set; }
+
         public Roles Position { get; set; }
 
         public virtual ICollection<ProjectModel> ActualProjects { get; set; }

@@ -19,7 +19,7 @@ namespace App.Migrations
 
         protected override void Seed(CodeFirst.DatabaseModelContainer context)
         {
-            for (int i = 1; i < 300; i++)
+            for (int i = 1; i < 3000; i++)
             {
                 context.EmployeeSet.Add(new EmployeeModel()
                 {
@@ -27,7 +27,8 @@ namespace App.Migrations
                     Surname = "zxc" + i.ToString(),
                     Position = positionsService.GetValue(i % 5),
                     ActualProjects = new List<ProjectModel>(),
-                    AbsenceList = new List<ManagingDateModel>()
+                    AbsenceList = new List<ManagingDateModel>(),
+                    Email = "test" + i.ToString() + "@test.com"
                 });
             }
         }

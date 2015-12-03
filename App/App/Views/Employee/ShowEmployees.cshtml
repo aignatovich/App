@@ -1,4 +1,6 @@
-﻿   
+﻿
+<link rel="stylesheet" href="~/Content/popup.css" />
+
 <br /><br />
 <div>
     <div class="merri-400">
@@ -6,106 +8,203 @@
         <div id="jpager"></div>
     </div>
 </div>
-  
+<div style="margin-top:7px;">
+    <div class="col-md-9">
+
+    </div>
+    <div class="col-md-2">
+        <button id="broadcast" class="btn btn-info merri-400">Broadcast</button>
+    </div>
+</div>
+
+
+<div id="blanket" class="blanket" style="display:none">
+
+</div>
+<div id="popUpDiv" class="popUpDiv" style="display:none; background:white;">
+
+</div>
+
+
+
+
 @using (Html.BeginForm("EditEmployee", "Employee", FormMethod.Get, new { @class = "", role = "" }))
 {
     @Html.Hidden("Id", "", new { @id = "edit" });
     <td width="50">
-        <input type="submit" id="editSubmit" value="Edit" class="btn btn-primary" style="visibility:hidden;"/>
+        <input type="submit" id="editSubmit" value="Edit" class="btn btn-primary" style="visibility:hidden;" />
     </td>
-}  
+}
 @section Scripts
 {
-    @Styles.Render("~/Content/employee-jqgrid")    
+    @Styles.Render("~/Content/employee-jqgrid")
     @Scripts.Render("~/bundles/jq")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqGrid") 
+    @Scripts.Render("~/bundles/jqGrid")
 
-<script type="text/javascript">
-    function DeleteAction(rowId) {
-             if (confirm("Are you sure you want to remove this employee?") == true) {
-                 var dataFromTheRow = $("#jqg").jqGrid('getRowData', rowId);;
-                 $.ajax({
-                     type: "POST",
-                     url: "/Employee/RemoveEmployee",
-                     data: { id: dataFromTheRow.Id },
-                     datatype: "html",
-                     success: function (data) {
-                         $('#jqg').jqGrid('delRowData', rowId);
-                     }
-                 });
-             } else {
-                 return false;
-             }
-    }
+    <script type="text/javascript">
 
-    function EditAction(rowId) {
-        if (confirm("Are you sure you want to edit this employee?") == true) {
-            var dataFromTheRow = $("#jqg").jqGrid('getRowData', rowId);;
-            var del = $('#edit');
-            del.val(dataFromTheRow.Id);
-            var o = $('#editSubmit');
-            o.click();
-        } else {
-            return false;
+        var checkedList = [];
+
+        $('#broadcast').on("click", function () {
+            popup('popUpDiv')
+        })
+
+        function toggle(div_id) {
+            var el = document.getElementById(div_id);
+            if (el.style.display == 'none') { el.style.display = 'block'; }
+            else { el.style.display = 'none'; }
         }
-    }
-
-    (function () {
-        $("#jqg").jqGrid({
-            url: '@Url.Action("GetEmployeeData")',
-            styleUI : 'Bootstrap',
-            datatype: "json",
-            myType: 'GET',
-            colNames: ['Id', 'Position', 'Name', 'Surname','',''],
-            colModel: [
-            { name: 'Id', label: 'Id', width: 30, stype: 'text' },
-            { name: 'PositionValue', label: 'Position', width: 50, sortable: true },
-            { name: 'Name', index: 'Name', width: 50, sortable: true },
-            { name: 'Surname', label: 'Surname', width: 50, sortable: true },
-
-             {
-                 search: false,
-                 width: 10,
-                 formatter: function (cellvalue, options, rowObject) {
-                     return '<span class="glyphicon glyphicon glyphicon-pencil" style="font-size: 25px;" onclick="EditAction(' + options.rowId + ');"></span>';
-                 }
-             } ,
-            {
-              search: false,
-              width:10,
-              formatter: function (cellvalue, options, rowObject) {
-                  return ' <span class="glyphicon glyphicon glyphicon-trash" style="font-size: 25px;" onclick="DeleteAction(' + options.rowId + ');"></span>';
-              },
+        function blanket_size(popUpDivVar) {
+            if (typeof window.innerWidth != 'undefined') {
+                viewportheight = window.innerHeight;
+            } else {
+                viewportheight = document.documentElement.clientHeight;
             }
-
-            ],
-            rowNum: 100,
-            sortname: 'Id',
-            sortorder: "desc",
-            caption: "Employee list",
-            viewrecords: true,
-            width: 980,
-            height: 630,
-            pager: '#jpager',
-            jsonReader: {
-                root: 'Employees',
-                page: "Page",
-                total: "TotalPages",
-                records: "TotalRecords",
-                id: "0",
-
-            },
-            onPaging: function () {
-                $('.ui-jqgrid-bdiv').scrollTop(0);
+            if ((viewportheight > document.body.parentNode.scrollHeight) && (viewportheight > document.body.parentNode.clientHeight)) {
+                blanket_height = viewportheight;
+            } else {
+                if (document.body.parentNode.clientHeight > document.body.parentNode.scrollHeight) {
+                    blanket_height = document.body.parentNode.clientHeight;
+                } else {
+                    blanket_height = document.body.parentNode.scrollHeight;
+                }
             }
-        });
+            var blanket = document.getElementById('blanket');
+            blanket.style.height = blanket_height + 'px';
+            var popUpDiv = document.getElementById(popUpDivVar);
+            popUpDiv_height = blanket_height / 2 - 200;//200 is half popup's height
+            popUpDiv.style.top = popUpDiv_height + 'px';
+        }
+        function window_pos(popUpDivVar) {
+            if (typeof window.innerWidth != 'undefined') {
+                viewportwidth = window.innerHeight;
+            } else {
+                viewportwidth = document.documentElement.clientHeight;
+            }
+            if ((viewportwidth > document.body.parentNode.scrollWidth) && (viewportwidth > document.body.parentNode.clientWidth)) {
+                window_width = viewportwidth;
+            } else {
+                if (document.body.parentNode.clientWidth > document.body.parentNode.scrollWidth) {
+                    window_width = document.body.parentNode.clientWidth;
+                } else {
+                    window_width = document.body.parentNode.scrollWidth;
+                }
+            }
+            var popUpDiv = document.getElementById(popUpDivVar);
+            window_width = window_width / 2 - 200;//200 is half popup's width
+            popUpDiv.style.left = window_width + 'px';
+        }
+        function popup(windowname) {
+            blanket_size(windowname);
+            window_pos(windowname);
+            toggle('blanket');
+            toggle(windowname);
+        }
 
-        $('#jqg').jqGrid('filterToolbar', {
-            stringResult: true,
-        });
 
-    })();
-</script>
+        function Check(checkBox, rowId) {
+            var dataFromTheRow = $("#jqg").jqGrid('getRowData', rowId);
+            var userId = dataFromTheRow.Id;
+            if (checkBox.checked) {
+                checkedList.push({ Id: userId });
+            }
+            else {
+                checkedList = $.grep(checkedList, function (e) { return e.Id != userId });
+            }
+        }
+
+        function DeleteAction(rowId) {
+            if (confirm("Are you sure you want to remove this employee?") == true) {
+                var dataFromTheRow = $("#jqg").jqGrid('getRowData', rowId);
+                $.ajax({
+                    type: "POST",
+                    url: "/Employee/RemoveEmployee",
+                    data: { id: dataFromTheRow.Id },
+                    datatype: "html",
+                    success: function (data) {
+                        $('#jqg').jqGrid('delRowData', rowId);
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+
+        function EditAction(rowId) {
+            if (confirm("Are you sure you want to edit this employee?") == true) {
+                var dataFromTheRow = $("#jqg").jqGrid('getRowData', rowId);;
+                var del = $('#edit');
+                del.val(dataFromTheRow.Id);
+                var o = $('#editSubmit');
+                o.click();
+            } else {
+                return false;
+            }
+        }
+
+        (function () {
+            $("#jqg").jqGrid({
+                url: '@Url.Action("GetEmployeeData")',
+                styleUI: 'Bootstrap',
+                datatype: "json",
+                myType: 'GET',
+                colNames: ['Id', 'Position', 'Name', 'Surname', '', '', ''],
+                colModel: [
+                { name: 'Id', label: 'Id', width: 15, stype: 'text' },
+                { name: 'PositionValue', label: 'Position', width: 15, sortable: true },
+                { name: 'Name', index: 'Name', width: 35, sortable: true },
+                { name: 'Surname', label: 'Surname', width: 35, sortable: true },
+
+                 {
+                     search: false,
+                     width: 6,
+                     formatter: function (cellvalue, options, rowObject) {
+                         return '<span class="glyphicon glyphicon glyphicon-pencil" style="font-size: 25px;" onclick="EditAction(' + options.rowId + ');"></span>';
+                     }
+                 },
+                {
+                    search: false,
+                    width: 6,
+                    formatter: function (cellvalue, options, rowObject) {
+                        return ' <span class="glyphicon glyphicon glyphicon-trash" style="font-size: 25px;" onclick="DeleteAction(' + options.rowId + ');"></span>';
+                    },
+                },
+                {
+                    search: false,
+                    width: 6,
+                    formatter: function (cellvalue, options, rowObject) {
+                        return '<input type="checkbox" class="form-control" onchange="Check(this,' + options.rowId + ');" />';
+                    },
+                }
+
+                ],
+                rowNum: 100,
+                sortname: 'Id',
+                sortorder: "desc",
+                caption: "Employee list",
+                viewrecords: true,
+                width: 980,
+                height: 630,
+                pager: '#jpager',
+                jsonReader: {
+                    root: 'Employees',
+                    page: "Page",
+                    total: "TotalPages",
+                    records: "TotalRecords",
+                    id: "0",
+
+                },
+                onPaging: function () {
+                    $('.ui-jqgrid-bdiv').scrollTop(0);
+                }
+            });
+
+            $('#jqg').jqGrid('filterToolbar', {
+                stringResult: true,
+            });
+
+        })();
+    </script>
 }
 

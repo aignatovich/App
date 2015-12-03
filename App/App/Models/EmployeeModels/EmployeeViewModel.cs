@@ -21,6 +21,10 @@ namespace App.Models
         [StringLength(60, MinimumLength = 3)]
         public string Surname { get; set; }
 
+        [Required(ErrorMessage = "Field can't be empty")]
+        [EmailAddress]
+        public string Email { get; set; }
+
         public Roles Position { get; set; }
 
 
@@ -40,6 +44,7 @@ namespace App.Models
             Name = employee.Name;
             Surname = employee.Surname;
             Position = employee.Position;
+            Email = employee.Email;
             AbsenceList = new List<ManagingDateModel>(employee.AbsenceList);
 
             foreach (ProjectModel project in employee.ActualProjects)
@@ -56,6 +61,7 @@ namespace App.Models
             toTransfer.Name = this.Name;
             toTransfer.Surname = this.Surname;
             toTransfer.Position = this.Position;
+            toTransfer.Email = this.Email;
             toTransfer.AbsenceList = new List<ManagingDateModel>(this.AbsenceList);
             ICollection<ProjectModel> projectList = new List<ProjectModel>();
             foreach (ProjectViewModel project in this.ActualProjects)

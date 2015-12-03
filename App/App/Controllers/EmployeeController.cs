@@ -9,6 +9,7 @@ using CodeFirst;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using App.Models.JqGridObjects;
+using App.ModelBindings;
 
 namespace App.Controllers
 {
@@ -19,7 +20,7 @@ namespace App.Controllers
 
         public EmployeeController(IEmployeeService employeeService)
         {
-            this.service = employeeService;
+            service = employeeService;
         }
 
         [HttpGet]
@@ -103,9 +104,9 @@ namespace App.Controllers
 
         [HttpGet]
         [Authorize]
-        public string GetEmployeeData(bool _search, int page, int rows, string sidx, string sord, string filters)
+        public string GetEmployeeData([ModelBinder(typeof(JqGridRequestBinder))] JqGridRequest request)
         {
-            var toTransfer = JqGridEmployeePagedCollection.Create(_search, page, rows, sidx, sord, filters);       
+            var toTransfer = JqGridEmployeePagedCollection.Create(request);       
             return JsonConvert.SerializeObject(toTransfer);
         }
     }

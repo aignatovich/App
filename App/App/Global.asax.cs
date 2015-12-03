@@ -1,5 +1,7 @@
 ﻿using App.ModelBinding;
+using App.ModelBindings;
 using App.Models;
+using App.Models.JqGridObjects;
 using App.Util;
 using CodeFirst;
 using FluentValidation.Mvc;
@@ -22,7 +24,8 @@ namespace App
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutofacConfig.ConfigureContainer();           
-            ModelBinders.Binders.Add(typeof(IEnumerable<Int32>), new IdsArrayBinder());     
+            ModelBinders.Binders.Add(typeof(IEnumerable<Int32>), new IdsArrayBinder());
+            ModelBinders.Binders.Add(typeof(JqGridRequest), new JqGridRequestBinder());
         }
 
         protected virtual void Application_BeginRequest()

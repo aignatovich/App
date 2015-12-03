@@ -203,7 +203,7 @@
       <DependentUpon>201511251010579_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="ModelBinding\IdsArrayBinder.cs" />
+    <Compile Include="ModelBindings\IdsArrayBinder.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -216,6 +216,7 @@
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="DAL\EmployeeDataAccessObject.cs" />
     <Compile Include="DAL\ProjectDataAccessObject.cs" />
+    <Compile Include="ModelBindings\JqGridRequestBinder.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseContextAccessor.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseModelContainer.cs" />
     <Compile Include="Models\DatabaseModel\IDatabaseContextAccessor.cs" />
@@ -225,6 +226,7 @@
     <Compile Include="Models\EmployeeModels\SimplifiedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
     <Compile Include="Models\JqGridObjects\JqGridEmployeePagedCollection.cs" />
+    <Compile Include="Models\JqGridObjects\JqGridRequest.cs" />
     <Compile Include="Models\ManagingTableModels\DayEnum.cs" />
     <Compile Include="Models\ManagingTableModels\ManagingParamsModel.cs" />
     <Compile Include="Models\ManagingTableModels\ManagingRequest.cs" />

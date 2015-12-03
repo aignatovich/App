@@ -31,10 +31,15 @@ namespace App.Models.JqGridObjects
 
         public IEnumerable<SimplifiedEmployeeViewModel> Employees { get; set; }
 
-        public static JqGridEmployeePagedCollection Create(bool search, int page, int rows, string sortingProperty, string sortingOrder, string filters)
+        public static JqGridEmployeePagedCollection Create(JqGridRequest request)
         {
             IEmployeeService employeeService = Container.Resolve<IEmployeeService>();
             List<SimplifiedEmployeeViewModel> employees = employeeService.GetAllSimplified().ToList();
+
+            bool search = request.IsSearch;
+            int page = request.Page;
+            string sortingOrder = request.SortOrder;
+            string sortingProperty = request.SortingProperty;
 
             if (!search)
             {
@@ -66,46 +71,18 @@ namespace App.Models.JqGridObjects
             {
                 IEnumerable<SimplifiedEmployeeViewModel> toTransfer = employees;
 
-                JObject appliedFilters = JObject.Parse(filters);
-                JEnumerable<JToken> tokens = appliedFilters.Children();
-
-                string Name = "";
-                string Surname = "";
-                string Role = "";
-                int? Id = null;
-                int index = 0;
-
-                foreach (JToken token in tokens)
-                {
-                    if (index != 0)
-                    {
-                        for (int j = 0; j < token.First.Count(); j++)
-                        {
-                            JToken currentToken = token.First[j];
-                            if (currentToken.Value<string>("field").Equals("Name"))
-                            {
-                                Name = currentToken["data"].ToString();
-                            }
-                            if (currentToken.Value<string>("field").Equals("Surname"))
-                            {
-                                Surname = currentToken["data"].ToString();
-                            }
-                            if (currentToken.Value<string>("field").Equals("PositionValue"))
-                            {
-                                Role = (Enum.Parse(typeof(Roles), currentToken["data"].ToString())).ToString();
-                            }
-                            if (currentToken.Value<string>("field").Equals("Id"))
-                            {
-                                Id = Convert.ToInt32(currentToken["data"].ToString());
-                            }
-                        }
-                    }
-                    index++;
-                }
-
-                toTransfer =  DirectSearch(toTransfer, Name, Surname, Id, Role);
+                toTransfer = DirectSearch(toTransfer, request.Name, request.Surname, request.Id, request.Role);
                 int startIndex = (page - 1) * jqGridPageSize;
                 int endIndex = jqGridPageSize < (toTransfer.Count() - (page - 1) * jqGridPageSize) ? jqGridPageSize : (toTransfer.Count() - (page - 1) * jqGridPageSize);
+
+                if (sortingOrder.Equals(SortingOrderAsc))
+                {
+                    toTransfer = toTransfer.AsEnumerable().OrderBy(sortingProperty).Reverse();
+                }
+                else
+                {
+                    toTransfer = toTransfer.AsEnumerable().OrderBy(sortingProperty);
+                }
 
                 return new JqGridEmployeePagedCollection()
                 {
@@ -143,8 +120,6 @@ namespace App.Models.JqGridObjects
                    
             return toTransfer.ToList();
         }
-
-
     }
 
 }

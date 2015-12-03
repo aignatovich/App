@@ -46,6 +46,16 @@ namespace App
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include("~/Scripts/knockout-3.3.0.js"));
 
+            bundles.Add(new StyleBundle("~/Content/employee-jqgrid").Include(
+               "~/Content/jquery-ui.css",
+               "~/Content/bootstrap.min.css",
+               "~/Content/ui.jqgrid-bootstrap.css",
+               "~/Content/ui.jqgrid-bootstrap-ui.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqGrid").Include(
+                "~/Scripts/grid.locale-en.js",
+                "~/Scripts/jquery.jqGrid.js"));
+
         }
     }
 }

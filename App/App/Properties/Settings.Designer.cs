@@ -22,5 +22,32 @@ namespace App.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Broadcast")]
+        public string subject {
+            get {
+                return ((string)(this["subject"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("292309745a@gmail.com")]
+        public string from {
+            get {
+                return ((string)(this["from"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Broadcast service")]
+        public string fromName {
+            get {
+                return ((string)(this["fromName"]));
+            }
+        }
     }
 }

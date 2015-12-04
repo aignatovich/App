@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Net.Configuration;
 using System.Web.Configuration;
 using System.Net;
+using App.Properties;
 
 namespace App.Service
 {
@@ -173,20 +174,19 @@ namespace App.Service
         public void Broadcast(IEnumerable<Int32> ids, string message)
         {
             ICollection<EmployeeModel> employees = GetEmployeesByIds(ids);
-            System.Configuration.Configuration config = WebConfigurationManager.OpenWebConfiguration(HttpContext.Current.Request.ApplicationPath);
-            MailSettingsSectionGroup settings = (MailSettingsSectionGroup)config.GetSectionGroup("system.net/mailSettings");
 
-            var subject = "Broadcast";
+            var subject = Settings.Default.subject;
+            var from = Settings.Default.from;
+            string fromName = Settings.Default.fromName;
 
             foreach (EmployeeModel employee in employees)
             {
                 using (var client = new SmtpClient())
                 {
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.Credentials = new NetworkCredential(settings.Smtp.Network.UserName, settings.Smtp.Network.Password);
                     client.EnableSsl = true;
                     var destination = employee.Email;
-                    var mail = new MailMessage(settings.Smtp.Network.UserName, destination);
+                    var mail = new MailMessage(new MailAddress(from, fromName), new MailAddress(destination));
                     mail.Subject = subject;
                     mail.Body = message;
                     mail.IsBodyHtml = true;

@@ -11,6 +11,9 @@ using App.Models.JqGridObjects;
 using App.Models.EmployeeModels;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using System.Net.Configuration;
+using System.Web.Configuration;
+using System.Net;
 
 namespace App.Service
 {
@@ -167,24 +170,23 @@ namespace App.Service
             return employeesSimplified;
         }
 
-        public async Task Broadcast(IEnumerable<Int32> ids, string message)
+        public void Broadcast(IEnumerable<Int32> ids, string message)
         {
             ICollection<EmployeeModel> employees = GetEmployeesByIds(ids);
+            System.Configuration.Configuration config = WebConfigurationManager.OpenWebConfiguration(HttpContext.Current.Request.ApplicationPath);
+            MailSettingsSectionGroup settings = (MailSettingsSectionGroup)config.GetSectionGroup("system.net/mailSettings");
 
-            var from = "292309745a@gmail.com";
-            var pass = "a17157114";
             var subject = "Broadcast";
 
             foreach (EmployeeModel employee in employees)
             {
-                using (var client = new SmtpClient("smtp.gmail.com", 25))
+                using (var client = new SmtpClient())
                 {
                     client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.UseDefaultCredentials = false;
-                    client.Credentials = new System.Net.NetworkCredential(from, pass);
+                    client.Credentials = new NetworkCredential(settings.Smtp.Network.UserName, settings.Smtp.Network.Password);
                     client.EnableSsl = true;
                     var destination = employee.Email;
-                    var mail = new MailMessage(from, destination);
+                    var mail = new MailMessage(settings.Smtp.Network.UserName, destination);
                     mail.Subject = subject;
                     mail.Body = message;
                     mail.IsBodyHtml = true;

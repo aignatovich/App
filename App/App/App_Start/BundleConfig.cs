@@ -57,6 +57,8 @@ namespace App
                 "~/Scripts/jquery.jqGrid.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include("~/Plug-ins/Editor/ckeditor.js"));
+
+            bundles.Add(new StyleBundle("~/Content/popup").Include("~/Content/popup.css"));
         }
     }
 }

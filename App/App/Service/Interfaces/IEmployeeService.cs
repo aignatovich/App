@@ -41,7 +41,7 @@ namespace App.Service.Interfaces
 
         ICollection<SimplifiedEmployeeViewModel> GetAllSimplified();
 
-        Task Broadcast(IEnumerable<Int32> ids, string message);
+        void Broadcast(IEnumerable<Int32> ids, string message);
 
     }
 }

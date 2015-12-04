@@ -1,8 +1,4 @@
 ﻿
-<link rel="stylesheet" href="~/Content/popup.css" />
-
-
-
 <br /><br />
 <div>
     <div class="merri-400">
@@ -40,9 +36,6 @@
        --> 
 </div>
 
-
-
-
 @using (Html.BeginForm("EditEmployee", "Employee", FormMethod.Get, new { @class = "", role = "" }))
 {
     @Html.Hidden("Id", "", new { @id = "edit" });
@@ -53,10 +46,10 @@
 @section Scripts
 {
     @Styles.Render("~/Content/employee-jqgrid")
+    @Styles.Render("~/Content/popup")
     @Scripts.Render("~/bundles/jq")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqGrid")
-
     @Scripts.Render("~/bundles/ckeditor")
 
     <script type="text/javascript">
@@ -69,6 +62,7 @@
 
         $('#send').on("click", function () {
             var data = CKEDITOR.instances.editor1.getData();
+            CKEDITOR.instances.editor1.setData("");
             var ids = "";
 
             for (var i = 0; i < checkedList.length; i++)

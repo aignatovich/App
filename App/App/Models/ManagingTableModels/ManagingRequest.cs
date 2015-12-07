@@ -13,5 +13,7 @@ namespace App.Models
         public int? Page { get; set; }
         
         public int? ProjectId { get; set; }
+
+        public Roles? Role { get; set; }
     }
 }

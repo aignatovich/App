@@ -10,7 +10,7 @@ namespace App.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+           return RedirectToAction("Manage", "Employee");
         }
 
         public ActionResult About()

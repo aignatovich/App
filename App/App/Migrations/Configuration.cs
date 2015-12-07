@@ -19,7 +19,7 @@ namespace App.Migrations
 
         protected override void Seed(CodeFirst.DatabaseModelContainer context)
         {
-            for (int i = 1; i < 3000; i++)
+            /*for (int i = 1; i < 3000; i++)
             {
                 context.EmployeeSet.Add(new EmployeeModel()
                 {
@@ -30,7 +30,7 @@ namespace App.Migrations
                     AbsenceList = new List<ManagingDateModel>(),
                     Email = "test" + i.ToString() + "@test.com"
                 });
-            }
+            }*/
         }
     }
 }

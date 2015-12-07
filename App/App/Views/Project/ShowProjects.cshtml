@@ -26,7 +26,7 @@
             }
         </div>
     </div>
-    <table class="table">
+    <table class="table" style="margin-top:10%;">
         <thead>
             <tr>
                 <th class="col-sm-2 merri-400">Name</th>
@@ -49,7 +49,7 @@
             }
         </tbody>
     </table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    <span class="merri-400">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
     @Html.PagedListPager(Model, page => Url.Action("ShowProjects", new { page, query = Request["query"] }))
 
 </div>

@@ -24,6 +24,7 @@
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
+                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { style = "color:lightgrey;", @class = "merri-700" })</li>
                     <li>@Html.ActionLink("Append Employee", "CreateEmployee", "Employee", new { area = "" }, new { style = "color:lightgrey;", @class="merri-700" })</li>
                     <li>@Html.ActionLink("Manage Employees", "ShowEmployees", "Employee", new { area = "" }, new { style = "color:lightgrey;",  @class="merri-700" })</li>
                     <li>@Html.ActionLink("Append Project", "CreateProject", "Project", new { area = "" }, new {  style = "color:lightgrey;", @class = "merri-700" })</li>

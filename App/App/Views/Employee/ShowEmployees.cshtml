@@ -180,15 +180,11 @@
         }
 
         function EditAction(rowId) {
-            if (confirm("Are you sure you want to edit this employee?") == true) {
-                var dataFromTheRow = $("#jqg").jqGrid('getRowData', rowId);;
-                var del = $('#edit');
-                del.val(dataFromTheRow.Id);
-                var o = $('#editSubmit');
-                o.click();
-            } else {
-                return false;
-            }
+            var dataFromTheRow = $("#jqg").jqGrid('getRowData', rowId);;
+            var del = $('#edit');
+            del.val(dataFromTheRow.Id);
+            var o = $('#editSubmit');
+            o.click();
         }
 
         (function () {
@@ -199,7 +195,7 @@
                 myType: 'GET',
                 postData: {
                     projectId: @projectId },
-                colNames: ['Id', 'Position', 'Name', 'Surname', '', '', ''],
+                colNames: ['Id', 'Position', 'Name', 'Surname', 'Edit', 'Del', 'Mark'],
                 colModel: [
                 { name: 'Id', label: 'Id', width: 15, stype: 'text' },
                 { name: 'PositionValue', label: 'Position', width: 15, sortable: true },

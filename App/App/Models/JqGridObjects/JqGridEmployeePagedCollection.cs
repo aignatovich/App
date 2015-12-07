@@ -28,13 +28,26 @@ namespace App.Models.JqGridObjects
 
         public string SortOrder { get; set; }
 
+        private static IEmployeeService employeeService { get; set; }
+        private static IProjectService projectService { get; set; }
 
         public IEnumerable<SimplifiedEmployeeViewModel> Employees { get; set; }
 
+        public JqGridEmployeePagedCollection()
+        {
+
+        }
+
+        public JqGridEmployeePagedCollection(IProjectService projectServiceInit, IEmployeeService employeeServiceInit)
+        {
+            employeeService = employeeServiceInit;
+            projectService = projectServiceInit;
+        }
+
         public static JqGridEmployeePagedCollection Create(JqGridRequest request)
         {
-            IEmployeeService employeeService = Container.Resolve<IEmployeeService>();
-            IProjectService projectService = Container.Resolve<IProjectService>();
+            //IEmployeeService employeeService = Container.Resolve<IEmployeeService>();
+           // IProjectService projectService = Container.Resolve<IProjectService>();
             List<SimplifiedEmployeeViewModel> employees;
 
             if (request.ProjectId == -1)

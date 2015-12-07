@@ -49,7 +49,9 @@
 {
     @Styles.Render("~/Content/employee-jqgrid")
     @Styles.Render("~/Content/popup")
+    @Styles.Render("~/Content/autocomplete-styles")
     @Scripts.Render("~/bundles/jq")
+    @Scripts.Render("~/bundles/autocomplete")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/jqGrid")
     @Scripts.Render("~/bundles/ckeditor")
@@ -94,6 +96,7 @@
         $('#broadcast').on("click", function () {
             popup('popUpDiv')
         })
+
 
         function toggle(div_id) {
             var el = document.getElementById(div_id);
@@ -252,6 +255,17 @@
             });
 
         })();
+
+        
+        $("#gs_Name").devbridgeAutocomplete({
+            serviceUrl: '/Employee/NameAutocompleteService'
+        });
+
+         
+        $("#gs_Surname").devbridgeAutocomplete({
+            serviceUrl: '/Employee/SurnameAutocompleteService'
+        });
+
     </script>
 }
 

@@ -119,5 +119,18 @@ namespace App.Controllers
             service.Broadcast(ids, message);
         }
 
+        [Authorize]
+        public string NameAutocompleteService(string query)
+        {
+            return service.FormAutocompleteResponseByName(query);
+        }
+
+        [Authorize]
+        public string SurnameAutocompleteService(string query)
+        {
+            return service.FormAutocompleteResponseBySurname(query);
+        }
+
+
     }
 }

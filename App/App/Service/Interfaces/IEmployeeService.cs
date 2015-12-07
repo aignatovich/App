@@ -45,6 +45,10 @@ namespace App.Service.Interfaces
 
         void Broadcast(IEnumerable<Int32> ids, string message);
 
+        string FormAutocompleteResponseByName(string query);
+
+        string FormAutocompleteResponseBySurname(string query);
+
 
 
     }

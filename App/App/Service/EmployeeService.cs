@@ -15,6 +15,8 @@ using System.Net.Configuration;
 using System.Web.Configuration;
 using System.Net;
 using App.Properties;
+using Newtonsoft.Json;
+using App.Models.AutocompleteQueryModel;
 
 namespace App.Service
 {
@@ -207,6 +209,34 @@ namespace App.Service
                 }
             }
         }
-     
+
+        public string FormAutocompleteResponseByName(string query)
+        {
+            IEnumerable<EmployeeModel> employees = employeeDataAccessObject.GetAll().Where(x => x.Name.Contains(query));
+            List<string> suggestions = new List<string>();
+
+            foreach (EmployeeModel employee in employees)
+            {
+                suggestions.Add(employee.Name);
+            }
+
+            AutocompleteQuery queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
+            return JsonConvert.SerializeObject(queryModel);
+        }
+
+        public string FormAutocompleteResponseBySurname(string query)
+        {
+            IEnumerable<EmployeeModel> employees = employeeDataAccessObject.GetAll().Where(x => x.Surname.Contains(query));
+            List<string> suggestions = new List<string>();
+
+            foreach (EmployeeModel employee in employees)
+            {
+                suggestions.Add(employee.Surname);
+            }
+
+            AutocompleteQuery queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
+            return JsonConvert.SerializeObject(queryModel);
+        }
+
     }
 }

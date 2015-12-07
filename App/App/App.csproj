@@ -245,8 +245,10 @@
     <Compile Include="Service\ExtendedProjectService.cs" />
     <Compile Include="Service\Interfaces\IEmployeeService.cs" />
     <Compile Include="Service\Interfaces\IExtendedProjectService.cs" />
+    <Compile Include="Service\Interfaces\IJqGridService.cs" />
     <Compile Include="Service\Interfaces\IPositionsService.cs" />
     <Compile Include="Service\Interfaces\IProjectService.cs" />
+    <Compile Include="Service\JqGridService.cs" />
     <Compile Include="Service\ProjectService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

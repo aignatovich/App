@@ -25,6 +25,7 @@ namespace App.Service
         private IEmployeeDAO employeeDataAccessObject;
         private IProjectDAO projectDataAccessObject;
 
+
         private const int pageSize = 25;
 
         public EmployeeService(IEmployeeDAO employeeDataAccessObject, IProjectDAO projectDataAccessObject)
@@ -33,18 +34,7 @@ namespace App.Service
             this.projectDataAccessObject = projectDataAccessObject;
         }
 
-        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
-        {
-            ICollection<EmployeeModel> employees = new List<EmployeeModel>();
-
-            foreach (Int32 employeeId in ids)
-            {
-                employees.Add(employeeDataAccessObject.GetSingle(employeeId));
-            }
-
-            return employees;
-        }
-
+      
         public void Add(EmployeeViewModel employee)
         {
             EmployeeModel toTransfer = employee.AsEmployeeModel();
@@ -188,7 +178,7 @@ namespace App.Service
 
         public void Broadcast(IEnumerable<Int32> ids, string message)
         {
-            ICollection<EmployeeModel> employees = GetEmployeesByIds(ids);
+            ICollection<EmployeeModel> employees = employeeDataAccessObject.GetEmployeesByIds(ids);
 
             var subject = Settings.Default.subject;
             var from = Settings.Default.from;
@@ -209,6 +199,7 @@ namespace App.Service
                 }
             }
         }
+
 
         public string FormAutocompleteResponseByName(string query)
         {

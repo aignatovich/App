@@ -1,5 +1,6 @@
 ﻿using App.Models;
 using App.Models.EmployeeModels;
+using App.Models.JqGridObjects;
 using App.Models.ManagingTableModels;
 using PagedList;
 using System;
@@ -12,9 +13,6 @@ namespace App.Service.Interfaces
 {
     public interface IEmployeeService
     {
-
-        ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids);
-
         void Add(EmployeeViewModel employee);
 
         ICollection<EmployeeViewModel> GetAllViewModels();
@@ -48,8 +46,6 @@ namespace App.Service.Interfaces
         string FormAutocompleteResponseByName(string query);
 
         string FormAutocompleteResponseBySurname(string query);
-
-
 
     }
 }

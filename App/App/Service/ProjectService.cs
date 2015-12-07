@@ -13,15 +13,13 @@ namespace App.Service
 {
     public class ProjectService:IProjectService
     {
-        private IEmployeeService employeeService;
         private IProjectDAO projectDataAccessObject;
         private IEmployeeDAO employeeDataAccessObject;
 
         private const int pageSize = 12;
 
-        public ProjectService(IEmployeeService employeeService, IProjectDAO projectDataAccessObject, IEmployeeDAO employeeDataAccessObject)
+        public ProjectService(IProjectDAO projectDataAccessObject, IEmployeeDAO employeeDataAccessObject)
         {
-            this.employeeService = employeeService;
             this.projectDataAccessObject = projectDataAccessObject;
             this.employeeDataAccessObject = employeeDataAccessObject;
         }
@@ -40,7 +38,7 @@ namespace App.Service
         public void EmployInProject(int projectId, IEnumerable<Int32> ids)
         {
             ProjectModel project = projectDataAccessObject.GetSingle(projectId);
-            ICollection<EmployeeModel> employees = employeeService.GetEmployeesByIds(ids);
+            ICollection<EmployeeModel> employees = employeeDataAccessObject.GetEmployeesByIds(ids);
             project.CurrentEmployees.Clear();
             project.CurrentEmployees = employees;
 

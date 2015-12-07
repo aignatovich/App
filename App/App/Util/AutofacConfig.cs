@@ -12,6 +12,7 @@ using App.Models;
 using App.DAL;
 using CodeFirst;
 using App.Models.DatabaseModel;
+using App.Models.JqGridObjects;
 
 namespace App.Util
 {
@@ -36,6 +37,7 @@ namespace App.Util
 
             //Builder.RegisterType<DatabaseModelContainer>().As<IDatabase>().InstancePerRequest();
             Builder.RegisterType<DatabaseContextAccessor>().As<IDatabaseContextAccessor>();
+            Builder.RegisterType<JqGridService>().As<IJqGridService>();
 
             Container = Builder.Build();
            

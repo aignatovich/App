@@ -65,5 +65,17 @@ namespace App.DAL
                                (employee.Name == null ||
                                employee.Surname == null);
         }
+
+        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
+        {
+            ICollection<EmployeeModel> employees = new List<EmployeeModel>();
+
+            foreach (Int32 employeeId in ids)
+            {
+                employees.Add(GetSingle(employeeId));
+            }
+
+            return employees;
+        }
     }
 }

@@ -20,5 +20,7 @@ namespace App.DAL
         EmployeeModel GetSingle(int id);
 
         bool Exists(EmployeeModel employee);
+
+        ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids);
     }
 }

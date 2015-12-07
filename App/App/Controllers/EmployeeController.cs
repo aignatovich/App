@@ -17,11 +17,15 @@ namespace App.Controllers
     public class EmployeeController : Controller
     {
 
-        private IEmployeeService service;
+        private IEmployeeService employeeService;
+        private IProjectService projectService;
+        private IJqGridService jqGridService;
 
-        public EmployeeController(IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService, IProjectService projectService, IJqGridService jqGridService)
         {
-            service = employeeService;
+            this.employeeService = employeeService;
+            this.projectService = projectService;
+            this.jqGridService = jqGridService;
         }
 
         [HttpGet]
@@ -37,7 +41,7 @@ namespace App.Controllers
         {
             if (ModelState.IsValid)
             {
-                service.Add(employee);
+                employeeService.Add(employee);
                 return RedirectToAction("ShowEmployees");
             }
             return View();
@@ -54,7 +58,7 @@ namespace App.Controllers
         [Authorize]
         public ActionResult RemoveEmployee(int id)
         {
-            EmployeeViewModel employee = service.GetSingle(id);
+            EmployeeViewModel employee = employeeService.GetSingle(id);
             return View(employee);
         }
 
@@ -62,7 +66,7 @@ namespace App.Controllers
         [Authorize]
         public ActionResult RemoveEmployee(EmployeeViewModel employee)
         {
-            service.Remove(employee);
+            employeeService.Remove(employee);
             return RedirectToAction("ShowEmployees");
         }
 
@@ -70,7 +74,7 @@ namespace App.Controllers
         [Authorize]
         public ActionResult EditEmployee(int id)
         {
-            EmployeeViewModel employee = service.GetSingle(id);
+            EmployeeViewModel employee = employeeService.GetSingle(id);
             return View(employee);
         }
 
@@ -78,7 +82,7 @@ namespace App.Controllers
         [Authorize]
         public ActionResult EditEmployee(EmployeeViewModel employee)
         {
-            service.Edit(employee);
+            employeeService.Edit(employee);
             return RedirectToAction("ShowEmployees");          
         }
 
@@ -86,7 +90,7 @@ namespace App.Controllers
         [Authorize]
         public ActionResult Manage(ManagingRequest request)
         {
-            return View(service.GetTableData(request));
+            return View(employeeService.GetTableData(request));
         }
 
         [HttpPost]
@@ -100,14 +104,14 @@ namespace App.Controllers
         [Authorize]
         public void ApplyChanges(ManagingDateModel model)
         {
-            service.ApplyAbsence(model);
+            employeeService.ApplyAbsence(model);
         }
 
         [HttpGet]
         [Authorize]
         public string GetEmployeeData([ModelBinder(typeof(JqGridRequestBinder))] JqGridRequest request)
         {
-            var toTransfer = JqGridEmployeePagedCollection.Create(request);       
+            var toTransfer = jqGridService.Create(request);
             return JsonConvert.SerializeObject(toTransfer);
         }
 
@@ -116,19 +120,19 @@ namespace App.Controllers
         [ValidateInput(false)]
         public void Broadcast([ModelBinder(typeof(IdsArrayBinder))] IEnumerable<Int32> ids, string message)
         {
-            service.Broadcast(ids, message);
+            employeeService.Broadcast(ids, message);
         }
 
         [Authorize]
         public string NameAutocompleteService(string query)
         {
-            return service.FormAutocompleteResponseByName(query);
+            return employeeService.FormAutocompleteResponseByName(query);
         }
 
         [Authorize]
         public string SurnameAutocompleteService(string query)
         {
-            return service.FormAutocompleteResponseBySurname(query);
+            return employeeService.FormAutocompleteResponseBySurname(query);
         }
 
 

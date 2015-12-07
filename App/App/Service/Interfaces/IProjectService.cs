@@ -27,5 +27,7 @@ namespace App.Service.Interfaces
         ICollection<ProjectViewModel> Search(ProjectViewModel project);
 
         IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page, string query);
+
+        string FormAutocompleteResponse(string query);
     }
 }

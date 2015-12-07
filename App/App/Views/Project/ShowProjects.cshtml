@@ -11,76 +11,78 @@
         <div class="col-md-7">
             <h2 class="merri-700">Recent projects</h2>
         </div>
-        <div class="col-md-5" style="margin-top:15px;">        
-                @using (Html.BeginForm("ShowProjects", "Project", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
-                {
-                    <div class="col-md-8">
-                        @Html.Hidden("page", Model.PageNumber)
-                        @Html.TextBox("query", "", new { @class = "form-control",@placeholder = " Search ..."})
-                    </div>
+        <div class="col-md-5" style="margin-top:15px;">
+            @using (Html.BeginForm("ShowProjects", "Project", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="col-md-8">
+                    @Html.Hidden("page", Model.PageNumber)
+                    @Html.TextBox("query", "", new { @class = "form-control", @placeholder = " Search ...", @id = "autocomplete" })
+                </div>
                     <div class="col-md-2">
                         <button type="submit" class="btn btn-default" value="Search">
                             <span class="glyphicon glyphicon-search"></span> Search
                         </button>
                     </div>
-                }
-            </div>
+            }
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="col-sm-5 merri-400">Name</th>
-                    <th class="col-sm-2 merri-400">Start date</th>
-                    <th class="col-sm-2 merri-400">End date</th>
-                    <th class="col-sm-4 merri-400">Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in ProjectList)
-            {
-                    <tr>
-                        <td class="col-sm-3 merri-400">@item.Name</td>
-                        <td class="col-sm-1 merri-400">@item.StartDate</td>
-                        <td class="col-sm-1 merri-400">@item.EndDate</td>
-                        @Html.Partial("OptionsPartial", item)
-                    </tr>
-                }
-            </tbody>
-        </table>
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("ShowProjects", new { page, query = Request["query"] }))
-
     </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="col-sm-5 merri-400">Name</th>
+                <th class="col-sm-2 merri-400">Start date</th>
+                <th class="col-sm-2 merri-400">End date</th>
+                <th class="col-sm-4 merri-400">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ProjectList)
+            {
+                <tr>
+                    <td class="col-sm-3 merri-400">@item.Name</td>
+                    <td class="col-sm-1 merri-400">@item.StartDate</td>
+                    <td class="col-sm-1 merri-400">@item.EndDate</td>
+                    @Html.Partial("OptionsPartial", item)
+                </tr>
+            }
+        </tbody>
+    </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ShowProjects", new { page, query = Request["query"] }))
 
+</div>
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jq")
+    <link rel="stylesheet" href="~/Content/autocomplete-styles.css" />
+    <script src="~/Scripts/jquery.autocomplete.js"></script>
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jq")
-        @Scripts.Render("~/bundles/jqueryval")
-        @Scripts.Render("~/bundles/bootstrap")
-        @Scripts.Render("~/bundles/datepicker")
-        @Styles.Render("~/Content/datepicker-styles")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datepicker")
+    @Styles.Render("~/Content/datepicker-styles")
 
-        <script type="text/javascript">
-            (function () {
-                $('.remove').each(function () {
-                    $(this).on("click", function () {
-                        if (confirm("Are you sure you want to delete project?") == true) {
-                            this.submit();
-                        } else {
-                            return false;
-                        }
-                    })
-                });
-                $('.datepicker').datepicker({
-                    orientation: 'bottom'
-                });
+    <script type="text/javascript">
+        (function () {
+            $('.remove').each(function () {
+                $(this).on("click", function () {
+                    if (confirm("Are you sure you want to delete project?") == true) {
+                        this.submit();
+                    } else {
+                        return false;
+                    }
+                })
+            });
+            $('.datepicker').datepicker({
+                orientation: 'bottom'
+            });
+        })();
 
-
-
-            })();
-        </script>
-    }
+        $("#autocomplete").devbridgeAutocomplete({
+            serviceUrl: '/Project/AutocompleteService'
+        });
+    </script>
+}
 
 
 

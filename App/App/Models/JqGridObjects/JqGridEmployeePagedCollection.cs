@@ -34,7 +34,17 @@ namespace App.Models.JqGridObjects
         public static JqGridEmployeePagedCollection Create(JqGridRequest request)
         {
             IEmployeeService employeeService = Container.Resolve<IEmployeeService>();
-            List<SimplifiedEmployeeViewModel> employees = employeeService.GetAllSimplified().ToList();
+            IProjectService projectService = Container.Resolve<IProjectService>();
+            List<SimplifiedEmployeeViewModel> employees;
+
+            if (request.ProjectId == -1)
+            {
+                 employees = employeeService.GetAllSimplified().ToList();
+            }
+            else
+            {
+                employees = employeeService.SimplifyCollection(projectService.GetSingle(request.ProjectId).CurrentEmployees).ToList();
+            }
 
             bool search = request.IsSearch;
             int page = request.Page;
@@ -53,7 +63,7 @@ namespace App.Models.JqGridObjects
                 {
                     Employees = toTransfer,
                     Page = page,
-                    TotalPages = employeeService.CalculateTotalPages(jqGridPageSize),
+                    TotalPages = employeeService.CalculatePages(jqGridPageSize, employees.Count),
                     SortColumn = sortingProperty,
                     SortOrder = sortingOrder,
                     TotalRecords = employees.Count

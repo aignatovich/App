@@ -27,6 +27,8 @@ namespace App.Models.JqGridObjects
 
         public int? Id { get; set; }
 
+        public int ProjectId { get; set; }
+
         public JqGridRequest()
         {
             Name = "";

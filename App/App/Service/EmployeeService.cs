@@ -171,6 +171,19 @@ namespace App.Service
             return employeesSimplified;
         }
 
+        public ICollection<SimplifiedEmployeeViewModel> SimplifyCollection(ICollection<EmployeeViewModel> employees)
+        {
+            ICollection<SimplifiedEmployeeViewModel> employeesSimplified = new List<SimplifiedEmployeeViewModel>();
+            ICollection<EmployeeViewModel> employeesNotSimplified = employees;
+
+            foreach (EmployeeViewModel employee in employeesNotSimplified)
+            {
+                employeesSimplified.Add(SimplifiedEmployeeViewModel.Create(employee));
+            }
+
+            return employeesSimplified;
+        }
+
         public void Broadcast(IEnumerable<Int32> ids, string message)
         {
             ICollection<EmployeeModel> employees = GetEmployeesByIds(ids);

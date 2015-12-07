@@ -1,6 +1,8 @@
 ﻿using App.DAL;
 using App.Models;
+using App.Models.AutocompleteQueryModel;
 using App.Service.Interfaces;
+using Newtonsoft.Json;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -98,5 +100,20 @@ namespace App.Service
                 return GetAllViewModels().Where(x => (x.Name.Contains(query) || x.StartDate.Contains(query) ||  x.EndDate.Contains(query))).ToPagedList(currentPage, pageSize);
             }    
         }
+
+        public string FormAutocompleteResponse(string query)
+        {
+            IEnumerable<ProjectModel> projects = projectDataAccessObject.GetAll().Where(x => x.Name.Contains(query));
+            List<string> suggestions = new List<string>();
+
+            foreach (ProjectModel project in projects)
+            {
+                suggestions.Add(project.Name);
+            }
+
+            AutocompleteQuery queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions};
+            return JsonConvert.SerializeObject(queryModel);
+        }
+
     }
 }

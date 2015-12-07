@@ -41,7 +41,11 @@ namespace App.Service.Interfaces
 
         ICollection<SimplifiedEmployeeViewModel> GetAllSimplified();
 
+        ICollection<SimplifiedEmployeeViewModel> SimplifyCollection(ICollection<EmployeeViewModel> employees);
+
         void Broadcast(IEnumerable<Int32> ids, string message);
+
+
 
     }
 }

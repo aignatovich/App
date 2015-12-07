@@ -45,9 +45,9 @@ namespace App.Controllers
 
         [HttpGet]
         [Authorize]
-        public ActionResult ShowEmployees()
+        public ActionResult ShowEmployees(int ? id)
         {
-            return View();
+            return View(id);
         }
 
         [HttpGet]

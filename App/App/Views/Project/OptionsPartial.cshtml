@@ -4,49 +4,69 @@
     ProjectViewModel item = Model;
 }
 
-<td class="col-sm-3">
-    <div class="col-sm-3">
-        @using (Html.BeginForm("RemoveProject", "Project", FormMethod.Post, new { @class = "", role = "" }))
-        {
-            @Html.HiddenFor(x => x.Id);
-            <button type="submit" class="btn btn-default remove">
-                <span class="glyphicon glyphicon-trash" style="font-size: 17px;"></span>
-            </button>
-        }
+<td class="col-sm-4">
+    <div class="col-md-2">
+        <div>
+            @using (Html.BeginForm("RemoveProject", "Project", FormMethod.Post, new { @class = "", role = "" }))
+            {
+                @Html.HiddenFor(x => x.Id);
+                <button type="submit" class="btn btn-default remove">
+                    <span class="glyphicon glyphicon-trash" style="font-size: 14px;"></span>
+                </button>
+            }
+        </div>
     </div>
 
-    <div class="col-sm-3">
-        @using (Html.BeginForm("EditProject", "Project", FormMethod.Get, new { @class = "", role = "" }))
-        {
-            @Html.HiddenFor(x => x.Id);
-            <button type="submit" class="btn btn-default">
-                <span class="glyphicon glyphicon-pencil" style="font-size: 17px;"></span>
-            </button>
-        }
+    <div class="col-md-2">
+        <div>
+            @using (Html.BeginForm("EditProject", "Project", FormMethod.Get, new { @class = "", role = "" }))
+            {
+                @Html.HiddenFor(x => x.Id);
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil" style="font-size: 14px;"></span>
+                </button>
+            }
+        </div>
     </div>
 
-    <div class="col-sm-3">
-        @using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { @class = "", role = "" }))
-        {
-            @Html.Hidden("month");
-            @Html.Hidden("year");
-            @Html.Hidden("page")
-            @Html.Hidden("sort");
-            @Html.Hidden("projectId", item.Id);
+    <div class="col-md-2">
+        <div>
+            @using (Html.BeginForm("Manage", "Employee", FormMethod.Get, new { @class = "", role = "" }))
+            {
+                @Html.Hidden("month");
+                @Html.Hidden("year");
+                @Html.Hidden("page")
+                @Html.Hidden("sort");
+                @Html.Hidden("projectId", item.Id);
 
-            <button type="submit" class="btn btn-default">
-                <span class="glyphicon glyphicon glyphicon-user" style="font-size: 17px;"></span>
-            </button>
-        }
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon glyphicon-user" style="font-size: 14px;"></span>
+                </button>
+            }
+        </div>
     </div>
 
-    <div class="col-sm-3"> 
-        @using (Html.BeginForm("SetupProject", "Project", FormMethod.Get, new { @class = "", role = "" }))
-        {
-            @Html.HiddenFor(x => x.Id);
-            <button type="submit" class="btn btn-default">
-                <span class="glyphicon glyphicon glyphicon-cog" style="font-size: 17px;"></span>
-            </button>
-        }
+    <div class="col-md-2"> 
+        <div>
+            @using (Html.BeginForm("SetupProject", "Project", FormMethod.Get, new { @class = "", role = "" }))
+            {
+                @Html.HiddenFor(x => x.Id);
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon glyphicon-cog" style="font-size: 14px;"></span>
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <div>
+            @using (Html.BeginForm("ShowEmployees", "Employee", FormMethod.Get, new { @class = "", role = "" }))
+            {
+                @Html.HiddenFor(x => x.Id);
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon " style="font-size: 14px;">@item.CurrentEmployees.Count</span>
+                </button>
+            }
+        </div>
     </div>
 </td>

@@ -103,6 +103,11 @@ namespace App.Controllers
             projectService.EmployInProject(projectId, ids);
             return RedirectToAction("ShowProjects");
         }
-                 
-    }
+
+        [Authorize]
+        public string AutocompleteService(string query)
+        {
+            return projectService.FormAutocompleteResponse(query);
+        }
+    }                
 }

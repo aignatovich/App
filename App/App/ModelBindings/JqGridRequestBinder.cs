@@ -16,6 +16,7 @@ namespace App.ModelBindings
         private const string keyRows = "rows";
         private const string keySidx = "sidx";
         private const string keySortingOrderd = "sord";
+        private const string projectId = "projectId";
         private const string filters = "filters";
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
@@ -23,7 +24,7 @@ namespace App.ModelBindings
             if (bindingContext.ModelType == typeof(JqGridRequest))
             {
 
-                return Bind(bindingContext, keySearch, keyPage, keyRows, keySidx, keySortingOrderd, filters);
+                return Bind(bindingContext, keySearch, keyPage, keyRows, keySidx, keySortingOrderd, filters, projectId);
             }
             else
             {
@@ -31,7 +32,7 @@ namespace App.ModelBindings
             }
         }
 
-        private JqGridRequest Bind(ModelBindingContext bindingContext, string keySearch, string keyPage, string keyRows, string keySortPropery, string keySort, string filters)
+        private JqGridRequest Bind(ModelBindingContext bindingContext, string keySearch, string keyPage, string keyRows, string keySortPropery, string keySort, string filters, string projectId)
         {
             ValueProviderResult searchValueResult = bindingContext.ValueProvider.GetValue(keySearch);
             ValueProviderResult pageValueResult = bindingContext.ValueProvider.GetValue(keyPage);
@@ -39,6 +40,7 @@ namespace App.ModelBindings
             ValueProviderResult sortProperyValueResult = bindingContext.ValueProvider.GetValue(keySortPropery);
             ValueProviderResult sortValueResult = bindingContext.ValueProvider.GetValue(keySort);
             ValueProviderResult filtersValueResult = bindingContext.ValueProvider.GetValue(filters);
+            ValueProviderResult projectIdValueResult = bindingContext.ValueProvider.GetValue(projectId);
 
             JqGridRequest request = new JqGridRequest()
             {
@@ -47,6 +49,7 @@ namespace App.ModelBindings
                 Rows = (int)rowsValueResult.ConvertTo(typeof(int)),
                 SortingProperty = (string)sortProperyValueResult.ConvertTo(typeof(string)),
                 SortOrder = (string)sortValueResult.ConvertTo(typeof(string)),
+                ProjectId = (int)projectIdValueResult.ConvertTo(typeof(int))
             };
 
             return filtersValueResult == null ? request : GetPropertyValues(request, filtersValueResult);

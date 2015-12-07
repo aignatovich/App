@@ -217,6 +217,7 @@
     <Compile Include="DAL\EmployeeDataAccessObject.cs" />
     <Compile Include="DAL\ProjectDataAccessObject.cs" />
     <Compile Include="ModelBindings\JqGridRequestBinder.cs" />
+    <Compile Include="Models\AutocompleteQueryModel\AutocompleteQuery.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseContextAccessor.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseModelContainer.cs" />
     <Compile Include="Models\DatabaseModel\IDatabaseContextAccessor.cs" />
@@ -267,6 +268,7 @@
     <Content Include="Content\contents.css" />
     <Content Include="Content\fonts.css" />
     <Content Include="Content\popup.css" />
+    <Content Include="Content\autocomplete-styles.css" />
     <Content Include="Content\ui.jqgrid-bootstrap-ui.css" />
     <Content Include="Content\ui.jqgrid-bootstrap.css" />
     <Content Include="Content\ui.jqgrid.css" />
@@ -292,6 +294,10 @@
     <Content Include="Content\register_styles.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\style-nice-select.css" />
+    <Content Include="Plug-ins\Autocomplete\.gitignore" />
+    <Content Include="Plug-ins\Autocomplete\gruntfile.js" />
+    <Content Include="Plug-ins\Autocomplete\index.htm" />
+    <Content Include="Plug-ins\Autocomplete\license.txt" />
     <Content Include="Plug-ins\Editor\build-config.js" />
     <Content Include="Plug-ins\Editor\ckeditor.js" />
     <Content Include="Plug-ins\Editor\config.js" />
@@ -368,6 +374,10 @@
     <Content Include="Plug-ins\Editor\CHANGES.md" />
     <Content Include="Plug-ins\Editor\LICENSE.md" />
     <Content Include="Plug-ins\Editor\README.md" />
+    <Content Include="Plug-ins\Autocomplete\bower.json" />
+    <Content Include="Plug-ins\Autocomplete\devbridge-autocomplete.jquery.json" />
+    <Content Include="Plug-ins\Autocomplete\package.json" />
+    <Content Include="Plug-ins\Autocomplete\readme.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -381,6 +391,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
+    <Content Include="Scripts\jquery.autocomplete.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
     <Content Include="Scripts\jquery.fmatter.js" />
     <Content Include="Scripts\jquery.jqGrid.js" />
@@ -519,6 +530,11 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\jquery.jqGrid\" />
     <Folder Include="Content\themes\" />
+    <Folder Include="Plug-ins\Autocomplete\content\" />
+    <Folder Include="Plug-ins\Autocomplete\dist\" />
+    <Folder Include="Plug-ins\Autocomplete\scripts\" />
+    <Folder Include="Plug-ins\Autocomplete\spec\" />
+    <Folder Include="Plug-ins\Autocomplete\src\" />
     <Folder Include="Plug-ins\Editor\adapters\" />
     <Folder Include="Plug-ins\Editor\lang\" />
     <Folder Include="Plug-ins\Editor\plugins\" />

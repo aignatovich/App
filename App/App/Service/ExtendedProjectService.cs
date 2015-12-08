@@ -12,16 +12,11 @@ namespace App.Service
     {
         private IProjectService projectService;
         private IEmployeeService employeeService;
-        private IEmployeeDAO employeeDataAccessObject;
-        private IProjectDAO projectDataAccessObject;
 
-        public ExtendedProjectService(IProjectService projectService, IEmployeeService employeeService, 
-                                      IEmployeeDAO employeeDataAccessObject, IProjectDAO projectDataAccessObject)
+        public ExtendedProjectService(IProjectService projectService, IEmployeeService employeeService)
         {
             this.projectService = projectService;
             this.employeeService = employeeService;
-            this.employeeDataAccessObject = employeeDataAccessObject;
-            this.projectDataAccessObject = projectDataAccessObject;
         }
 
 

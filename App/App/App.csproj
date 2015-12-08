@@ -216,7 +216,7 @@
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="DAL\EmployeeDataAccessObject.cs" />
     <Compile Include="DAL\ProjectDataAccessObject.cs" />
-    <Compile Include="ModelBindings\JqGridRequestBinder.cs" />
+    <Compile Include="ModelBindings\TableRequestBinder.cs" />
     <Compile Include="Models\AutocompleteQueryModel\AutocompleteQuery.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseContextAccessor.cs" />
     <Compile Include="Models\DatabaseModel\DatabaseModelContainer.cs" />
@@ -226,13 +226,14 @@
     <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />
     <Compile Include="Models\EmployeeModels\SimplifiedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
-    <Compile Include="Models\JqGridObjects\JqGridEmployeePagedCollection.cs" />
-    <Compile Include="Models\JqGridObjects\JqGridRequest.cs" />
+    <Compile Include="Models\EmployeeTableObjects\EmployeePagedCollection.cs" />
+    <Compile Include="Models\EmployeeTableObjects\TableRequest.cs" />
     <Compile Include="Models\ManagingTableModels\DayEnum.cs" />
     <Compile Include="Models\ManagingTableModels\ManagingParamsModel.cs" />
     <Compile Include="Models\ManagingTableModels\ManagingRequest.cs" />
     <Compile Include="Models\ManagingTableModels\MonthEnum.cs" />
     <Compile Include="Models\ManagingTableModels\Reason.cs" />
+    <Compile Include="Models\ManagingTableModels\SortEnum.cs" />
     <Compile Include="Models\ManagingTableModels\TableData.cs" />
     <Compile Include="Models\ProjectModels\ExtendedProjectViewModel.cs" />
     <Compile Include="Models\ProjectModels\ProjectViewModel.cs" />
@@ -241,14 +242,20 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Service\BroadcastService.cs" />
+    <Compile Include="Service\AutocompleteEmployeeService.cs" />
     <Compile Include="Service\EmployeeService.cs" />
     <Compile Include="Service\ExtendedProjectService.cs" />
+    <Compile Include="Service\Interfaces\IBroadcastService.cs" />
+    <Compile Include="Service\Interfaces\IAutocompleteEmployeeService.cs" />
     <Compile Include="Service\Interfaces\IEmployeeService.cs" />
     <Compile Include="Service\Interfaces\IExtendedProjectService.cs" />
-    <Compile Include="Service\Interfaces\IJqGridService.cs" />
+    <Compile Include="Service\Interfaces\IEmployeeTableService.cs" />
+    <Compile Include="Service\Interfaces\IManagingTableService.cs" />
     <Compile Include="Service\Interfaces\IPositionsService.cs" />
     <Compile Include="Service\Interfaces\IProjectService.cs" />
-    <Compile Include="Service\JqGridService.cs" />
+    <Compile Include="Service\EmployeeTableService.cs" />
+    <Compile Include="Service\ManagingTableService.cs" />
     <Compile Include="Service\ProjectService.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

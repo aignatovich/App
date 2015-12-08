@@ -4,15 +4,11 @@ using App.Service.Interfaces;
 using Autofac;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Linq.Dynamic;
-using static App.Util.AutofacConfig;
-using Newtonsoft.Json.Linq;
+using App.Models.ManagingTableModels;
 
 namespace App.Models.JqGridObjects
 {
-    public class JqGridEmployeePagedCollection
+    public class EmployeePagedCollection
     {
         public int Page { get; set; }
 
@@ -22,7 +18,7 @@ namespace App.Models.JqGridObjects
 
         public string SortColumn { get; set; }
 
-        public string SortOrder { get; set; }
+        public SortEnum SortOrder { get; set; }
 
         private static IProjectService projectService { get; set; }
 

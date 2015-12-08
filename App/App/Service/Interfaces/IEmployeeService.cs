@@ -23,29 +23,14 @@ namespace App.Service.Interfaces
 
         void Edit(EmployeeViewModel employee);
 
-        IPagedList<EmployeeViewModel> GetAllAsIPagedList(ManagingRequest request);
-
-        IPagedList<EmployeeViewModel> GetAllAsIPagedList(int? monthTransfered, int? yearTransfered, int? page, int? sorting);
-
-        IPagedList<EmployeeViewModel> GetIPagedList(int month, int year, int page, int sortingOrder, int? id);
+        IPagedList<EmployeeViewModel> GetIPagedList(ManagingRequest request);
 
         TableData GetTableData(ManagingRequest request);
 
         void ApplyAbsence(ManagingDateModel model);
 
-        int CalculateTotalPages(int pageSize);
-
         int CalculatePages(int pageSize, int length);
 
-        ICollection<SimplifiedEmployeeViewModel> GetAllSimplified();
-
-        ICollection<SimplifiedEmployeeViewModel> SimplifyCollection(ICollection<EmployeeViewModel> employees);
-
-        void Broadcast(IEnumerable<Int32> ids, string message);
-
-        string FormAutocompleteResponseByName(string query);
-
-        string FormAutocompleteResponseBySurname(string query);
-
+        IEnumerable<SimplifiedEmployeeViewModel> SimplifyCollection(IEnumerable<EmployeeModel> employees);
     }
 }

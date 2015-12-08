@@ -1,11 +1,12 @@
-﻿using System;
+﻿using App.Models.ManagingTableModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace App.Models.JqGridObjects
 {
-    public class JqGridRequest
+    public class TableRequest
     {
         public bool IsSearch { get; set; }
 
@@ -15,7 +16,7 @@ namespace App.Models.JqGridObjects
 
         public string SortingProperty { get; set; }
 
-        public string SortOrder { get; set; }
+        public SortEnum SortOrder { get; set; }
 
         public string Filters { get; set; } //parse
 
@@ -23,17 +24,17 @@ namespace App.Models.JqGridObjects
 
         public string Surname { get; set; }
 
-        public string Role { get; set; }
+        public Roles Role { get; set; }
 
         public int? Id { get; set; }
 
-        public int ProjectId { get; set; }
+        public int? ProjectId { get; set; }
 
-        public JqGridRequest()
+        public TableRequest()
         {
             Name = "";
             Surname = "";
-            Role = "";
+            Role = Roles.All;
             Id = null;
         }
     }

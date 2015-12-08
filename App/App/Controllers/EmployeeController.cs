@@ -19,13 +19,18 @@ namespace App.Controllers
 
         private IEmployeeService employeeService;
         private IProjectService projectService;
-        private IJqGridService jqGridService;
+        private IEmployeeTableService tableService;
+        private IBroadcastService broadcastService;
+        private IAutocompleteEmployeeService employeeAutocomplete;
 
-        public EmployeeController(IEmployeeService employeeService, IProjectService projectService, IJqGridService jqGridService)
+        public EmployeeController(IEmployeeService employeeService, IProjectService projectService, 
+            IEmployeeTableService jqGridService, IBroadcastService broadcastService, IAutocompleteEmployeeService employeeAutocomplete)
         {
             this.employeeService = employeeService;
             this.projectService = projectService;
-            this.jqGridService = jqGridService;
+            this.tableService = jqGridService;
+            this.broadcastService = broadcastService;
+            this.employeeAutocomplete = employeeAutocomplete;
         }
 
         [HttpGet]
@@ -109,9 +114,9 @@ namespace App.Controllers
 
         [HttpGet]
         [Authorize]
-        public string GetEmployeeData([ModelBinder(typeof(JqGridRequestBinder))] JqGridRequest request)
+        public string GetEmployeeData([ModelBinder(typeof(TableRequestBinder))] TableRequest request)
         {
-            var toTransfer = jqGridService.Create(request);
+            var toTransfer = tableService.Create(request);
             return JsonConvert.SerializeObject(toTransfer);
         }
 
@@ -120,19 +125,20 @@ namespace App.Controllers
         [ValidateInput(false)]
         public void Broadcast([ModelBinder(typeof(IdsArrayBinder))] IEnumerable<Int32> ids, string message)
         {
-            employeeService.Broadcast(ids, message);
+            broadcastService.Broadcast(ids, message);
         }
+
 
         [Authorize]
         public string NameAutocompleteService(string query)
         {
-            return employeeService.FormAutocompleteResponseByName(query);
+            return employeeAutocomplete.FormAutocompleteResponseByName(query);
         }
 
         [Authorize]
         public string SurnameAutocompleteService(string query)
         {
-            return employeeService.FormAutocompleteResponseBySurname(query);
+            return employeeAutocomplete.FormAutocompleteResponseBySurname(query);
         }
 
 

@@ -24,14 +24,15 @@ namespace App.Service
     {
         private IEmployeeDAO employeeDataAccessObject;
         private IProjectDAO projectDataAccessObject;
-
+        private IManagingTableService managingTableService;
 
         private const int pageSize = 25;
 
-        public EmployeeService(IEmployeeDAO employeeDataAccessObject, IProjectDAO projectDataAccessObject)
+        public EmployeeService(IEmployeeDAO employeeDataAccessObject, IProjectDAO projectDataAccessObject, IManagingTableService managingTableService)
         {
             this.employeeDataAccessObject = employeeDataAccessObject;
             this.projectDataAccessObject = projectDataAccessObject;
+            this.managingTableService = managingTableService;
         }
 
       
@@ -70,48 +71,15 @@ namespace App.Service
             employeeDataAccessObject.Edit(toTransfer);
         }
 
-        public IPagedList<EmployeeViewModel> GetAllAsIPagedList(ManagingRequest request)
+        public IPagedList<EmployeeViewModel> GetIPagedList(ManagingRequest request)
         {
-            int pageNumber = (request.Page ?? 1);
-            int sortingOrder = (request.Sort ?? 2);
-            int month = (request.Month ?? DateTime.Now.Month);
+            int projectId = (request.ProjectId ?? projectDataAccessObject.GetLastProjectId());
+            int page = (request.Page ?? 1);
             int year = (request.Year ?? DateTime.Now.Year);
-            int? projectId = request.ProjectId;
-
-            return GetIPagedList(month, year, pageNumber, sortingOrder, projectId);
-        }
-
-        public IPagedList<EmployeeViewModel> GetAllAsIPagedList(int? monthTransfered, int? yearTransfered, int? page, int? sorting)
-        {
-            int pageNumber = (page ?? 1);
-            int sortingOrder = (sorting ?? 2);
-            int month = (monthTransfered ?? 0);
-            int year = (yearTransfered ?? 0);
-            int? projectId = null;
-
-            return GetIPagedList(month, year, pageNumber, sortingOrder, projectId);
-
-        }
-
-        public IPagedList<EmployeeViewModel> GetIPagedList(int month, int year, int page, int sortingOrder, int? id)
-        {
-            int projectId = (id ?? projectDataAccessObject.GetLastProjectId());
+            int month = (request.Month ?? DateTime.Now.Month);
             ProjectViewModel project = projectId == -1 ? new ProjectViewModel() : ProjectViewModel.Create(projectDataAccessObject.GetSingle(projectId));
-            ICollection<EmployeeViewModel> employees = (id == null ? GetAllViewModels() : project.CurrentEmployees);
-            List<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
-
-            switch (sortingOrder)
-            {
-                case 1:
-                    toTransfer = employees.OrderBy(x => x.Position.ToString()).ToList();
-                    break;
-                case 2:
-                    toTransfer = employees.OrderBy(x => x.Name).ToList();
-                    break;
-                case 3:
-                    toTransfer = employees.OrderBy(x => x.Surname).ToList();
-                    break;
-            }
+            ICollection<EmployeeViewModel> employees = (request.ProjectId == null ? GetAllViewModels() : project.CurrentEmployees);
+            ICollection<EmployeeViewModel> toTransfer = employees;
 
             foreach (EmployeeViewModel e in toTransfer)
             {
@@ -122,7 +90,7 @@ namespace App.Service
 
         public TableData GetTableData(ManagingRequest request)
         {
-            return new TableData(GetAllAsIPagedList(request),request);
+            return managingTableService.CreateTable(GetIPagedList(request),request);
         }
 
 
@@ -140,94 +108,22 @@ namespace App.Service
             });
         }
 
-        public int CalculateTotalPages(int pageSize)
-        {
-            return (employeeDataAccessObject.GetAll().Count / pageSize + 1);
-        }
-
         public int CalculatePages(int pageSize, int length)
         {
             return (length / pageSize + 1);
         }
 
-        public ICollection<SimplifiedEmployeeViewModel> GetAllSimplified()
+        public IEnumerable<SimplifiedEmployeeViewModel> SimplifyCollection(IEnumerable<EmployeeModel> employees)
         {
             ICollection<SimplifiedEmployeeViewModel> employeesSimplified = new List<SimplifiedEmployeeViewModel>();
-            ICollection<EmployeeModel> employeesNotSimplified = employeeDataAccessObject.GetAll();
+            IEnumerable<EmployeeModel> employeesNotSimplified = employees;
 
             foreach (EmployeeModel employee in employeesNotSimplified)
             {
-                employeesSimplified.Add(SimplifiedEmployeeViewModel.Create(employee));
+                employeesSimplified.Add(new SimplifiedEmployeeViewModel(employee));
             }
 
             return employeesSimplified;
         }
-
-        public ICollection<SimplifiedEmployeeViewModel> SimplifyCollection(ICollection<EmployeeViewModel> employees)
-        {
-            ICollection<SimplifiedEmployeeViewModel> employeesSimplified = new List<SimplifiedEmployeeViewModel>();
-            ICollection<EmployeeViewModel> employeesNotSimplified = employees;
-
-            foreach (EmployeeViewModel employee in employeesNotSimplified)
-            {
-                employeesSimplified.Add(SimplifiedEmployeeViewModel.Create(employee));
-            }
-
-            return employeesSimplified;
-        }
-
-        public void Broadcast(IEnumerable<Int32> ids, string message)
-        {
-            ICollection<EmployeeModel> employees = employeeDataAccessObject.GetEmployeesByIds(ids);
-
-            var subject = Settings.Default.subject;
-            var from = Settings.Default.from;
-            string fromName = Settings.Default.fromName;
-
-            foreach (EmployeeModel employee in employees)
-            {
-                using (var client = new SmtpClient())
-                {
-                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    client.EnableSsl = true;
-                    var destination = employee.Email;
-                    var mail = new MailMessage(new MailAddress(from, fromName), new MailAddress(destination));
-                    mail.Subject = subject;
-                    mail.Body = message;
-                    mail.IsBodyHtml = true;
-                    client.Send(mail);
-                }
-            }
-        }
-
-
-        public string FormAutocompleteResponseByName(string query)
-        {
-            IEnumerable<EmployeeModel> employees = employeeDataAccessObject.GetAll().Where(x => x.Name.Contains(query));
-            List<string> suggestions = new List<string>();
-
-            foreach (EmployeeModel employee in employees)
-            {
-                suggestions.Add(employee.Name);
-            }
-
-            AutocompleteQuery queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
-            return JsonConvert.SerializeObject(queryModel);
-        }
-
-        public string FormAutocompleteResponseBySurname(string query)
-        {
-            IEnumerable<EmployeeModel> employees = employeeDataAccessObject.GetAll().Where(x => x.Surname.Contains(query));
-            List<string> suggestions = new List<string>();
-
-            foreach (EmployeeModel employee in employees)
-            {
-                suggestions.Add(employee.Surname);
-            }
-
-            AutocompleteQuery queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
-            return JsonConvert.SerializeObject(queryModel);
-        }
-
     }
 }

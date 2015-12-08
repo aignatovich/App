@@ -22,5 +22,7 @@ namespace App.DAL
         bool Exists(ProjectModel project);
 
         int GetLastProjectId();
+
+        IEnumerable<ProjectModel> Search(string query);
     }
 }

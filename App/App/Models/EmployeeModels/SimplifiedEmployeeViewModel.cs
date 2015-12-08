@@ -16,29 +16,20 @@ namespace App.Models.EmployeeModels
         public string PositionValue { get; set; }
 
 
-        public static SimplifiedEmployeeViewModel Create(EmployeeModel employee)
+        public SimplifiedEmployeeViewModel(EmployeeModel employee)
         {
-            return new SimplifiedEmployeeViewModel()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-                Surname = employee.Surname,
-                PositionValue = Enum.GetName(typeof(Roles), employee.Position)
-            };
+            Id = employee.Id;
+            Name = employee.Name;
+            Surname = employee.Surname;
+            PositionValue = Enum.GetName(typeof(Roles), employee.Position);
         }
 
-        public static SimplifiedEmployeeViewModel Create(EmployeeViewModel employee)
+        public  SimplifiedEmployeeViewModel (EmployeeViewModel employee)
         {
-            return new SimplifiedEmployeeViewModel()
-            {
-                Id = employee.Id,
-                Name = employee.Name,
-                Surname = employee.Surname,
-                PositionValue = Enum.GetName(typeof(Roles), employee.Position)
-            };
+            Id = employee.Id;
+            Name = employee.Name;
+            Surname = employee.Surname;
+            PositionValue = Enum.GetName(typeof(Roles), employee.Position);
         }
-
-
-
     }
 }

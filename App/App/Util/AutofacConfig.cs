@@ -37,7 +37,12 @@ namespace App.Util
 
             //Builder.RegisterType<DatabaseModelContainer>().As<IDatabase>().InstancePerRequest();
             Builder.RegisterType<DatabaseContextAccessor>().As<IDatabaseContextAccessor>();
-            Builder.RegisterType<JqGridService>().As<IJqGridService>();
+            Builder.RegisterType<EmployeeTableService>().As<IEmployeeTableService>();
+
+            Builder.RegisterType<ManagingTableService>().As<IManagingTableService>();
+            Builder.RegisterType<BroadcastService>().As<IBroadcastService>();
+
+            Builder.RegisterType<AutocompleteEmployeeService>().As<IAutocompleteEmployeeService>();
 
             Container = Builder.Build();
            

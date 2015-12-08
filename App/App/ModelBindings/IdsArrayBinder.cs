@@ -12,8 +12,7 @@ namespace App.ModelBinding
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             if (bindingContext.ModelType == typeof(IEnumerable<Int32>))
-            {
-           
+            {      
                 return GetIdsAsList(bindingContext, key);
             }
             else

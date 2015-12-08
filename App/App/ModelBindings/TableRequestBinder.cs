@@ -1,5 +1,6 @@
 ﻿using App.Models;
 using App.Models.JqGridObjects;
+using App.Models.ManagingTableModels;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -9,22 +10,22 @@ using System.Web.Mvc;
 
 namespace App.ModelBindings
 {
-    public class JqGridRequestBinder:DefaultModelBinder
+    public  class TableRequestBinder:DefaultModelBinder
     {
         private const string keySearch = "_search";
         private const string keyPage = "page";
         private const string keyRows = "rows";
-        private const string keySidx = "sidx";
-        private const string keySortingOrderd = "sord";
+        private const string keySortProperty= "sidx";
+        private const string keySortingOrder = "sord";
         private const string projectId = "projectId";
         private const string filters = "filters";
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            if (bindingContext.ModelType == typeof(JqGridRequest))
+            if (bindingContext.ModelType == typeof(TableRequest))
             {
 
-                return Bind(bindingContext, keySearch, keyPage, keyRows, keySidx, keySortingOrderd, filters, projectId);
+                return Bind(bindingContext);
             }
             else
             {
@@ -32,30 +33,31 @@ namespace App.ModelBindings
             }
         }
 
-        private JqGridRequest Bind(ModelBindingContext bindingContext, string keySearch, string keyPage, string keyRows, string keySortPropery, string keySort, string filters, string projectId)
+        private TableRequest Bind(ModelBindingContext bindingContext)
         {
             ValueProviderResult searchValueResult = bindingContext.ValueProvider.GetValue(keySearch);
             ValueProviderResult pageValueResult = bindingContext.ValueProvider.GetValue(keyPage);
             ValueProviderResult rowsValueResult = bindingContext.ValueProvider.GetValue(keyRows);
-            ValueProviderResult sortProperyValueResult = bindingContext.ValueProvider.GetValue(keySortPropery);
-            ValueProviderResult sortValueResult = bindingContext.ValueProvider.GetValue(keySort);
+            ValueProviderResult sortProperyValueResult = bindingContext.ValueProvider.GetValue(keySortProperty);
+            ValueProviderResult sortValueResult = bindingContext.ValueProvider.GetValue(keySortingOrder);
             ValueProviderResult filtersValueResult = bindingContext.ValueProvider.GetValue(filters);
             ValueProviderResult projectIdValueResult = bindingContext.ValueProvider.GetValue(projectId);
 
-            JqGridRequest request = new JqGridRequest()
+            TableRequest request = new TableRequest()
             {
                 IsSearch = (bool)searchValueResult.ConvertTo(typeof(bool)),
                 Page = (int)pageValueResult.ConvertTo(typeof(int)),
                 Rows = (int)rowsValueResult.ConvertTo(typeof(int)),
                 SortingProperty = (string)sortProperyValueResult.ConvertTo(typeof(string)),
-                SortOrder = (string)sortValueResult.ConvertTo(typeof(string)),
-                ProjectId = (int)projectIdValueResult.ConvertTo(typeof(int))
+                SortOrder = (SortEnum)Enum.Parse(typeof(SortEnum),(string)sortValueResult.ConvertTo(typeof(string))),
+                ProjectId = ToNullableInt32((string)projectIdValueResult.ConvertTo(typeof(string)))
             };
 
             return filtersValueResult == null ? request : GetPropertyValues(request, filtersValueResult);
         }
 
-        private JqGridRequest GetPropertyValues(JqGridRequest request, ValueProviderResult filtersValueResult)
+
+        private TableRequest GetPropertyValues(TableRequest request, ValueProviderResult filtersValueResult)
         {
             string filters = (string)filtersValueResult.ConvertTo(typeof(string));
             JObject appliedFilters = JObject.Parse(filters);
@@ -63,7 +65,7 @@ namespace App.ModelBindings
 
             string Name = "";
             string Surname = "";
-            string Role = "";
+            Roles Role = Roles.All;
             int? Id = null;
             int index = 0;
 
@@ -84,7 +86,7 @@ namespace App.ModelBindings
                         }
                         if (currentToken.Value<string>("field").Equals("PositionValue"))
                         {
-                            Role = (Enum.Parse(typeof(Roles), currentToken["data"].ToString())).ToString();
+                            Role = (Roles)(Enum.Parse(typeof(Roles), currentToken["data"].ToString()));
                         }
                         if (currentToken.Value<string>("field").Equals("Id"))
                         {
@@ -101,6 +103,13 @@ namespace App.ModelBindings
             request.Id = Id;
 
             return request;
+        }
+
+        private int? ToNullableInt32(string toParse)
+        {
+            int i;
+            if (Int32.TryParse(toParse, out i)) return i;
+            return null;
         }
     }
 }

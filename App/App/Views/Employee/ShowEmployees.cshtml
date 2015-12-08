@@ -1,6 +1,6 @@
 ﻿@model Int32?
 @{
-    var projectId = (Model == null) ? -1 : Model;
+    var projectId = (Model == null) ? "null" : Model.ToString();
  }
 <br /><br />
 <div>
@@ -194,7 +194,7 @@
                 datatype: "json",
                 myType: 'GET',
                 postData: {
-                    projectId: @projectId },
+                    projectId: @projectId},
                 colNames: ['Id', 'Position', 'Name', 'Surname', 'Edit', 'Del', 'Mark'],
                 colModel: [
                 { name: 'Id', label: 'Id', width: 15, stype: 'text' },

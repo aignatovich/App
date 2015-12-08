@@ -53,5 +53,12 @@ namespace App.DAL
             ProjectModel project = DatabaseModelContainer.Current.ProjectSet.OrderByDescending(x => x.Id).FirstOrDefault();
             return (project == null ? -1 : project.Id);
         }
+
+        public IEnumerable<ProjectModel> Search(string query)
+        {
+            return DatabaseModelContainer.Current.ProjectSet.Where(x => (x.Name.Contains(query) || 
+            x.StartDate.ToString().Contains(query) || x.EndDate.ToString().Contains(query)));
+        }
+
     }
 }

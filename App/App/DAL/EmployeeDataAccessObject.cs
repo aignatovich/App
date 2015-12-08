@@ -4,14 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web.Helpers;
-using System.Web.Mvc;
-using Newtonsoft.Json;
-using App.Service;
-using static App.Util.AutofacConfig;
 using Autofac;
 using System.Web;
 using App.Models.DatabaseModel;
+using App.Models.ManagingTableModels;
+using System.Linq.Dynamic;
 
 namespace App.DAL
 {
@@ -50,6 +47,11 @@ namespace App.DAL
             return employeeList;
         }
 
+        public IEnumerable<EmployeeModel> GetNextPage(int pageNumber, int pageSize)
+        {
+            return DatabaseModelContainer.Current.EmployeeSet.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        }
+
         public EmployeeModel GetSingle(int id)
         {
             EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
@@ -77,5 +79,48 @@ namespace App.DAL
 
             return employees;
         }
+
+        public int GetTotalEmployeeCount()
+        {
+            return DatabaseModelContainer.Current.EmployeeSet.Count();
+        }
+
+        public IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role)
+        {
+            IEnumerable<EmployeeModel> toTransfer = new List<EmployeeModel>();
+
+            if (id != null)
+            {
+                if (toTransfer.Count() == 0)
+                     toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id.Equals(id));
+                else
+                    toTransfer = toTransfer.Where(x => x.Id.Equals(id));
+            }
+            if (role != Roles.All)
+            {
+                if (toTransfer.Count() == 0)
+                    toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Position.ToString().Equals(role.ToString()));
+                else
+                    toTransfer = toTransfer.Where(x => x.Position.ToString().Equals(role.ToString()));
+            }
+
+            if (!String.IsNullOrEmpty(name))
+            {
+                if (toTransfer.Count() == 0)
+                    toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Name.Contains(name));
+                else
+                    toTransfer = toTransfer.Where(x => x.Name.Contains(name));
+            }
+            if (!String.IsNullOrEmpty(surname))
+            {
+                if (toTransfer.Count() == 0)
+                    toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Surname.Contains(surname));
+                else
+                    toTransfer = toTransfer.Where(x => x.Surname.Contains(surname));
+            }
+        
+            return toTransfer;
+        }
+
     }
 }

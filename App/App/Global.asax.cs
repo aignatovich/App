@@ -25,7 +25,7 @@ namespace App
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutofacConfig.ConfigureContainer();           
             ModelBinders.Binders.Add(typeof(IEnumerable<Int32>), new IdsArrayBinder());
-            ModelBinders.Binders.Add(typeof(JqGridRequest), new JqGridRequestBinder());
+            ModelBinders.Binders.Add(typeof(TableRequest), new TableRequestBinder());
         }
 
         protected virtual void Application_BeginRequest()

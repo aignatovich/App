@@ -75,16 +75,6 @@ namespace App.Service
             return projectDataAccessObject.GetLastProjectId();
         }
 
-        public ICollection<ProjectViewModel> Search(ProjectViewModel project)
-        {
-            ICollection<ProjectViewModel> projects = GetAllViewModels();
-            ICollection<ProjectViewModel> toTransfer = new List<ProjectViewModel>();
-
-            toTransfer = projects.Where(x => (x.Name.Equals(project.Name) || 
-            x.StartDate.Equals(project.StartDate) || x.EndDate.Equals(project.EndDate))).ToList();            
-            return toTransfer;
-        }
-
         public IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page, string query)
         {
             int currentPage = (page ?? 1);
@@ -95,13 +85,21 @@ namespace App.Service
             }
             else
             {
-                return GetAllViewModels().Where(x => (x.Name.Contains(query) || x.StartDate.Contains(query) ||  x.EndDate.Contains(query))).ToPagedList(currentPage, pageSize);
+                IEnumerable<ProjectModel> projects = projectDataAccessObject.Search(query);
+                ICollection<ProjectViewModel> projectViewModels = new List<ProjectViewModel>();
+
+                foreach (ProjectModel project in projects)
+                {
+                    projectViewModels.Add(new ProjectViewModel(project));
+                }
+
+                return projectViewModels.ToPagedList(currentPage, pageSize);
             }    
         }
 
         public string FormAutocompleteResponse(string query)
         {
-            IEnumerable<ProjectModel> projects = projectDataAccessObject.GetAll().Where(x => x.Name.Contains(query));
+            IEnumerable<ProjectModel> projects = projectDataAccessObject.Search(query);
             List<string> suggestions = new List<string>();
 
             foreach (ProjectModel project in projects)

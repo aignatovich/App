@@ -27,41 +27,17 @@ namespace App.Models.ManagingTableModels
 
         public int EndYear { get; set; }
 
-        public int Sort { get; set; }
+        public SortEnum? Sort { get; set; }
 
         public Roles? Role { get; set; }
 
         public ICollection<ProjectViewModel> Projects { get; set; }
 
+        public string CurrentProjectName { get; set; }
+
         public TableData()
         {
-        }
 
-        public TableData(IPagedList<EmployeeViewModel> employees, ManagingRequest request)
-        {
-
-            IProjectService projectService = Container.Resolve<IProjectService>();
-            int year = (request.Year ?? DateTime.Now.Year);
-            int month = (request.Month ?? DateTime.Now.Month);
-            int sort = (request.Sort ?? 2);
-            int projectId = (request.ProjectId ?? -1);
-            int pageNumber = employees.PageNumber;
-            int pageSize = employees.PageSize;
-
-            ProjectId = request.ProjectId;
-            Role = request.Role;
-            Projects = projectService.GetAllViewModels();
-            Employees = employees.ToList().Where(x => x.Position == request.Role).ToPagedList(pageNumber, pageSize);
-            Month = (Month)month;
-            Year = year;
-            DayLimit = DateTime.DaysInMonth(year, month);
-            FirstDay = (DayEnum)(int)(new DateTime(year, month, 1)).DayOfWeek;
-            StartYear = 2010;
-            EndYear = 2015;
-            Sort = sort;
-
-            ProjectId = projectId;
-
-        }
+        }     
     }
 }

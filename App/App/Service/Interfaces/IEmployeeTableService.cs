@@ -7,8 +7,8 @@ using System.Web;
 
 namespace App.Service.Interfaces
 {
-    public interface IJqGridService
+    public interface IEmployeeTableService
     {
-        JqGridEmployeePagedCollection Create(JqGridRequest request);
+        EmployeePagedCollection Create(TableRequest request);
     }
 }

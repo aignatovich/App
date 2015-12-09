@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace App.ModelBinding
@@ -11,26 +8,19 @@ namespace App.ModelBinding
         private const string key = "ids";
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            if (bindingContext.ModelType == typeof(IEnumerable<Int32>))
-            {      
-                return GetIdsAsList(bindingContext, key);
-            }
-            else
-            {
-                return base.BindModel(controllerContext, bindingContext);
-            }
+            return bindingContext.ModelType == typeof(IEnumerable<int>) ? GetIdsAsList(bindingContext, key) : base.BindModel(controllerContext, bindingContext);
         }
 
-        private ICollection<Int32> GetIdsAsList(ModelBindingContext bindingContext, string key)
+        private ICollection<int> GetIdsAsList(ModelBindingContext bindingContext, string key)
         {
-            ValueProviderResult valueResult = bindingContext.ValueProvider.GetValue(key);
-            ICollection<Int32> list = new List<int>();
+            var valueResult = bindingContext.ValueProvider.GetValue(key);
+            ICollection<int> list = new List<int>();
 
             if (valueResult != null)
             {
-                string[] ids = ((string)valueResult.ConvertTo(typeof(string))).Trim().Split(' ');
+                var ids = ((string)valueResult.ConvertTo(typeof(string))).Trim().Split(' ');
 
-                foreach (string id in ids)
+                foreach (var id in ids)
                 {
                     int tmp;
                     if (int.TryParse(id, out tmp))

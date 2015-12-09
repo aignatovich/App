@@ -1,20 +1,13 @@
-﻿using App.Models;
-using App.Models.DatabaseModel;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Web;
+using App.Models;
 
 namespace CodeFirst
 {
     public class DatabaseModelContainer : DbContext
     {
-        public static DatabaseModelContainer Current
-        {
-            get
-            {
-               return (HttpContext.Current.Items["_DatabaseModelContainer"] as DatabaseModelContainer);
-            }
-        }
+        public static DatabaseModelContainer Current => (HttpContext.Current.Items["_DatabaseModelContainer"] as DatabaseModelContainer);
+
         public DatabaseModelContainer()
         {
             //Database.SetInitializer(new DropCreateDatabaseAlways<DatabaseModelContainer>());

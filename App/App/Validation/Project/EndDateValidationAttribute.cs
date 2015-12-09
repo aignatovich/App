@@ -1,5 +1,5 @@
-﻿using App.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using App.Models;
 
 namespace App.Validation
 {
@@ -8,14 +8,12 @@ namespace App.Validation
         protected override ValidationResult IsValid(object project, ValidationContext validationContext)
         {
 
-            ProjectViewModel projectViewModel = validationContext.ObjectInstance as ProjectViewModel;
-            ProjectModel projectModel = projectViewModel.AsProjectModel();
+            var projectViewModel = validationContext.ObjectInstance as ProjectViewModel;
+            var projectModel = projectViewModel.AsProjectModel();
 
-            if (isDateValid(projectModel))
-            {
-                return ValidationResult.Success;
-            }
-            return new ValidationResult("Are you a timetraveller? Check if end date is valid");
+            return isDateValid(projectModel)
+                ? ValidationResult.Success
+                : new ValidationResult("Are you a timetraveller? Check if end date is valid");
         }
 
         public static bool isDateValid(ProjectModel project)

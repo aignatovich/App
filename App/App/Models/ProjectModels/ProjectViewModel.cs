@@ -1,12 +1,7 @@
-﻿using App.Service;
-using App.Service.Interfaces;
-using App.Validation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Web;
+using App.Validation;
 
 namespace App.Models
 {
@@ -41,36 +36,29 @@ namespace App.Models
             StartDate = project.StartDate.ToShortDateString();
             CurrentEmployees = new List<EmployeeViewModel>();
 
-            foreach (EmployeeModel e in project.CurrentEmployees)
+            foreach (var e in project.CurrentEmployees)
             {
                 CurrentEmployees.Add(new EmployeeViewModel(e));
             }
 
-            if (!(project.EndDate == null))
-            {
-                EndDate = project.EndDate.Value.ToShortDateString();
-            }
-            else
-            {
-                EndDate = EMPTY_DATE_VALUE_PLACEHOLDER;
-            }
+            EndDate = project.EndDate?.ToShortDateString() ?? EMPTY_DATE_VALUE_PLACEHOLDER;
         }
 
         public ProjectModel AsProjectModel()
         {
-            ProjectModel project = new ProjectModel();
+            var project = new ProjectModel();
             project.Id = this.Id;
             project.Name = this.Name;
-            DateTime temporaryDate = new DateTime();
+            var temporaryDate = new DateTime();
             DateTime.TryParse(this.StartDate, out temporaryDate);
             project.StartDate = temporaryDate;
 
-            foreach (EmployeeViewModel e in this.CurrentEmployees)
+            foreach (var e in this.CurrentEmployees)
             {
                 project.CurrentEmployees.Add(e.AsEmployeeModel());
             }
 
-            if (this.EndDate != null)
+            if (EndDate != null)
             {
                 DateTime.TryParse(this.EndDate, out temporaryDate);
                 project.EndDate = temporaryDate;

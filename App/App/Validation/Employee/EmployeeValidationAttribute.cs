@@ -1,7 +1,7 @@
-﻿using App.DAL;
+﻿using System.ComponentModel.DataAnnotations;
+using App.DAL;
 using App.Models;
 using Autofac;
-using System.ComponentModel.DataAnnotations;
 using static App.Util.AutofacConfig;
 
 namespace App.Validation

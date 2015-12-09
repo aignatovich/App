@@ -1,11 +1,9 @@
-﻿using App.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using App.Service;
 using App.ModelBinding;
+using App.Models;
 using App.Service.Interfaces;
-using Newtonsoft.Json;
 using PagedList;
 
 namespace App.Controllers

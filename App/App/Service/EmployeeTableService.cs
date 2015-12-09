@@ -1,14 +1,12 @@
-﻿using App.Models.EmployeeModels;
-using App.Models.JqGridObjects;
-using App.Service.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Linq.Dynamic;
-using App.Models;
-using App.Models.ManagingTableModels;
 using App.DAL;
+using App.Models;
+using App.Models.EmployeeModels;
+using App.Models.JqGridObjects;
+using App.Models.ManagingTableModels;
+using App.Service.Interfaces;
 
 namespace App.Service
 {
@@ -34,8 +32,8 @@ namespace App.Service
             IEnumerable<SimplifiedEmployeeViewModel> toTransfer;
             IEnumerable<EmployeeModel> employees;
 
-            int startIndex = (request.Page - 1) * gridPageSize;
-            int totalCount = 0;
+            var startIndex = (request.Page - 1) * gridPageSize;
+            var totalCount = 0;
 
             if (!request.IsSearch)
             {
@@ -76,15 +74,7 @@ namespace App.Service
 
         private IEnumerable<SimplifiedEmployeeViewModel> OrderByProperty(IEnumerable<SimplifiedEmployeeViewModel> toTransfer, SortEnum sortingOrder, string property)
         {
-            if (sortingOrder.Equals(SortEnum.asc))
-            {
-                toTransfer = toTransfer.OrderBy(property).Reverse();
-            }
-            else
-            {
-                toTransfer = toTransfer.OrderBy(property);
-            }
-
+            toTransfer = sortingOrder.Equals(SortEnum.asc) ? toTransfer.OrderBy(property).Reverse() : toTransfer.OrderBy(property);
             return toTransfer;
         }
     }

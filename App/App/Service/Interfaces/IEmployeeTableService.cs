@@ -1,9 +1,4 @@
-﻿using App.Models.EmployeeModels;
-using App.Models.JqGridObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using App.Models.JqGridObjects;
 
 namespace App.Service.Interfaces
 {

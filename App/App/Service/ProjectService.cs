@@ -1,13 +1,10 @@
-﻿using App.DAL;
-using App.Models;
-using App.Models.AutocompleteQueryModel;
-using App.Service.Interfaces;
-using Newtonsoft.Json;
-using PagedList;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using App.DAL;
+using App.Models;
+using App.Service.Interfaces;
+using PagedList;
 
 namespace App.Service
 {
@@ -26,19 +23,14 @@ namespace App.Service
 
         public ICollection<ProjectViewModel> GetAllViewModels()
         {
-            ICollection<ProjectModel> projectList = projectDataAccessObject.GetAll();
-            ICollection<ProjectViewModel> toTransfer = new List<ProjectViewModel>();
-            foreach (ProjectModel item in projectList)
-            {
-                toTransfer.Add(ProjectViewModel.Create(item));
-            }
-            return toTransfer;
+            var projectList = projectDataAccessObject.GetAll();
+            return projectList.Select(item => ProjectViewModel.Create(item)).ToList();
         }
 
         public void EmployInProject(int projectId, IEnumerable<Int32> ids)
         {
-            ProjectModel project = projectDataAccessObject.GetSingle(projectId);
-            ICollection<EmployeeModel> employees = employeeDataAccessObject.GetEmployeesByIds(ids);
+            var project = projectDataAccessObject.GetSingle(projectId);
+            var employees = employeeDataAccessObject.GetEmployeesByIds(ids);
             project.CurrentEmployees.Clear();
             project.CurrentEmployees = employees;
 
@@ -50,7 +42,7 @@ namespace App.Service
 
         public void Add(ProjectViewModel projectViewModel)
         {
-            ProjectModel projectModel = projectViewModel.AsProjectModel();
+            var projectModel = projectViewModel.AsProjectModel();
             projectDataAccessObject.Add(projectModel);
         }
 
@@ -61,7 +53,7 @@ namespace App.Service
 
         public void Edit(ProjectViewModel projectViewModel)
         {
-            ProjectModel toEdit =  projectViewModel.AsProjectModel();
+            var toEdit =  projectViewModel.AsProjectModel();
             projectDataAccessObject.Edit(toEdit);
         }
 
@@ -77,7 +69,7 @@ namespace App.Service
 
         public IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page, string query)
         {
-            int currentPage = (page ?? 1);
+            var currentPage = (page ?? 1);
 
             if (query == null)
             {
@@ -86,13 +78,7 @@ namespace App.Service
             else
             {
                 IEnumerable<ProjectModel> projects = projectDataAccessObject.Search(query);
-                ICollection<ProjectViewModel> projectViewModels = new List<ProjectViewModel>();
-
-                foreach (ProjectModel project in projects)
-                {
-                    projectViewModels.Add(new ProjectViewModel(project));
-                }
-
+                ICollection<ProjectViewModel> projectViewModels = projects.Select(project => new ProjectViewModel(project)).ToList();
                 return projectViewModels.ToPagedList(currentPage, pageSize);
             }    
         }

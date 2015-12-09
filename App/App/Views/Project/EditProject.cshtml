@@ -1,5 +1,5 @@
-﻿@model App.Models.ProjectViewModel
-@using App.Models
+﻿@using App.Models
+@model App.Models.ProjectViewModel
 
 @{
     ViewBag.Title = "Edit project";
@@ -25,9 +25,9 @@
 
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jq")
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jq")
     @Scripts.Render("~/bundles/datepicker")
     @Styles.Render("~/Content/datepicker-styles")
     <script>

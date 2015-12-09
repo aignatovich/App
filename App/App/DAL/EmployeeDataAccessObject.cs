@@ -1,20 +1,14 @@
-﻿using App.Models;
-using CodeFirst;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Autofac;
-using System.Web;
+using App.Models;
 using App.Models.DatabaseModel;
-using App.Models.ManagingTableModels;
-using System.Linq.Dynamic;
+using CodeFirst;
 
 namespace App.DAL
 {
     public class EmployeeDataAccessObject : IEmployeeDAO
     {
-        IDatabaseContextAccessor dbAccessor;
+        private IDatabaseContextAccessor dbAccessor;
 
         public EmployeeDataAccessObject(IDatabaseContextAccessor dbContextAccessor)
         {
@@ -28,7 +22,7 @@ namespace App.DAL
 
         public void Edit(EmployeeModel employee)
         {
-            EmployeeModel editableEmployee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == employee.Id).FirstOrDefault();
+            EmployeeModel editableEmployee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == employee.Id);
             editableEmployee.Name = employee.Name;
             editableEmployee.Surname = employee.Surname;
             editableEmployee.Position = employee.Position;
@@ -37,7 +31,7 @@ namespace App.DAL
 
         public void Remove(int id)
         {
-            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
+            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == id);
             DatabaseModelContainer.Current.EmployeeSet.Remove(employee);
         }
 
@@ -54,7 +48,7 @@ namespace App.DAL
 
         public EmployeeModel GetSingle(int id)
         {
-            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id).FirstOrDefault();
+            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == id);
             return employee;
         }
 
@@ -68,16 +62,9 @@ namespace App.DAL
                                employee.Surname == null);
         }
 
-        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids)
+        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<int> ids)
         {
-            ICollection<EmployeeModel> employees = new List<EmployeeModel>();
-
-            foreach (Int32 employeeId in ids)
-            {
-                employees.Add(GetSingle(employeeId));
-            }
-
-            return employees;
+            return ids.Select(GetSingle).ToList();
         }
 
         public int GetTotalEmployeeCount()
@@ -91,32 +78,20 @@ namespace App.DAL
 
             if (id != null)
             {
-                if (toTransfer.Count() == 0)
-                     toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id.Equals(id));
-                else
-                    toTransfer = toTransfer.Where(x => x.Id.Equals(id));
+                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id.Equals(id)) : toTransfer.Where(x => x.Id.Equals(id));
             }
             if (role != Roles.All)
             {
-                if (toTransfer.Count() == 0)
-                    toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Position.ToString().Equals(role.ToString()));
-                else
-                    toTransfer = toTransfer.Where(x => x.Position.ToString().Equals(role.ToString()));
+                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Position.ToString().Equals(role.ToString())) : toTransfer.Where(x => x.Position.ToString().Equals(role.ToString()));
             }
 
-            if (!String.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
-                if (toTransfer.Count() == 0)
-                    toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Name.Contains(name));
-                else
-                    toTransfer = toTransfer.Where(x => x.Name.Contains(name));
+                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Name.Contains(name)) : toTransfer.Where(x => x.Name.Contains(name));
             }
-            if (!String.IsNullOrEmpty(surname))
+            if (!string.IsNullOrEmpty(surname))
             {
-                if (toTransfer.Count() == 0)
-                    toTransfer = DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Surname.Contains(surname));
-                else
-                    toTransfer = toTransfer.Where(x => x.Surname.Contains(surname));
+                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Surname.Contains(surname)) : toTransfer.Where(x => x.Surname.Contains(surname));
             }
         
             return toTransfer;

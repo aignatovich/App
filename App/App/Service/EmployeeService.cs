@@ -1,22 +1,12 @@
-﻿using App.DAL;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using App.DAL;
 using App.Models;
+using App.Models.EmployeeModels;
 using App.Models.ManagingTableModels;
 using App.Service.Interfaces;
 using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using App.Models.JqGridObjects;
-using App.Models.EmployeeModels;
-using System.Net.Mail;
-using System.Threading.Tasks;
-using System.Net.Configuration;
-using System.Web.Configuration;
-using System.Net;
-using App.Properties;
-using Newtonsoft.Json;
-using App.Models.AutocompleteQueryModel;
 
 namespace App.Service
 {
@@ -38,21 +28,14 @@ namespace App.Service
       
         public void Add(EmployeeViewModel employee)
         {
-            EmployeeModel toTransfer = employee.AsEmployeeModel();
+            var toTransfer = employee.AsEmployeeModel();
             employeeDataAccessObject.Add(toTransfer);
         }
 
         public ICollection<EmployeeViewModel> GetAllViewModels()
         {
-            ICollection<EmployeeViewModel> toTransfer = new List<EmployeeViewModel>();
-            ICollection<EmployeeModel> employees = employeeDataAccessObject.GetAll();
-
-            foreach (EmployeeModel e in employees)
-            {
-                toTransfer.Add(new EmployeeViewModel(e));
-            }
-
-            return toTransfer;
+            var employees = employeeDataAccessObject.GetAll();
+            return employees.Select(e => new EmployeeViewModel(e)).ToList();
         }
 
         public EmployeeViewModel GetSingle(int id)
@@ -67,21 +50,21 @@ namespace App.Service
 
         public void Edit(EmployeeViewModel employee)
         {
-            EmployeeModel toTransfer = employee.AsEmployeeModel();
+            var toTransfer = employee.AsEmployeeModel();
             employeeDataAccessObject.Edit(toTransfer);
         }
 
         public IPagedList<EmployeeViewModel> GetIPagedList(ManagingRequest request)
         {
-            int projectId = (request.ProjectId ?? projectDataAccessObject.GetLastProjectId());
-            int page = (request.Page ?? 1);
-            int year = (request.Year ?? DateTime.Now.Year);
-            int month = (request.Month ?? DateTime.Now.Month);
-            ProjectViewModel project = projectId == -1 ? new ProjectViewModel() : ProjectViewModel.Create(projectDataAccessObject.GetSingle(projectId));
-            ICollection<EmployeeViewModel> employees = (request.ProjectId == null ? GetAllViewModels() : project.CurrentEmployees);
-            ICollection<EmployeeViewModel> toTransfer = employees;
+            var projectId = (request.ProjectId ?? projectDataAccessObject.GetLastProjectId());
+            var page = (request.Page ?? 1);
+            var year = (request.Year ?? DateTime.Now.Year);
+            var month = (request.Month ?? DateTime.Now.Month);
+            var project = projectId == -1 ? new ProjectViewModel() : ProjectViewModel.Create(projectDataAccessObject.GetSingle(projectId));
+            var employees = (request.ProjectId == null ? GetAllViewModels() : project.CurrentEmployees);
+            var toTransfer = employees;
 
-            foreach (EmployeeViewModel e in toTransfer)
+            foreach (var e in toTransfer)
             {
                 e.AbsenceList = e.AbsenceList.Where(x => (x.Month == month && x.Year == year)).ToList();
             }       
@@ -96,9 +79,9 @@ namespace App.Service
 
         public void ApplyAbsence(ManagingDateModel model)
         {
-            int id = model.UserId;
+            var id = model.UserId;
 
-            EmployeeModel employee = employeeDataAccessObject.GetSingle(id);
+            var employee = employeeDataAccessObject.GetSingle(id);
             employee.AbsenceList.Add(new ManagingDateModel {
                 Day = model.Day,
                 Month = model.Month,
@@ -115,15 +98,8 @@ namespace App.Service
 
         public IEnumerable<SimplifiedEmployeeViewModel> SimplifyCollection(IEnumerable<EmployeeModel> employees)
         {
-            ICollection<SimplifiedEmployeeViewModel> employeesSimplified = new List<SimplifiedEmployeeViewModel>();
-            IEnumerable<EmployeeModel> employeesNotSimplified = employees;
-
-            foreach (EmployeeModel employee in employeesNotSimplified)
-            {
-                employeesSimplified.Add(new SimplifiedEmployeeViewModel(employee));
-            }
-
-            return employeesSimplified;
+            var employeesNotSimplified = employees;
+            return employeesNotSimplified.Select(employee => new SimplifiedEmployeeViewModel(employee)).ToList();
         }
     }
 }

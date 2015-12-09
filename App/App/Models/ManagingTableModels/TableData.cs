@@ -1,12 +1,5 @@
-﻿using PagedList;
-using System;
-using App.Service;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using App.Service.Interfaces;
-using Autofac;
-using static App.Util.AutofacConfig;
+﻿using System.Collections.Generic;
+using PagedList;
 
 namespace App.Models.ManagingTableModels
 {

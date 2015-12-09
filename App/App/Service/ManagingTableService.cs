@@ -1,11 +1,9 @@
-﻿using App.Models;
+﻿using System;
+using System.Linq;
+using App.Models;
 using App.Models.ManagingTableModels;
 using App.Service.Interfaces;
 using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace App.Service
 {
@@ -20,13 +18,13 @@ namespace App.Service
 
         public TableData CreateTable(IPagedList<EmployeeViewModel> employees, ManagingRequest request)
         {
-            int year = (request.Year ?? DateTime.Now.Year);
-            int month = (request.Month ?? DateTime.Now.Month);
-            int sort = (request.Sort ?? 2);
-            int? projectId = request.ProjectId;
-            int pageNumber = employees.PageNumber;
-            int pageSize = employees.PageSize;
-            string projectName = projectId == null ? "" : projectService.GetSingle((int)projectId).Name;
+            var year = (request.Year ?? DateTime.Now.Year);
+            var month = (request.Month ?? DateTime.Now.Month);
+            var sort = (request.Sort ?? 2);
+            var projectId = request.ProjectId;
+            var pageNumber = employees.PageNumber;
+            var pageSize = employees.PageSize;
+            var projectName = (projectId == null ? "" : projectService.GetSingle((int)projectId).Name);
 
             if (request.Role != null && !request.Role.Equals(Roles.All))
             {

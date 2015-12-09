@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using App.Models;
+using System.Linq;
 using App.Validation;
 
 namespace App.Models
 {
-    [EmployeeValidationAttribute]
+    [EmployeeValidation]
     public class EmployeeViewModel : IViewModel<EmployeeViewModel>
     {
         [Key]
@@ -63,14 +62,8 @@ namespace App.Models
             toTransfer.Position = this.Position;
             toTransfer.Email = this.Email;
             toTransfer.AbsenceList = new List<ManagingDateModel>(this.AbsenceList);
-            ICollection<ProjectModel> projectList = new List<ProjectModel>();
-            foreach (ProjectViewModel project in this.ActualProjects)
-            {
-                projectList.Add(project.AsProjectModel());
-            }
-
+            ICollection<ProjectModel> projectList = this.ActualProjects.Select(project => project.AsProjectModel()).ToList();
             toTransfer.ActualProjects = new List<ProjectModel>(projectList);
-
             return toTransfer;
         }
 

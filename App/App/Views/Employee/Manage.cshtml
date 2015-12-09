@@ -1,7 +1,5 @@
-﻿@using App.Models.ManagingTableModels
-@using PagedList.Mvc;
-@using App.Models;
-@model TableData
+﻿@using PagedList.Mvc
+@model App.Models.ManagingTableModels.TableData
 @{
     int days = Model.DayLimit;
     int startYear = Model.StartYear;
@@ -246,8 +244,6 @@
             Personal: 3
         }
 
-        self.project = Model.CurrentProjectName;
-
         self.projects = function(){
             var projectList = [];
             for (var i = 0; i < Model.Projects.length; i++)
@@ -267,6 +263,7 @@
 
         self.year = ko.observable(Model.Year);
 
+        self.project = ko.observable(Model);
 
         self.years = function() {
             var years = [];

@@ -1,9 +1,5 @@
-﻿using App.Models.EmployeeModels;
-using App.Service;
-using App.Service.Interfaces;
-using Autofac;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using App.Models.EmployeeModels;
 using App.Models.ManagingTableModels;
 
 namespace App.Models.JqGridObjects
@@ -19,8 +15,6 @@ namespace App.Models.JqGridObjects
         public string SortColumn { get; set; }
 
         public SortEnum SortOrder { get; set; }
-
-        private static IProjectService projectService { get; set; }
 
         public IEnumerable<SimplifiedEmployeeViewModel> Employees { get; set; }
     }

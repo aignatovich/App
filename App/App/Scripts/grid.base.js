@@ -2262,7 +2262,7 @@ $.fn.jqGrid = function( pin ) {
 					//if(s>0) {
 					//	var result = query.select();
 					//	query = $.jgrid.from( result);
-					//	if (ts.p.ignoreCase) { query = query.ignoreCase(); } 
+					//	if (ts.p.ignoreCase) { query = Query.ignoreCase(); } 
 					//}
 					try{
 						ror = group.rules.length && group.groupOp.toString().toUpperCase() === "OR";

@@ -1,13 +1,8 @@
-﻿using App.Models;
+﻿using System.Collections.Generic;
+using App.Models;
 using App.Models.EmployeeModels;
-using App.Models.JqGridObjects;
 using App.Models.ManagingTableModels;
 using PagedList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace App.Service.Interfaces
 {

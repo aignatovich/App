@@ -1,12 +1,8 @@
-﻿using App.DAL;
-using App.Models;
+﻿using System.Linq;
+using App.DAL;
 using App.Models.AutocompleteQueryModel;
 using App.Service.Interfaces;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace App.Service
 {
@@ -21,15 +17,9 @@ namespace App.Service
 
         public string FormAutocompleteResponse(string query)
         {
-            IEnumerable<ProjectModel> projects = projectDataAccessObject.Search(query);
-            List<string> suggestions = new List<string>();
-
-            foreach (ProjectModel project in projects)
-            {
-                suggestions.Add(project.Name);
-            }
-
-            AutocompleteQuery queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
+            var projects = projectDataAccessObject.Search(query);
+            var suggestions = projects.Select(project => project.Name).ToList();
+            var queryModel = new AutocompleteQuery() { Query = query, Suggestions = suggestions };
             return JsonConvert.SerializeObject(queryModel);
         }
 

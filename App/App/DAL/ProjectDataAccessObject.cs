@@ -1,9 +1,7 @@
-﻿using App.Models;
-using CodeFirst;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using App.Models;
+using CodeFirst;
 
 namespace App.DAL
 {
@@ -16,7 +14,7 @@ namespace App.DAL
 
         public void Edit(ProjectModel project)
         {
-            ProjectModel editableProject = DatabaseModelContainer.Current.ProjectSet.Where(x => x.Id == project.Id).FirstOrDefault();
+            ProjectModel editableProject = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == project.Id);
             editableProject.Name = project.Name;
             editableProject.StartDate = project.StartDate;
             editableProject.EndDate = project.EndDate;
@@ -24,7 +22,7 @@ namespace App.DAL
 
         public void Remove(int id)
         {
-            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.Where(x => x.Id == id).FirstOrDefault();
+            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == id);
             DatabaseModelContainer.Current.ProjectSet.Remove(project);
         }
 
@@ -36,7 +34,7 @@ namespace App.DAL
 
         public ProjectModel GetSingle(int id)
         {
-            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.Where(x => x.Id == id).FirstOrDefault();
+            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == id);
             return project;
         }
 
@@ -45,13 +43,13 @@ namespace App.DAL
             return (DatabaseModelContainer.Current.ProjectSet.Any(x =>
                                x.Name.Equals(project.Name) &&
                                x.StartDate.Equals(project.StartDate) &&
-                               x.EndDate == (project.EndDate) && !(x.Id == project.Id)));
+                               x.EndDate == (project.EndDate) && x.Id != project.Id));
         }
 
         public int GetLastProjectId()
         {
             ProjectModel project = DatabaseModelContainer.Current.ProjectSet.OrderByDescending(x => x.Id).FirstOrDefault();
-            return (project == null ? -1 : project.Id);
+            return project?.Id ?? -1;
         }
 
         public IEnumerable<ProjectModel> Search(string query)

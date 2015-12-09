@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using App.Models;
 
 namespace App.Models
 {
@@ -19,18 +16,18 @@ namespace App.Models
             Project = new ProjectViewModel();
         }
 
-        public ExtendedProjectViewModel(ICollection<EmployeeViewModel> employees, ProjectViewModel project)
+        public ExtendedProjectViewModel(IEnumerable<EmployeeViewModel> employees, ProjectViewModel project)
         {
             Employed = new List<ExtendedEmployeeViewModel>();
             Unemployed = new List<ExtendedEmployeeViewModel>();
             Project = project;
-            IEnumerable<EmployeeViewModel> employeeModels = employees.Where(x => (!project.CurrentEmployees.Contains(x)));
+            var employeeModels = employees.Where(x => (!project.CurrentEmployees.Contains(x)));
 
-            foreach (EmployeeViewModel e in employeeModels)
+            foreach (var e in employeeModels)
             {
                 Unemployed.Add(new ExtendedEmployeeViewModel(e));
             }
-            foreach (EmployeeViewModel e in project.CurrentEmployees)
+            foreach (var e in project.CurrentEmployees)
             {
                 Employed.Add(new ExtendedEmployeeViewModel(e));
             }

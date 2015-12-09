@@ -1,12 +1,10 @@
-﻿using App.Models;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
+using App.Models;
 using App.Models.JqGridObjects;
 using App.Models.ManagingTableModels;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace App.ModelBindings
 {
@@ -22,28 +20,20 @@ namespace App.ModelBindings
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            if (bindingContext.ModelType == typeof(TableRequest))
-            {
-
-                return Bind(bindingContext);
-            }
-            else
-            {
-                return base.BindModel(controllerContext, bindingContext);
-            }
+            return bindingContext.ModelType == typeof(TableRequest) ? Bind(bindingContext) : base.BindModel(controllerContext, bindingContext);
         }
 
         private TableRequest Bind(ModelBindingContext bindingContext)
         {
-            ValueProviderResult searchValueResult = bindingContext.ValueProvider.GetValue(keySearch);
-            ValueProviderResult pageValueResult = bindingContext.ValueProvider.GetValue(keyPage);
-            ValueProviderResult rowsValueResult = bindingContext.ValueProvider.GetValue(keyRows);
-            ValueProviderResult sortProperyValueResult = bindingContext.ValueProvider.GetValue(keySortProperty);
-            ValueProviderResult sortValueResult = bindingContext.ValueProvider.GetValue(keySortingOrder);
-            ValueProviderResult filtersValueResult = bindingContext.ValueProvider.GetValue(filters);
-            ValueProviderResult projectIdValueResult = bindingContext.ValueProvider.GetValue(projectId);
+            var searchValueResult = bindingContext.ValueProvider.GetValue(keySearch);
+            var pageValueResult = bindingContext.ValueProvider.GetValue(keyPage);
+            var rowsValueResult = bindingContext.ValueProvider.GetValue(keyRows);
+            var sortProperyValueResult = bindingContext.ValueProvider.GetValue(keySortProperty);
+            var sortValueResult = bindingContext.ValueProvider.GetValue(keySortingOrder);
+            var filtersValueResult = bindingContext.ValueProvider.GetValue(filters);
+            var projectIdValueResult = bindingContext.ValueProvider.GetValue(projectId);
 
-            TableRequest request = new TableRequest()
+            var request = new TableRequest()
             {
                 IsSearch = (bool)searchValueResult.ConvertTo(typeof(bool)),
                 Page = (int)pageValueResult.ConvertTo(typeof(int)),
@@ -59,23 +49,23 @@ namespace App.ModelBindings
 
         private TableRequest GetPropertyValues(TableRequest request, ValueProviderResult filtersValueResult)
         {
-            string filters = (string)filtersValueResult.ConvertTo(typeof(string));
-            JObject appliedFilters = JObject.Parse(filters);
-            JEnumerable<JToken> tokens = appliedFilters.Children();
+            var filters = (string)filtersValueResult.ConvertTo(typeof(string));
+            var appliedFilters = JObject.Parse(filters);
+            var tokens = appliedFilters.Children();
 
-            string Name = "";
-            string Surname = "";
-            Roles Role = Roles.All;
+            var Name = "";
+            var Surname = "";
+            var Role = Roles.All;
             int? Id = null;
-            int index = 0;
+            var index = 0;
 
-            foreach (JToken token in tokens)
+            foreach (var token in tokens)
             {
                 if (index != 0)
                 {
-                    for (int j = 0; j < token.First.Count(); j++)
+                    for (var j = 0; j < token.First.Count(); j++)
                     {
-                        JToken currentToken = token.First[j];
+                        var currentToken = token.First[j];
                         if (currentToken.Value<string>("field").Equals("Name"))
                         {
                             Name = currentToken["data"].ToString();

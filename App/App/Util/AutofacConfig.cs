@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using App.Service;
-using Autofac;
-using Autofac.Core;
-using Autofac.Integration.Mvc;
-using System.Web.Mvc;
-using App.Service.Interfaces;
-using App.Models;
+﻿using System.Web.Mvc;
 using App.DAL;
-using CodeFirst;
+using App.Models;
 using App.Models.DatabaseModel;
-using App.Models.JqGridObjects;
+using App.Service;
+using App.Service.Interfaces;
+using Autofac;
+using Autofac.Integration.Mvc;
 
 namespace App.Util
 {
@@ -35,7 +28,6 @@ namespace App.Util
             Builder.RegisterType<EmployeeDataAccessObject>().As<IEmployeeDAO>();
             Builder.RegisterType<ProjectDataAccessObject>().As<IProjectDAO>();
 
-            //Builder.RegisterType<DatabaseModelContainer>().As<IDatabase>().InstancePerRequest();
             Builder.RegisterType<DatabaseContextAccessor>().As<IDatabaseContextAccessor>();
             Builder.RegisterType<EmployeeTableService>().As<IEmployeeTableService>();
 

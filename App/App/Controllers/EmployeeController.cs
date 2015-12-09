@@ -1,16 +1,12 @@
-﻿using App.Models;
-using System.Web.Mvc;
-using App.Service;
-using PagedList;
-using System;
-using System.Web;
-using App.Service.Interfaces;
-using CodeFirst;
+﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using App.Models.JqGridObjects;
-using App.ModelBindings;
+using System.Web.Mvc;
 using App.ModelBinding;
+using App.ModelBindings;
+using App.Models;
+using App.Models.JqGridObjects;
+using App.Service.Interfaces;
+using Newtonsoft.Json;
 
 namespace App.Controllers
 {

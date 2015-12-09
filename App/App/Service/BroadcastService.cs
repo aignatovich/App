@@ -1,12 +1,8 @@
-﻿using App.DAL;
-using App.Models;
+﻿using System.Collections.Generic;
+using System.Net.Mail;
+using App.DAL;
 using App.Properties;
 using App.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Web;
 
 namespace App.Service
 {
@@ -19,15 +15,14 @@ namespace App.Service
             this.employeeDataAccessObject = employeeDataAccessObject;
         }
 
-        public void Broadcast(IEnumerable<Int32> ids, string message)
+        public void Broadcast(IEnumerable<int> ids, string message)
         {
-            ICollection<EmployeeModel> employees = employeeDataAccessObject.GetEmployeesByIds(ids);
-
+            var employees = employeeDataAccessObject.GetEmployeesByIds(ids);
             var subject = Settings.Default.subject;
             var from = Settings.Default.from;
-            string fromName = Settings.Default.fromName;
+            var fromName = Settings.Default.fromName;
 
-            foreach (EmployeeModel employee in employees)
+            foreach (var employee in employees)
             {
                 using (var client = new SmtpClient())
                 {

@@ -1,12 +1,9 @@
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using App.Models;
+
 namespace App.Migrations
 {
-    using Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
     internal sealed class Configuration : DbMigrationsConfiguration<CodeFirst.DatabaseModelContainer>
     {
         PositionsService positionsService = new PositionsService();

@@ -1,10 +1,5 @@
-﻿using App.DAL;
-using App.Models;
+﻿using App.Models;
 using App.Service.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace App.Service
 {
@@ -21,7 +16,7 @@ namespace App.Service
 
         public ExtendedProjectViewModel Create(int projectId)
         {
-            ExtendedProjectViewModel toTransfer = new ExtendedProjectViewModel(employeeService.GetAllViewModels(), projectService.GetSingle(projectId));
+            var toTransfer = new ExtendedProjectViewModel(employeeService.GetAllViewModels(), projectService.GetSingle(projectId));
             return toTransfer;
         }
     }

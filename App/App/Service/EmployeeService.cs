@@ -55,7 +55,7 @@ namespace App.Service
             employeeDataAccessObject.Edit(toTransfer);
         }
 
-        public IPagedList<EmployeeViewModel> GetIPagedList(ManagingRequest request)
+        public TableData GetIPagedList(ManagingRequest request)
         {
             var projectId = request.ProjectId ?? projectDataAccessObject.GetLastProjectId();
             var page = request.Page ?? 1;
@@ -69,12 +69,12 @@ namespace App.Service
             {
                 e.AbsenceList = e.AbsenceList.Where(x => (x.Month == month && x.Year == year)).ToList();
             }       
-            return toTransfer.ToPagedList(page, pageSize);
+            return managingTableService.CreateTable(employees, request, page, pageSize);
         }
 
         public TableData GetTableData(ManagingRequest request)
         {
-            return managingTableService.CreateTable(GetIPagedList(request),request);
+            return GetIPagedList(request);
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using App.Models;
 using App.Models.ManagingTableModels;
@@ -16,7 +17,7 @@ namespace App.Service
             this.projectService = projectService;
         }
 
-        public TableData CreateTable(IPagedList<EmployeeViewModel> employees, ManagingRequest request)
+        public TableData CreateTable(IEnumerable<EmployeeViewModel> employees, ManagingRequest request, int page, int pageSize)
         {
             var year = (request.Year ?? DateTime.Now.Year);
             var month = (request.Month ?? DateTime.Now.Month);
@@ -26,7 +27,7 @@ namespace App.Service
 
             if (request.Role != null && !request.Role.Equals(Roles.All))
             {
-                employees = employees.Where(x => x.Position.ToString().Equals(request.Role.ToString())).ToPagedList(employees.PageNumber, employees.PageSize);
+                employees = employees.Where(x => x.Position.Equals(request.Role));
             }
 
             return new TableData()
@@ -35,7 +36,7 @@ namespace App.Service
                 CurrentProjectName = projectName,
                 Role = request.Role,
                 Projects = projectService.GetAllViewModels(),
-                Employees = employees,
+                Employees = employees.ToPagedList(page, pageSize),
                 Month = (Month)month,
                 Year = year,
                 DayLimit = DateTime.DaysInMonth(year, month),

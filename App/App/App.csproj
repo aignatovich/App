@@ -224,6 +224,7 @@
     <Compile Include="Models\EmployeeModels\EmployeeModel.cs" />
     <Compile Include="Models\EmployeeModels\EmployeeViewModel.cs" />
     <Compile Include="Models\EmployeeModels\ExtendedEmployeeViewModel.cs" />
+    <Compile Include="Models\EmployeeModels\PagingQueryResult.cs" />
     <Compile Include="Models\EmployeeModels\SimplifiedEmployeeViewModel.cs" />
     <Compile Include="Models\Interfaces\IViewModel.cs" />
     <Compile Include="Models\EmployeeTableObjects\EmployeePagedCollection.cs" />

@@ -26,7 +26,7 @@ namespace App.Models
             return roles.ToString();
         }
 
-        public IEnumerable<String> GetNames()
+        public IEnumerable<string> GetNames()
         {
             var RoleList = Enum.GetNames(typeof(Roles)).ToList();
             return RoleList;

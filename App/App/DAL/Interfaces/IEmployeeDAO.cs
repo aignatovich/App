@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using App.Models;
+using App.Models.EmployeeModels;
+using App.Models.JqGridObjects;
 using App.Models.ManagingTableModels;
 
 namespace App.DAL
@@ -23,6 +25,6 @@ namespace App.DAL
 
         IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role);
 
-        IEnumerable<EmployeeModel> GetNextPage(int pageNumber, int pageSize, int? projectId, SortEnum sortingOrder, string property);
+        PagingQueryResult GetNextPage(TableRequest request, int pageSize);
     }
 }

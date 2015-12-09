@@ -18,7 +18,7 @@ namespace App.Service.Interfaces
 
         void Edit(EmployeeViewModel employee);
 
-        IPagedList<EmployeeViewModel> GetIPagedList(ManagingRequest request);
+        TableData GetIPagedList(ManagingRequest request);
 
         TableData GetTableData(ManagingRequest request);
 

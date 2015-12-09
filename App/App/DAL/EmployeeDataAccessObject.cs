@@ -3,6 +3,8 @@ using System.Linq;
 using System.Linq.Dynamic;
 using App.Models;
 using App.Models.DatabaseModel;
+using App.Models.EmployeeModels;
+using App.Models.JqGridObjects;
 using App.Models.ManagingTableModels;
 using CodeFirst;
 
@@ -43,26 +45,26 @@ namespace App.DAL
             return employeeList;
         }
 
-        public IEnumerable<EmployeeModel> GetNextPage(int pageNumber, int pageSize, int? projectId,
-            SortEnum sortingOrder, string property)
+        public PagingQueryResult GetNextPage(TableRequest request, int pageSize)
         {
+            var projectId = request.ProjectId;
+            var id = request.Id;
+            var role = request.Role;
+            var name = request.Name;
+            var surname = request.Surname;
+            var property = request.SortingProperty;
+            var sortingOrder = request.SortOrder;
+            var pageNumber = request.Page;
 
-            return sortingOrder.Equals(SortEnum.desc)
-                ? projectId == null
-                    ? DatabaseModelContainer.Current.EmployeeSet.OrderBy(property)
-                        .Skip((pageNumber - 1)*pageSize)
-                        .Take(pageSize)
-                    : DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == projectId).CurrentEmployees.
-                        OrderBy(property).Skip((pageNumber - 1)*pageSize).Take(pageSize)
-                : projectId == null
-                    ? DatabaseModelContainer.Current.EmployeeSet.
-                        OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""))
-                        .Skip((pageNumber - 1)*pageSize)
-                        .Take(pageSize)
-                    : DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == projectId).CurrentEmployees.
-                        OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""))
-                        .Skip((pageNumber - 1)*pageSize)
-                        .Take(pageSize);
+            var result = DatabaseModelContainer.Current.EmployeeSet.Where(
+                x => (projectId == null || x.ActualProjects.Any(y => y.Id == projectId) &&
+                      (id == null || x.Id == id) &&
+                      (role == Roles.All || x.Position == role) &&
+                      (string.IsNullOrEmpty(name) || x.Name.Contains(name)) &&
+                      (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname))))
+                .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""));               
+
+            return new PagingQueryResult() {Employees = result.Skip((pageNumber - 1)*pageSize).Take(pageSize), ResultQuantity = result.Count()};
         }
 
         public EmployeeModel GetSingle(int id)
@@ -90,24 +92,14 @@ namespace App.DAL
         {
             IEnumerable<EmployeeModel> toTransfer = new List<EmployeeModel>();
 
-            if (id != null)
-            {
-                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id) : toTransfer.Where(x => x.Id == id);
-            }
-            if (role != Roles.All)
-            {
-                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Position.ToString().Equals(role.ToString())) : toTransfer.Where(x => x.Position.Equals(role));
-            }
+            toTransfer =
+                DatabaseModelContainer.Current.EmployeeSet.Where(
+                    x =>
+                        (id == null || x.Id == id) &&
+                        (role == Roles.All || x.Position == role) &&
+                        (string.IsNullOrEmpty(name) || x.Name.Contains(name)) &&
+                        (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname)));
 
-            if (!string.IsNullOrEmpty(name))
-            {
-                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Name.Contains(name)) : toTransfer.Where(x => x.Name.Contains(name));
-            }
-            if (!string.IsNullOrEmpty(surname))
-            {
-                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Surname.Contains(surname)) : toTransfer.Where(x => x.Surname.Contains(surname));
-            }
-        
             return toTransfer;
         }
 

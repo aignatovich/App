@@ -68,27 +68,27 @@ namespace App.ModelBindings
                         var currentToken = token.First[j];
                         if (currentToken.Value<string>("field").Equals("Name"))
                         {
-                            Name = currentToken["data"].ToString();
+                            Name = currentToken["data"].ToString().Trim();
                         }
                         if (currentToken.Value<string>("field").Equals("Surname"))
                         {
-                            Surname = currentToken["data"].ToString();
+                            Surname = currentToken["data"].ToString().Trim();
                         }
-                        if (currentToken.Value<string>("field").Equals("PositionValue"))
+                        if (currentToken.Value<string>("field").Equals("Position"))
                         {
-                            Role = (Roles)(Enum.Parse(typeof(Roles), currentToken["data"].ToString()));
+                            Role = (Roles)(Enum.Parse(typeof(Roles), currentToken["data"].ToString().Trim()));
                         }
                         if (currentToken.Value<string>("field").Equals("Id"))
                         {
-                            Id = Convert.ToInt32(currentToken["data"].ToString());
+                            Id = Convert.ToInt32(currentToken["data"].ToString().Trim());
                         }
                     }
                 }
                 index++;
             }
 
-            request.Name = Name;
-            request.Surname = Surname;
+            request.Name = Name.Trim();
+            request.Surname = Surname.Trim();
             request.Role = Role;
             request.Id = Id;
 

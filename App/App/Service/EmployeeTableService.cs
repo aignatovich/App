@@ -10,7 +10,7 @@ using App.Service.Interfaces;
 
 namespace App.Service
 {
-    public class EmployeeTableService:IEmployeeTableService
+    public class EmployeeTableService : IEmployeeTableService
     {
         private const int gridPageSize = 100;
 
@@ -19,7 +19,8 @@ namespace App.Service
         private IEmployeeDAO employeeDataAccessObject;
         private IProjectDAO projectDataAccessObject;
 
-        public EmployeeTableService(IEmployeeService employeeService, IProjectService projectService, IEmployeeDAO employeeDAO, IProjectDAO projectDAO)
+        public EmployeeTableService(IEmployeeService employeeService, IProjectService projectService,
+            IEmployeeDAO employeeDAO, IProjectDAO projectDAO)
         {
             this.employeeService = employeeService;
             this.projectService = projectService;
@@ -30,24 +31,12 @@ namespace App.Service
         public EmployeePagedCollection Create(TableRequest request)
         {
             IEnumerable<SimplifiedEmployeeViewModel> toTransfer;
-            IEnumerable<EmployeeModel> employees;
 
-            var startIndex = (request.Page - 1) * gridPageSize;
             var totalCount = 0;
+            var queryResult = employeeDataAccessObject.GetNextPage(request, gridPageSize);
 
-            if (!request.IsSearch)
-            {
-                employees = employeeDataAccessObject.GetNextPage(request.Page, gridPageSize, request.ProjectId, request.SortOrder, request.SortingProperty);
-                totalCount = projectDataAccessObject.GetTotalEmployeeCount(request.ProjectId);
-            }
-            else
-            {
-                employees = employeeDataAccessObject.DirectSearch(request.Name, request.Surname, request.Id, request.Role);
-                totalCount = employees.Count();
-                employees.Skip(startIndex).Take(gridPageSize);
-            }
-
-            toTransfer = employeeService.SimplifyCollection(employees);
+            totalCount = projectDataAccessObject.GetTotalEmployeeCount(request.ProjectId);
+            toTransfer = employeeService.SimplifyCollection(queryResult.Employees);
 
             return new EmployeePagedCollection()
             {
@@ -58,6 +47,7 @@ namespace App.Service
                 SortOrder = request.SortOrder,
                 TotalRecords = totalCount
             };
-        }      
+        }
     }
 }
+

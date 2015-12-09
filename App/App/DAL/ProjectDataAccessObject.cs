@@ -60,7 +60,10 @@ namespace App.DAL
 
         public int GetTotalEmployeeCount(int? projectId)
         {
-            return projectId == null ? DatabaseModelContainer.Current.EmployeeSet.Count() : DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == projectId).CurrentEmployees.Count;
+            return projectId == null
+                ? DatabaseModelContainer.Current.EmployeeSet.Count()
+                : DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == projectId)
+                    .CurrentEmployees.Count;
         }
 
     }

@@ -26,6 +26,7 @@ namespace App.Service
             int? projectId = request.ProjectId;
             int pageNumber = employees.PageNumber;
             int pageSize = employees.PageSize;
+            string projectName = projectId == null ? "" : projectService.GetSingle((int)projectId).Name;
 
             if (request.Role != null && !request.Role.Equals(Roles.All))
             {
@@ -35,7 +36,7 @@ namespace App.Service
             return new TableData()
             {
                 ProjectId = projectId,
-                CurrentProjectName = projectId == null ? "" : projectService.GetSingle((int)projectId).Name,
+                CurrentProjectName = projectName,
                 Role = request.Role,
                 Projects = projectService.GetAllViewModels(),
                 Employees = employees,

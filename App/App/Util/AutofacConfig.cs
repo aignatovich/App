@@ -43,6 +43,7 @@ namespace App.Util
             Builder.RegisterType<BroadcastService>().As<IBroadcastService>();
 
             Builder.RegisterType<AutocompleteEmployeeService>().As<IAutocompleteEmployeeService>();
+            Builder.RegisterType<AutocompleteProjectService>().As<IAutocompleteProjectService>();
 
             Container = Builder.Build();
            

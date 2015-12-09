@@ -19,7 +19,6 @@ namespace App.Service
             this.employeeService = employeeService;
         }
 
-
         public ExtendedProjectViewModel Create(int projectId)
         {
             ExtendedProjectViewModel toTransfer = new ExtendedProjectViewModel(employeeService.GetAllViewModels(), projectService.GetSingle(projectId));

@@ -21,7 +21,7 @@ namespace App.Controllers
         private IProjectService projectService;
         private IEmployeeTableService tableService;
         private IBroadcastService broadcastService;
-        private IAutocompleteEmployeeService employeeAutocomplete;
+        private IAutocompleteEmployeeService employeeAutocompleteService;
 
         public EmployeeController(IEmployeeService employeeService, IProjectService projectService, 
             IEmployeeTableService jqGridService, IBroadcastService broadcastService, IAutocompleteEmployeeService employeeAutocomplete)
@@ -30,7 +30,7 @@ namespace App.Controllers
             this.projectService = projectService;
             this.tableService = jqGridService;
             this.broadcastService = broadcastService;
-            this.employeeAutocomplete = employeeAutocomplete;
+            this.employeeAutocompleteService = employeeAutocomplete;
         }
 
         [HttpGet]
@@ -132,13 +132,13 @@ namespace App.Controllers
         [Authorize]
         public string NameAutocompleteService(string query)
         {
-            return employeeAutocomplete.FormAutocompleteResponseByName(query);
+            return employeeAutocompleteService.FormAutocompleteResponseByName(query);
         }
 
         [Authorize]
         public string SurnameAutocompleteService(string query)
         {
-            return employeeAutocomplete.FormAutocompleteResponseBySurname(query);
+            return employeeAutocompleteService.FormAutocompleteResponseBySurname(query);
         }
 
 

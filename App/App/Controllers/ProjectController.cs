@@ -15,12 +15,15 @@ namespace App.Controllers
         private IProjectService projectService;
         private IEmployeeService employeeService;
         private IExtendedProjectService extendedProjectService;
+        private IAutocompleteProjectService autocompleteProjectService;
 
-        public ProjectController(IProjectService projectService, IEmployeeService employeeService, IExtendedProjectService extendedProjectService)
+        public ProjectController(IProjectService projectService, IEmployeeService employeeService, 
+            IExtendedProjectService extendedProjectService, IAutocompleteProjectService autocompleteProjectService)
         {
             this.extendedProjectService = extendedProjectService;
             this.employeeService = employeeService;
             this.projectService = projectService;
+            this.autocompleteProjectService = autocompleteProjectService;
         }
 
         [HttpGet]
@@ -107,7 +110,7 @@ namespace App.Controllers
         [Authorize]
         public string AutocompleteService(string query)
         {
-            return projectService.FormAutocompleteResponse(query);
+            return autocompleteProjectService.FormAutocompleteResponse(query);
         }
     }                
 }

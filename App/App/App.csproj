@@ -242,10 +242,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Service\AutocompleteProjectService.cs" />
     <Compile Include="Service\BroadcastService.cs" />
     <Compile Include="Service\AutocompleteEmployeeService.cs" />
     <Compile Include="Service\EmployeeService.cs" />
     <Compile Include="Service\ExtendedProjectService.cs" />
+    <Compile Include="Service\Interfaces\IAutocompleteProjectService.cs" />
     <Compile Include="Service\Interfaces\IBroadcastService.cs" />
     <Compile Include="Service\Interfaces\IAutocompleteEmployeeService.cs" />
     <Compile Include="Service\Interfaces\IEmployeeService.cs" />

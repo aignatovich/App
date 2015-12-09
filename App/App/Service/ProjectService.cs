@@ -96,20 +96,5 @@ namespace App.Service
                 return projectViewModels.ToPagedList(currentPage, pageSize);
             }    
         }
-
-        public string FormAutocompleteResponse(string query)
-        {
-            IEnumerable<ProjectModel> projects = projectDataAccessObject.Search(query);
-            List<string> suggestions = new List<string>();
-
-            foreach (ProjectModel project in projects)
-            {
-                suggestions.Add(project.Name);
-            }
-
-            AutocompleteQuery queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions};
-            return JsonConvert.SerializeObject(queryModel);
-        }
-
     }
 }

@@ -25,7 +25,5 @@ namespace App.Service.Interfaces
         int GetLastProjectId();
 
         IPagedList<ProjectViewModel> GetAllAsIPagedList(int? page, string query);
-
-        string FormAutocompleteResponse(string query);
     }
 }

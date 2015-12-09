@@ -10,7 +10,7 @@ namespace App.Models.EmployeeModels
 
         public string Surname { get; set; }
 
-        public string PositionValue { get; set; }
+        public string Position { get; set; }
 
 
         public SimplifiedEmployeeViewModel(EmployeeModel employee)
@@ -18,7 +18,7 @@ namespace App.Models.EmployeeModels
             Id = employee.Id;
             Name = employee.Name;
             Surname = employee.Surname;
-            PositionValue = Enum.GetName(typeof(Roles), employee.Position);
+            Position = Enum.GetName(typeof(Roles), employee.Position);
         }
 
         public  SimplifiedEmployeeViewModel (EmployeeViewModel employee)
@@ -26,7 +26,7 @@ namespace App.Models.EmployeeModels
             Id = employee.Id;
             Name = employee.Name;
             Surname = employee.Surname;
-            PositionValue = Enum.GetName(typeof(Roles), employee.Position);
+            Position = Enum.GetName(typeof(Roles), employee.Position);
         }
     }
 }

@@ -22,8 +22,6 @@ namespace App.Service
             var month = (request.Month ?? DateTime.Now.Month);
             var sort = (request.Sort ?? 2);
             var projectId = request.ProjectId;
-            var pageNumber = employees.PageNumber;
-            var pageSize = employees.PageSize;
             var projectName = (projectId == null ? "" : projectService.GetSingle((int)projectId).Name);
 
             if (request.Role != null && !request.Role.Equals(Roles.All))

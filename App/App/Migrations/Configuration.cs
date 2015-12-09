@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using App.Models;
@@ -7,16 +8,17 @@ namespace App.Migrations
     internal sealed class Configuration : DbMigrationsConfiguration<CodeFirst.DatabaseModelContainer>
     {
         PositionsService positionsService = new PositionsService();
+
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            //AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "CodeFirst.DatabaseModelContainer";
         }
 
         protected override void Seed(CodeFirst.DatabaseModelContainer context)
         {
-            for (int i = 1; i < 300; i++)
+            for (int i = 1; i < 1000; i++)
             {
                 context.EmployeeSet.Add(new EmployeeModel()
                 {
@@ -28,6 +30,15 @@ namespace App.Migrations
                     Email = "test" + i.ToString() + "@test.com"
                 });
             }
+
+            /*for (int i = 1; i < 50; i++)
+            {
+                context.ProjectSet.Add(new ProjectModel()
+                {
+                    Name = "qwe" + i.ToString()
+                });
+            }*/
+
         }
     }
 }

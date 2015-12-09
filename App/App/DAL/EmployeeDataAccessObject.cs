@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic;
 using App.Models;
 using App.Models.DatabaseModel;
+using App.Models.ManagingTableModels;
 using CodeFirst;
 
 namespace App.DAL
@@ -22,7 +24,7 @@ namespace App.DAL
 
         public void Edit(EmployeeModel employee)
         {
-            EmployeeModel editableEmployee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == employee.Id);
+            var editableEmployee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == employee.Id);
             editableEmployee.Name = employee.Name;
             editableEmployee.Surname = employee.Surname;
             editableEmployee.Position = employee.Position;
@@ -31,7 +33,7 @@ namespace App.DAL
 
         public void Remove(int id)
         {
-            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == id);
+            var employee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == id);
             DatabaseModelContainer.Current.EmployeeSet.Remove(employee);
         }
 
@@ -41,14 +43,31 @@ namespace App.DAL
             return employeeList;
         }
 
-        public IEnumerable<EmployeeModel> GetNextPage(int pageNumber, int pageSize)
+        public IEnumerable<EmployeeModel> GetNextPage(int pageNumber, int pageSize, int? projectId,
+            SortEnum sortingOrder, string property)
         {
-            return DatabaseModelContainer.Current.EmployeeSet.OrderBy(x => x.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+            return sortingOrder.Equals(SortEnum.desc)
+                ? projectId == null
+                    ? DatabaseModelContainer.Current.EmployeeSet.OrderBy(property)
+                        .Skip((pageNumber - 1)*pageSize)
+                        .Take(pageSize)
+                    : DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == projectId).CurrentEmployees.
+                        OrderBy(property).Skip((pageNumber - 1)*pageSize).Take(pageSize)
+                : projectId == null
+                    ? DatabaseModelContainer.Current.EmployeeSet.
+                        OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""))
+                        .Skip((pageNumber - 1)*pageSize)
+                        .Take(pageSize)
+                    : DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == projectId).CurrentEmployees.
+                        OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""))
+                        .Skip((pageNumber - 1)*pageSize)
+                        .Take(pageSize);
         }
 
         public EmployeeModel GetSingle(int id)
         {
-            EmployeeModel employee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == id);
+            var employee = DatabaseModelContainer.Current.EmployeeSet.FirstOrDefault(x => x.Id == id);
             return employee;
         }
 
@@ -67,22 +86,17 @@ namespace App.DAL
             return ids.Select(GetSingle).ToList();
         }
 
-        public int GetTotalEmployeeCount()
-        {
-            return DatabaseModelContainer.Current.EmployeeSet.Count();
-        }
-
         public IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role)
         {
             IEnumerable<EmployeeModel> toTransfer = new List<EmployeeModel>();
 
             if (id != null)
             {
-                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id.Equals(id)) : toTransfer.Where(x => x.Id.Equals(id));
+                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Id == id) : toTransfer.Where(x => x.Id == id);
             }
             if (role != Roles.All)
             {
-                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Position.ToString().Equals(role.ToString())) : toTransfer.Where(x => x.Position.ToString().Equals(role.ToString()));
+                toTransfer = !toTransfer.Any() ? DatabaseModelContainer.Current.EmployeeSet.Where(x => x.Position.ToString().Equals(role.ToString())) : toTransfer.Where(x => x.Position.Equals(role));
             }
 
             if (!string.IsNullOrEmpty(name))

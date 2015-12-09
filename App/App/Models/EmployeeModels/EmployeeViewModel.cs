@@ -55,7 +55,7 @@ namespace App.Models
 
         public EmployeeModel AsEmployeeModel()
         {
-            EmployeeModel toTransfer = new EmployeeModel();
+            var toTransfer = new EmployeeModel();
             toTransfer.Id = this.Id;
             toTransfer.Name = this.Name;
             toTransfer.Surname = this.Surname;

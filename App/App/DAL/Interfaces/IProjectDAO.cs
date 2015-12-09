@@ -20,5 +20,7 @@ namespace App.DAL
         int GetLastProjectId();
 
         IEnumerable<ProjectModel> Search(string query);
+
+        int GetTotalEmployeeCount(int? projectId);
     }
 }

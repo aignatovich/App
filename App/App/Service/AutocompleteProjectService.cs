@@ -19,7 +19,7 @@ namespace App.Service
         {
             var projects = projectDataAccessObject.Search(query);
             var suggestions = projects.Select(project => project.Name).ToList();
-            var queryModel = new AutocompleteQuery() { Query = query, Suggestions = suggestions };
+            var queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
             return JsonConvert.SerializeObject(queryModel);
         }
 

@@ -24,17 +24,17 @@ namespace App.Service
         public ICollection<ProjectViewModel> GetAllViewModels()
         {
             var projectList = projectDataAccessObject.GetAll();
-            return projectList.Select(item => ProjectViewModel.Create(item)).ToList();
+            return projectList.Select(ProjectViewModel.Create).ToList();
         }
 
-        public void EmployInProject(int projectId, IEnumerable<Int32> ids)
+        public void EmployInProject(int projectId, IEnumerable<int> ids)
         {
             var project = projectDataAccessObject.GetSingle(projectId);
             var employees = employeeDataAccessObject.GetEmployeesByIds(ids);
             project.CurrentEmployees.Clear();
             project.CurrentEmployees = employees;
 
-            foreach (EmployeeModel employee in project.CurrentEmployees)
+            foreach (var employee in project.CurrentEmployees)
             {
                 employee.ActualProjects.Add(project);
             }
@@ -77,8 +77,8 @@ namespace App.Service
             }
             else
             {
-                IEnumerable<ProjectModel> projects = projectDataAccessObject.Search(query);
-                ICollection<ProjectViewModel> projectViewModels = projects.Select(project => new ProjectViewModel(project)).ToList();
+                var projects = projectDataAccessObject.Search(query);
+                var projectViewModels = projects.Select(project => new ProjectViewModel(project)).ToList();
                 return projectViewModels.ToPagedList(currentPage, pageSize);
             }    
         }

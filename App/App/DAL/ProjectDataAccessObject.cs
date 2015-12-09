@@ -14,7 +14,7 @@ namespace App.DAL
 
         public void Edit(ProjectModel project)
         {
-            ProjectModel editableProject = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == project.Id);
+            var editableProject = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == project.Id);
             editableProject.Name = project.Name;
             editableProject.StartDate = project.StartDate;
             editableProject.EndDate = project.EndDate;
@@ -22,7 +22,7 @@ namespace App.DAL
 
         public void Remove(int id)
         {
-            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == id);
+            var project = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == id);
             DatabaseModelContainer.Current.ProjectSet.Remove(project);
         }
 
@@ -34,7 +34,7 @@ namespace App.DAL
 
         public ProjectModel GetSingle(int id)
         {
-            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == id);
+            var project = DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == id);
             return project;
         }
 
@@ -48,7 +48,7 @@ namespace App.DAL
 
         public int GetLastProjectId()
         {
-            ProjectModel project = DatabaseModelContainer.Current.ProjectSet.OrderByDescending(x => x.Id).FirstOrDefault();
+            var project = DatabaseModelContainer.Current.ProjectSet.OrderByDescending(x => x.Id).FirstOrDefault();
             return project?.Id ?? -1;
         }
 
@@ -56,6 +56,11 @@ namespace App.DAL
         {
             return DatabaseModelContainer.Current.ProjectSet.Where(x => (x.Name.Contains(query) || 
             x.StartDate.ToString().Contains(query) || x.EndDate.ToString().Contains(query)));
+        }
+
+        public int GetTotalEmployeeCount(int? projectId)
+        {
+            return projectId == null ? DatabaseModelContainer.Current.EmployeeSet.Count() : DatabaseModelContainer.Current.ProjectSet.FirstOrDefault(x => x.Id == projectId).CurrentEmployees.Count;
         }
 
     }

@@ -7,6 +7,7 @@ using App.Models.EmployeeModels;
 using App.Models.ManagingTableModels;
 using App.Service.Interfaces;
 using PagedList;
+using System.Linq.Dynamic;
 
 namespace App.Service
 {
@@ -56,12 +57,12 @@ namespace App.Service
 
         public IPagedList<EmployeeViewModel> GetIPagedList(ManagingRequest request)
         {
-            var projectId = (request.ProjectId ?? projectDataAccessObject.GetLastProjectId());
-            var page = (request.Page ?? 1);
-            var year = (request.Year ?? DateTime.Now.Year);
-            var month = (request.Month ?? DateTime.Now.Month);
+            var projectId = request.ProjectId ?? projectDataAccessObject.GetLastProjectId();
+            var page = request.Page ?? 1;
+            var year = request.Year ?? DateTime.Now.Year;
+            var month = request.Month ?? DateTime.Now.Month;
             var project = projectId == -1 ? new ProjectViewModel() : ProjectViewModel.Create(projectDataAccessObject.GetSingle(projectId));
-            var employees = (request.ProjectId == null ? GetAllViewModels() : project.CurrentEmployees);
+            var employees = request.ProjectId == null ? GetAllViewModels() : project.CurrentEmployees;
             var toTransfer = employees;
 
             foreach (var e in toTransfer)

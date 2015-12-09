@@ -37,30 +37,18 @@ namespace App.Service
 
             if (!request.IsSearch)
             {
-                if (request.ProjectId == null)
-                {
-                    employees = employeeDataAccessObject.GetNextPage(request.Page, gridPageSize);
-                    toTransfer = employeeService.SimplifyCollection(employees);
-                    totalCount = employeeDataAccessObject.GetTotalEmployeeCount();
-                }
-                else
-                {
-                    employees = projectDataAccessObject.GetSingle((int)request.ProjectId).CurrentEmployees;
-                    totalCount = employees.Count();
-                    toTransfer = employeeService.SimplifyCollection(employees);
-                    toTransfer = toTransfer.Skip(startIndex).Take(gridPageSize);
-                }
+                employees = employeeDataAccessObject.GetNextPage(request.Page, gridPageSize, request.ProjectId, request.SortOrder, request.SortingProperty);
+                totalCount = projectDataAccessObject.GetTotalEmployeeCount(request.ProjectId);
             }
             else
             {
                 employees = employeeDataAccessObject.DirectSearch(request.Name, request.Surname, request.Id, request.Role);
                 totalCount = employees.Count();
-                toTransfer = employeeService.SimplifyCollection(employees);
-                toTransfer = toTransfer.Skip(startIndex).Take(gridPageSize);
+                employees.Skip(startIndex).Take(gridPageSize);
             }
 
-            toTransfer = OrderByProperty(toTransfer, request.SortOrder, request.SortingProperty);
-          
+            toTransfer = employeeService.SimplifyCollection(employees);
+
             return new EmployeePagedCollection()
             {
                 Employees = toTransfer,
@@ -70,12 +58,6 @@ namespace App.Service
                 SortOrder = request.SortOrder,
                 TotalRecords = totalCount
             };
-        }
-
-        private IEnumerable<SimplifiedEmployeeViewModel> OrderByProperty(IEnumerable<SimplifiedEmployeeViewModel> toTransfer, SortEnum sortingOrder, string property)
-        {
-            toTransfer = sortingOrder.Equals(SortEnum.asc) ? toTransfer.OrderBy(property).Reverse() : toTransfer.OrderBy(property);
-            return toTransfer;
-        }
+        }      
     }
 }

@@ -4,8 +4,8 @@ namespace App.Models.AutocompleteQueryModel
 {
     public class AutocompleteQuery
     {
-        public string Query { get; set; }
+        public string query { get; set; }
 
-        public List<string> Suggestions { get; set; }
+        public List<string> suggestions { get; set; }
     }
 }

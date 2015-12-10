@@ -57,14 +57,18 @@ namespace App.DAL
             var pageNumber = request.Page;
 
             var result = DatabaseModelContainer.Current.EmployeeSet.Where(
-                x => (projectId == null || x.ActualProjects.Any(y => y.Id == projectId) &&
-                      (id == null || x.Id == id) &&
-                      (role == Roles.All || x.Position == role) &&
-                      (string.IsNullOrEmpty(name) || x.Name.Contains(name)) &&
-                      (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname))))
-                .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""));               
+                x => (projectId == null || x.ActualProjects.Any(y => y.Id == projectId))).Where(x =>
+                    (id == null || x.Id == id) &&
+                    (role == Roles.All || x.Position == role) &&
+                    (string.IsNullOrEmpty(name) || x.Name.Contains(name)) &&
+                    (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname)))
+                .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""));
 
-            return new PagingQueryResult() {Employees = result.Skip((pageNumber - 1)*pageSize).Take(pageSize), ResultQuantity = result.Count()};
+            return new PagingQueryResult()
+            {
+                Employees = result.Skip((pageNumber - 1)*pageSize).Take(pageSize),
+                ResultQuantity = result.Count()
+            };
         }
 
         public EmployeeModel GetSingle(int id)

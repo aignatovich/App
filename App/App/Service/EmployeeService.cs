@@ -100,7 +100,7 @@ namespace App.Service
         public IEnumerable<SimplifiedEmployeeViewModel> SimplifyCollection(IEnumerable<EmployeeModel> employees)
         {
             var employeesNotSimplified = employees;
-            return employeesNotSimplified.Select(employee => new SimplifiedEmployeeViewModel(employee)).ToList();
+            return employeesNotSimplified.Select(employee => new SimplifiedEmployeeViewModel(employee));
         }
     }
 }

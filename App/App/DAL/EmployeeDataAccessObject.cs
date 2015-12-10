@@ -79,7 +79,7 @@ namespace App.DAL
             return (DatabaseModelContainer.Current.EmployeeSet.Any(x =>
                                x.Name.Equals(employee.Name) &&
                                x.Surname.Equals(employee.Surname) &&
-                               x.Position.ToString().Equals(employee.Position.ToString()))) ||
+                               x.Position.Equals(employee.Position))) ||
                                (employee.Name == null ||
                                employee.Surname == null);
         }
@@ -91,7 +91,7 @@ namespace App.DAL
 
         public IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role, int? projectId)
         {
-            IEnumerable<EmployeeModel> toTransfer = new List<EmployeeModel>();
+            IEnumerable<EmployeeModel> toTransfer;
 
             toTransfer =
                 DatabaseModelContainer.Current.EmployeeSet.Where(
@@ -99,8 +99,8 @@ namespace App.DAL
                         (id == null || x.Id == id) &&
                         (role == Roles.All || x.Position == role) &&
                         (string.IsNullOrEmpty(name) || x.Name.Contains(name)) &&
-                        (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname))).
-                        Where(x => (projectId == null || x.ActualProjects.Any(y => y.Id == projectId)));
+                        (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname)) &&
+                        (projectId == null || x.ActualProjects.Any(y => y.Id == projectId)));
 
             return toTransfer;
         }

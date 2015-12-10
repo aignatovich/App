@@ -196,6 +196,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="DAL\Interfaces\IEmployeeDAO.cs" />
     <Compile Include="DAL\Interfaces\IProjectDAO.cs" />
     <Compile Include="Migrations\201511251010579_Initial.cs" />
@@ -238,6 +239,8 @@
     <Compile Include="Models\ManagingTableModels\TableData.cs" />
     <Compile Include="Models\ProjectModels\ExtendedProjectViewModel.cs" />
     <Compile Include="Models\ProjectModels\ProjectViewModel.cs" />
+    <Compile Include="Models\Statistics\StatisticsRequest.cs" />
+    <Compile Include="Models\Statistics\StatisticsResponse.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -258,6 +261,7 @@
     <Compile Include="Service\Interfaces\IPositionsService.cs" />
     <Compile Include="Service\Interfaces\IProjectService.cs" />
     <Compile Include="Service\EmployeeTableService.cs" />
+    <Compile Include="Service\Interfaces\IStatisticsService.cs" />
     <Compile Include="Service\ManagingTableService.cs" />
     <Compile Include="Service\ProjectService.cs" />
     <Compile Include="Global.asax.cs">
@@ -270,6 +274,7 @@
     <Compile Include="Models\PositionsModels\PositionsEnum.cs" />
     <Compile Include="Models\ProjectModels\ProjectModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\StatisticsService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Util\AutofacConfig.cs" />
     <Compile Include="Validation\Employee\EmployeeValidationAttribute.cs" />
@@ -321,6 +326,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\build-config.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\ckeditor.js" />
     <Content Include="Scripts\config.js" />
     <Content Include="Scripts\grid.base.js" />
@@ -537,6 +544,7 @@
     <Content Include="Views\Employee\Manage.cshtml" />
     <Content Include="Views\Project\ProjectSearchPartial.cshtml" />
     <Content Include="Views\Employee\ShowEmployees.cshtml" />
+    <Content Include="Views\Statistics\EmployeeAbsenceHist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,17 +28,17 @@
                     <li>@Html.ActionLink("Append Employee", "CreateEmployee", "Employee", new { area = "" }, new { style = "color:lightgrey;", @class="merri-700" })</li>
                     <li>@Html.ActionLink("Manage Employees", "ShowEmployees", "Employee", new { area = "" }, new { style = "color:lightgrey;",  @class="merri-700" })</li>
                     <li>@Html.ActionLink("Append Project", "CreateProject", "Project", new { area = "" }, new {  style = "color:lightgrey;", @class = "merri-700" })</li>
-                    <li>@Html.ActionLink("Manage Projects", "ShowProjects", "Project", new { area = "" }, new { style = "color:lightgrey;",  @class="merri-700" })</li>
+                        <li>@Html.ActionLink("Manage Projects", "ShowProjects", "Project", new {area = ""}, new {style = "color:lightgrey;", @class = "merri-700"})</li>
+                        <li>@Html.ActionLink("Stats", "EmployeeAbsenceHist", "Statistics", new { area = "" }, new { style = "color:lightgrey;", @class = "merri-700" })</li>
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody() 
-    </div>
-
-    @RenderSection("scripts", required: false)
+<div class="container body-content">
+    @RenderBody()
+</div>
+@RenderSection("scripts", required: false)
 </body>
 </html>

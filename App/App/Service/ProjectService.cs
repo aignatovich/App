@@ -32,7 +32,7 @@ namespace App.Service
             var project = projectDataAccessObject.GetSingle(projectId);
             var employees = employeeDataAccessObject.GetEmployeesByIds(ids);
             project.CurrentEmployees.Clear();
-            project.CurrentEmployees = employees;
+            project.CurrentEmployees = employees.ToList();
 
             foreach (var employee in project.CurrentEmployees)
             {

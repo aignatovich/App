@@ -25,7 +25,6 @@ namespace App.Service
             this.projectDataAccessObject = projectDataAccessObject;
             this.managingTableService = managingTableService;
         }
-
       
         public void Add(EmployeeViewModel employee)
         {

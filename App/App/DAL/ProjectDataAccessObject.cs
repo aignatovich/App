@@ -26,9 +26,9 @@ namespace App.DAL
             DatabaseModelContainer.Current.ProjectSet.Remove(project);
         }
 
-        public ICollection<ProjectModel> GetAll()
+        public IEnumerable<ProjectModel> GetAll()
         {
-            ICollection<ProjectModel> projectList = DatabaseModelContainer.Current.ProjectSet.ToList();
+            var projectList = DatabaseModelContainer.Current.ProjectSet.ToList();
             return projectList;
         }
 

@@ -37,6 +37,8 @@ namespace App.Util
             Builder.RegisterType<AutocompleteEmployeeService>().As<IAutocompleteEmployeeService>();
             Builder.RegisterType<AutocompleteProjectService>().As<IAutocompleteProjectService>();
 
+            Builder.RegisterType<StatisticsService>().As<IStatisticsService>();
+
             Container = Builder.Build();
            
             DependencyResolver.SetResolver(new AutofacDependencyResolver(Container));

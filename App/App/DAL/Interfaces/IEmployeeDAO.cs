@@ -15,13 +15,13 @@ namespace App.DAL
 
         void Remove(int id);
 
-        ICollection<EmployeeModel> GetAll();
+        IEnumerable<EmployeeModel> GetAll();
 
         EmployeeModel GetSingle(int id);
 
         bool Exists(EmployeeModel employee);
 
-        ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids);
+        IEnumerable<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids);
 
         IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role, int? projectId);
 

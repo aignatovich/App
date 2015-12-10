@@ -60,6 +60,8 @@ namespace App
 
             bundles.Add(new ScriptBundle("~/bundles/autocomplete").Include("~/Scripts/jquery.autocomplete.js"));
             bundles.Add(new StyleBundle("~/Content/autocomplete-styles").Include("~/Content/autocomplete-styles.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include("~/Scripts/Chart.js"));
         }
     }
 }

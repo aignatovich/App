@@ -17,10 +17,5 @@ namespace App.Models
 
         public virtual ICollection<EmployeeModel> CurrentEmployees { get; set; }
 
-
-        public ProjectModel()
-        {
-            CurrentEmployees = new List<EmployeeModel>();
-        }
     }
 }

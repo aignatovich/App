@@ -35,7 +35,7 @@ namespace App.Service
             var totalCount = 0;
             var queryResult = employeeDataAccessObject.GetNextPage(request, gridPageSize);
 
-            totalCount = projectDataAccessObject.GetTotalEmployeeCount(request.ProjectId);
+            totalCount = queryResult.ResultQuantity;
             toTransfer = employeeService.SimplifyCollection(queryResult.Employees);
 
             return new EmployeePagedCollection()

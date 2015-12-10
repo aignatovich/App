@@ -11,7 +11,7 @@ namespace App.DAL
 
         void Remove(int id);
 
-        ICollection<ProjectModel> GetAll();
+        IEnumerable<ProjectModel> GetAll();
 
         ProjectModel GetSingle(int id);
 

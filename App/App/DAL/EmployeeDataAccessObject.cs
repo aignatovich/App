@@ -39,10 +39,10 @@ namespace App.DAL
             DatabaseModelContainer.Current.EmployeeSet.Remove(employee);
         }
 
-        public ICollection<EmployeeModel> GetAll()
+        public IEnumerable<EmployeeModel> GetAll()
         {
-            ICollection<EmployeeModel> employeeList = DatabaseModelContainer.Current.EmployeeSet.ToList();
-            return employeeList;
+            var employees = DatabaseModelContainer.Current.EmployeeSet;
+            return employees;
         }
 
         public PagingQueryResult GetNextPage(TableRequest request, int pageSize)
@@ -57,13 +57,13 @@ namespace App.DAL
             var pageNumber = request.Page;
 
             var result = DirectSearch(name, surname, id, role, projectId)
-                .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""))
-                .Skip((pageNumber - 1)*pageSize)
-                .Take(pageSize);
+                .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""));
 
             return new PagingQueryResult()
             {
-                Employees = result,
+                Employees = result
+                    .Skip((pageNumber - 1)*pageSize)
+                    .Take(pageSize),
                 ResultQuantity = result.Count()
             };
         }
@@ -76,24 +76,22 @@ namespace App.DAL
 
         public  bool Exists(EmployeeModel employee)
         {
-            return (DatabaseModelContainer.Current.EmployeeSet.Any(x =>
+            return DatabaseModelContainer.Current.EmployeeSet.Any(x =>
                                x.Name.Equals(employee.Name) &&
                                x.Surname.Equals(employee.Surname) &&
-                               x.Position.Equals(employee.Position))) ||
+                               x.Position.Equals(employee.Position)) ||
                                (employee.Name == null ||
                                employee.Surname == null);
         }
 
-        public ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<int> ids)
+        public IEnumerable<EmployeeModel> GetEmployeesByIds(IEnumerable<int> ids)
         {
-            return ids.Select(GetSingle).ToList();
+            return ids.Select(GetSingle);
         }
 
         public IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role, int? projectId)
         {
-            IEnumerable<EmployeeModel> toTransfer;
-
-            toTransfer =
+            var toTransfer =
                 DatabaseModelContainer.Current.EmployeeSet.Where(
                     x =>
                         (id == null || x.Id == id) &&

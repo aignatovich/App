@@ -56,17 +56,16 @@ namespace App.DAL
             var sortingOrder = request.SortOrder;
             var pageNumber = request.Page;
 
-            var result = DatabaseModelContainer.Current.EmployeeSet.Where(
-                x => (projectId == null || x.ActualProjects.Any(y => y.Id == projectId))).Where(x =>
-                    (id == null || x.Id == id) &&
-                    (role == Roles.All || x.Position == role) &&
-                    (string.IsNullOrEmpty(name) || x.Name.Contains(name)) &&
-                    (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname)))
-                .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""));
+            var result = (projectId == null
+                ? DirectSearch(name, surname, id, role)
+                : DirectSearch(name, surname, id, role).Where(x => x.ActualProjects.Any(y => y.Id == projectId)))
+                .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""))
+                .Skip((pageNumber - 1)*pageSize)
+                .Take(pageSize);
 
             return new PagingQueryResult()
             {
-                Employees = result.Skip((pageNumber - 1)*pageSize).Take(pageSize),
+                Employees = result,
                 ResultQuantity = result.Count()
             };
         }
@@ -106,6 +105,5 @@ namespace App.DAL
 
             return toTransfer;
         }
-
     }
 }

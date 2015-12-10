@@ -56,9 +56,7 @@ namespace App.DAL
             var sortingOrder = request.SortOrder;
             var pageNumber = request.Page;
 
-            var result = (projectId == null
-                ? DirectSearch(name, surname, id, role)
-                : DirectSearch(name, surname, id, role).Where(x => x.ActualProjects.Any(y => y.Id == projectId)))
+            var result = DirectSearch(name, surname, id, role, projectId)
                 .OrderBy(property + (sortingOrder.Equals(SortEnum.asc) ? " descending" : ""))
                 .Skip((pageNumber - 1)*pageSize)
                 .Take(pageSize);
@@ -91,7 +89,7 @@ namespace App.DAL
             return ids.Select(GetSingle).ToList();
         }
 
-        public IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role)
+        public IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role, int? projectId)
         {
             IEnumerable<EmployeeModel> toTransfer = new List<EmployeeModel>();
 
@@ -101,7 +99,8 @@ namespace App.DAL
                         (id == null || x.Id == id) &&
                         (role == Roles.All || x.Position == role) &&
                         (string.IsNullOrEmpty(name) || x.Name.Contains(name)) &&
-                        (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname)));
+                        (string.IsNullOrEmpty(surname) || x.Surname.Contains(surname))).
+                        Where(x => (projectId == null || x.ActualProjects.Any(y => y.Id == projectId)));
 
             return toTransfer;
         }

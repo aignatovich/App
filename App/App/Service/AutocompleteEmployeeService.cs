@@ -18,7 +18,7 @@ namespace App.Service
 
         public string FormAutocompleteResponseByName(string query)
         {
-            var employees = employeeDataAccessObject.DirectSearch(query, null, null, Roles.All);
+            var employees = employeeDataAccessObject.DirectSearch(query, null, null, Roles.All, null);
             var suggestions = employees.Select(employee => employee.Name).ToList();
             var queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
             return JsonConvert.SerializeObject(queryModel);
@@ -26,7 +26,7 @@ namespace App.Service
 
         public string FormAutocompleteResponseBySurname(string query)
         {
-            var employees = employeeDataAccessObject.DirectSearch(null, query, null, Roles.All);
+            var employees = employeeDataAccessObject.DirectSearch(null, query, null, Roles.All, null);
             var suggestions = employees.Select(employee => employee.Surname).ToList();
             var queryModel = new AutocompleteQuery() { query = query, suggestions = suggestions };
             return JsonConvert.SerializeObject(queryModel);

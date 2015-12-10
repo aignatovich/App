@@ -23,7 +23,7 @@ namespace App.DAL
 
         ICollection<EmployeeModel> GetEmployeesByIds(IEnumerable<Int32> ids);
 
-        IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role);
+        IEnumerable<EmployeeModel> DirectSearch(string name, string surname, int? id, Roles role, int? projectId);
 
         PagingQueryResult GetNextPage(TableRequest request, int pageSize);
     }
